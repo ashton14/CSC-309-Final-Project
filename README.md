@@ -1,2 +1,2 @@
-# CSC-309-Final-Project
-Programming Tutor App
+# CSC308-W23-Final-Project
+Final Project for CSC308
