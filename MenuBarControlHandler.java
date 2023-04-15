@@ -73,45 +73,7 @@ public class MenuBarControlHandler implements ActionListener {
 
         if(e.getActionCommand().equals("comboBoxChanged")){
             JComboBox tmp = (JComboBox) e.getSource();
-            switch ((String)tmp.getSelectedItem()){
-                case "Start":
-                    //System.out.println("Start");
-                    Repository.getInstance().setSelectedCodeBlock("Start");
-                    break;
-                case "End":
-                    //System.out.println("End");
-                    Repository.getInstance().setSelectedCodeBlock("End");
-                    break;
-                case "Print":
-                    //System.out.println("Print");
-                    Repository.getInstance().setSelectedCodeBlock("Print");
-                    break;
-                case "Loop":
-                    //System.out.println("Loop");
-                    Repository.getInstance().setSelectedCodeBlock("Loop");
-                    break;
-                case "If":
-                    //System.out.println("If");
-                    Repository.getInstance().setSelectedCodeBlock("If");
-                    break;
-                case "Instruction":
-                    //System.out.println("Instruction");
-                    Repository.getInstance().setSelectedCodeBlock("Instruction");
-                    break;
-                case "Function":
-                    //System.out.println("Function");
-                    Repository.getInstance().setSelectedCodeBlock("Function");
-                    break;
-                case "Variable":
-                    //System.out.println("Variable");
-                    Repository.getInstance().setSelectedCodeBlock("Variable");
-                    break;
-                case "Connection":
-                    //System.out.println("Connection");
-                    Repository.getInstance().setSelectedCodeBlock("Connection");
-                    break;
-
+            Repository.getInstance().setSelectedCodeBlock((String)tmp.getSelectedItem());
             }
         }
     }
-}
