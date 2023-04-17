@@ -51,7 +51,7 @@ public class DiagramApp extends JFrame {
 
         String [] shapes = {"Start","End","Print","Loop","If","Instruction", "Function", "Variable","Connection"};
 
-        JComboBox shape = new JComboBox(shapes);
+        JComboBox<String> shape = new JComboBox<>(shapes);
 
         file.add(newFile);
         file.add(save);
