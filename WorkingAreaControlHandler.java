@@ -46,7 +46,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         String blockType = Repository.getInstance().getSelectedCodeBlock();
 
         // If we are drawing a connection
-        if (blockType.equals("Connection")) {
+        if (blockType.equals("Connection")) { //Connection is no longer an option, change to if a block is clicked
             // If the mouse is inside a CodeBlock
             for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
                 if (block.isInBounds(e.getX(), e.getY())) {
