@@ -16,6 +16,7 @@ public class DiagramApp extends JFrame {
         super("Diagram App");
 
         JMenuBar menuBar = new JMenuBar();
+        SidePanel sidePanel = new SidePanel();
         WorkingArea drawPanel = new WorkingArea();
         StatusBar statusBar = new StatusBar("Status");
         Repository.getInstance().addObserver(drawPanel);
@@ -75,6 +76,7 @@ public class DiagramApp extends JFrame {
         menuBar.add(shape);
 
         add(menuBar,BorderLayout.NORTH);
+        add(sidePanel,BorderLayout.WEST);
         add(drawPanel, BorderLayout.CENTER);
         add(statusBar, BorderLayout.SOUTH);
 
