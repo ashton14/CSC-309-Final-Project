@@ -49,7 +49,7 @@ public class DiagramApp extends JFrame {
         JMenuItem clear = new JMenuItem("Clear");
 
 
-        String [] shapes = {"Start","End","Print","Loop","If","Instruction", "Function", "Variable"};
+        String [] shapes = {"Start","End","Print","Loop","If","Instruction", "Function", "Variable", "Connection"};
 
         JComboBox<String> shape = new JComboBox<>(shapes);
 
