@@ -24,11 +24,11 @@ public class MenuBarControlHandler implements ActionListener {
         switch (e.getActionCommand()) {
             case "New":
                 Repository.getInstance().clear();
-                Repository.getInstance().selectMenuItem("New File Created.");
+                Repository.getInstance().setSelectedMenuItem("New File Created.");
                 System.out.println("New");
                 break;
             case "Save":
-                Repository.getInstance().selectMenuItem("File Saved.");
+                Repository.getInstance().setSelectedMenuItem("File Saved.");
 
                 String saveFile = (String) JOptionPane.showInputDialog(
                         null,
@@ -43,7 +43,7 @@ public class MenuBarControlHandler implements ActionListener {
                 }
                 break;
             case "Load":
-                Repository.getInstance().selectMenuItem("File Loaded.");
+                Repository.getInstance().setSelectedMenuItem("File Loaded.");
                 String loadFile = (String) JOptionPane.showInputDialog(
                         null,
                         "Select a save file to load a diagram",
@@ -58,7 +58,7 @@ public class MenuBarControlHandler implements ActionListener {
                 }
                 break;
             case "About":
-                Repository.getInstance().selectMenuItem("About");
+                Repository.getInstance().setSelectedMenuItem("About");
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),
                         "Welcome to version 1.0 of the Diagram App.\nThis is an overview of the features and how to use them.\nBy clicking on \"File\", you have the options to make a new diagram,\nsave your diagram, or load an existing diagram.\nBy clicking on help, you managed to open this dialog.\nClicking on Actions gives the options to clear the diagram or undo the last action.\nIf you click on Start, you can select which component you would like to draw.\nClicking anywhere in the area will draw the selected shape at that location.\nIf you scroll down in the shapes menu and select connections, you can draw lines\nbetween shapes by clicking them consecutively.\nAuthors:\nAshton Alonge\nAaron Bettencourt\nAlex Banham\nConnor Hickey" +
                                 "\nPatrick Whitlock\nCameron Hardy");
@@ -70,7 +70,6 @@ public class MenuBarControlHandler implements ActionListener {
                 Repository.getInstance().clear();
 
         }
-
         if(e.getActionCommand().equals("comboBoxChanged")){
             JComboBox tmp = (JComboBox) e.getSource();
             Repository.getInstance().setSelectedCodeBlock((String)tmp.getSelectedItem());

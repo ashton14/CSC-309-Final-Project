@@ -11,7 +11,7 @@ public class Repository extends Observable {
     private String selectedMenuItem;
     private ArrayList<CodeBlock> codeBlocks;
     private ArrayList<Line> lines;
-    private ArrayList<Object> drawables;
+    private ArrayList<Drawable> drawables;
 
 
     /**
@@ -46,14 +46,24 @@ public class Repository extends Observable {
     }
 
     /**
+     * getter for currently selected code block
+     * @return currently selected code block
+     */
+    public String getSelectedCodeBlock() {
+        return selectedCodeBlock;
+    }
+
+    /**
      * Sets selected menu item from menu bar
      * @param s
      */
-    public void selectMenuItem(String s){
+    public void setSelectedMenuItem(String s){
         selectedMenuItem = s;
         setChanged();
         notifyObservers(selectedMenuItem);
     }
+
+    public String getSelectedMenuItem(){ return selectedMenuItem; }
 
     /**
      * Sets list of code blocks
@@ -75,6 +85,17 @@ public class Repository extends Observable {
     }
 
     /**
+     * getter for data
+     * @return list of drawables
+     */
+    public ArrayList<Drawable> getDrawables() {
+        if(drawables == null){
+            drawables = new ArrayList<>();
+        }
+        return drawables;
+    }
+
+    /**
      * adds code block to list
      * @param codeBlock code block
      */
@@ -82,10 +103,8 @@ public class Repository extends Observable {
         if(codeBlocks == null){
             codeBlocks = new ArrayList<>();
         }
-
         codeBlocks.add(codeBlock);
         drawables.add(codeBlock);
-
         setChanged();
         notifyObservers();
     }
@@ -117,14 +136,6 @@ public class Repository extends Observable {
         }
         lines.add(l);
         drawables.add(l);
-    }
-
-    /**
-     * getter for currently selected code block
-     * @return currently selected code block
-     */
-    public String getSelectedCodeBlock() {
-        return selectedCodeBlock;
     }
 
 
