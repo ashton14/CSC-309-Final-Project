@@ -173,6 +173,23 @@ public class Repository extends Observable {
         notifyObservers("Board Cleared.");
     }
 
+    public void deleteSelectedItem(){
+        //delete currently selected item
+        setChanged();
+        notifyObservers("Item deleted.");
+    }
+
+    public void parseCode(){
+        //parse code
+        setChanged();
+        notifyObservers("Code submitted.");
+    }
+
+    public void updateStatusBar(String s){
+        setChanged();
+        notifyObservers(s);
+    }
+
     /**
      * notifies observer to clear drawing area
      */
