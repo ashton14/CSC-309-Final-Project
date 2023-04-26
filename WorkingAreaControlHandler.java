@@ -44,6 +44,8 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         // Create blockFactory and get selected CodeBlock/Drawable type
         BlockFactory blockFactory = new BlockFactory();
         String blockType = Repository.getInstance().getSelectedCodeBlock();
+        Repository.getInstance().updateStatusBar(blockType);
+
 
         // If we are drawing a connection
         if (blockType.equals("Connection")) { //Connection should no longer be an option, change to if a block is clicked

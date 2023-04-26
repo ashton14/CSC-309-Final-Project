@@ -47,6 +47,7 @@ public class DiagramApp extends JFrame {
         JMenuItem about = new JMenuItem("About");
         JMenuItem undo = new JMenuItem("Undo");
         JMenuItem clear = new JMenuItem("Clear");
+        JMenuItem delete = new JMenuItem("Delete");
 
 
         String [] shapes = {"Start","End","Print","Loop","If","Instruction", "Function", "Variable", "Connection"};
@@ -59,6 +60,7 @@ public class DiagramApp extends JFrame {
         help.add(about);
         actions.add(undo);
         actions.add(clear);
+        actions.add(delete);
 
         MenuBarControlHandler menuController = new MenuBarControlHandler();
 
@@ -69,6 +71,7 @@ public class DiagramApp extends JFrame {
         shape.addActionListener(menuController);
         undo.addActionListener(menuController);
         clear.addActionListener(menuController);
+        delete.addActionListener(menuController);
 
         menuBar.add(file);
         menuBar.add(help);
