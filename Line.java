@@ -31,6 +31,22 @@ public class Line implements Drawable {
     }
 
     /**
+     * Getter function for the first CodeBlock in this Line.
+     * @return The first CodeBlock in this Line.
+     */
+    public CodeBlock getStart(){
+        return start;
+    }
+
+    /**
+     * Getter function for the last CodeBlock in this Line.
+     * @return The last CodeBlock in this Line.
+     */
+    public CodeBlock getEnd(){
+        return end;
+    }
+
+    /**
      * Draws the line, and arrow head
      * @param g - Graphics object used for drawing
      */

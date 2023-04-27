@@ -148,8 +148,11 @@ public class Repository extends Observable {
         if (drawables != null && drawables.size() > 0) {
             if (drawables.get(drawables.size() - 1).getClass().equals(Line.class)) {
                 if (lines != null && lines.size() > 0) {
+                    Line line = lines.get((lines.size() - 1));
+                    line.getStart().removeConnection(line.getEnd());
                     lines.remove(lines.size() - 1);
                     drawables.remove(drawables.size()-1);
+
                 }
             }
             else {
