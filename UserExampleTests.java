@@ -1,0 +1,62 @@
+import java.util.ArrayList;
+
+public class UserExampleTests {
+
+    public static void main(String [] args) {
+        ArrayList<String> t0;
+        ArrayList<CodeBlock> T0;
+        t0 = new ArrayList<>();
+        T0 = new ArrayList<>();
+
+        t0.add("int a = 2;");
+        t0.add("int b = 3;");
+        t0.add("int c;");
+        t0.add("c = a + b;");
+        t0.add("System.out.println(c);");
+
+        BlockFactory factory = new BlockFactory();
+
+        CodeBlock cb0 = factory.makeBlock("Start", 100, 100);
+        CodeBlock cb1 = factory.makeBlock("Variable", 100, 150);
+        CodeBlock cb2 = factory.makeBlock("Variable", 100, 200);
+        CodeBlock cb3 = factory.makeBlock("Variable", 100, 250);
+        CodeBlock cb4 = factory.makeBlock("Instruction", 100, 300);
+        CodeBlock cb5 = factory.makeBlock("Print", 100, 350);
+        CodeBlock cb6 = factory.makeBlock("End", 100, 400);
+
+        cb0.addToOutbound(cb1);
+        cb1.addToInbound(cb0);
+        cb1.addToOutbound(cb2);
+        cb2.addToInbound(cb1);
+        cb2.addToOutbound(cb3);
+        cb3.addToInbound(cb2);
+        cb3.addToOutbound(cb4);
+        cb4.addToInbound(cb3);
+        cb4.addToOutbound(cb5);
+        cb5.addToInbound(cb4);
+        cb5.addToOutbound(cb6);
+        cb6.addToInbound(cb5);
+
+        T0.add(cb0);
+        T0.add(cb1);
+        T0.add(cb2);
+        T0.add(cb3);
+        T0.add(cb4);
+        T0.add(cb5);
+        T0.add(cb6);
+
+
+        UserExample ex0 = new UserExample(t0, T0, "ex0");
+
+        //User code Test
+        ArrayList<String> usersCode = new ArrayList<>();
+        usersCode.add("int a = 2;");
+        usersCode.add("int b = 3;");
+        usersCode.add("int c");
+        usersCode.add("c = a + b;");
+        usersCode.add("System.out.println(c);");
+
+        int result = ex0.compareCode(usersCode);
+        System.out.println(result);
+    }
+}
