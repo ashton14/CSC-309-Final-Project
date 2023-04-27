@@ -19,6 +19,7 @@ public class WorkingArea extends JPanel implements Observer {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Repository.getInstance().getCurrentlySelectedCodeBlockOutline().draw(g);
         for(CodeBlock codeBlock: Repository.getInstance().getCodeBlocks()) {
             codeBlock.draw(g);
         }

@@ -24,6 +24,11 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
     private CodeBlock dragging = null;
 
     /**
+     * @Field draggingOutline - Outline shape of CodeBLock being dragged
+     */
+    private Shape draggingShape = null;
+
+    /**
      * Constructs the WorkingAreaControlHandler
      */
     public WorkingAreaControlHandler(){ }
@@ -76,6 +81,8 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
                 if(block.isInBounds(e.getX(), e.getY())) {
                     dragging = block;
+                    Repository.getInstance().setCurrentlySelectedCodeBlock(block);
+                    draggingShape = Repository.getInstance().getCurrentlySelectedCodeBlockOutline();
                 }
             }
             // If we aren't dragging anything create corresponding CodeBlock
@@ -93,6 +100,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
     public void mouseReleased(MouseEvent e) {
 
         dragging = null;
+        draggingShape = null;
         Repository.getInstance().updateStatusBar(Repository.getInstance().getSelectedCodeBlock());
     }
     /**
@@ -121,6 +129,8 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         if(dragging != null) {
             dragging.setXCenter(e.getX());
             dragging.setYCenter(e.getY());
+            draggingShape.setXCenter(e.getX());
+            draggingShape.setYCenter(e.getY());
             Repository.getInstance().repaintWorkingArea();
         }
     }

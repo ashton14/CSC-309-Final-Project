@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -9,6 +10,8 @@ public class Repository extends Observable {
     private static Repository repository;
     private String selectedCodeBlock;
     private String selectedMenuItem;
+    private CodeBlock currentlySelectedCodeBlock;
+    private Shape currentlySelectedCodeBlockOutline;
     private ArrayList<CodeBlock> codeBlocks;
     private ArrayList<Line> lines;
     private ArrayList<Drawable> drawables;
@@ -24,6 +27,8 @@ public class Repository extends Observable {
         codeBlocks = new ArrayList<>();
         lines = new ArrayList<>();
         drawables = new ArrayList<>();
+        currentlySelectedCodeBlock = null;
+        currentlySelectedCodeBlockOutline = new Rectangle(0, 0, 0, 0, Color.white);
     }
 
     /**
@@ -35,6 +40,59 @@ public class Repository extends Observable {
             repository = new Repository();
         }
         return repository;
+    }
+
+    /**
+     * Sets the clicked code block as the currently selected code block, along with populating the outlineShape field
+     * with the correct shape
+     * @param block code block to be set as currently selected
+     */
+    public void setCurrentlySelectedCodeBlock(CodeBlock block) {
+        Circle circOutline = new Circle(block.getXCenter(), block.getYCenter(), 60, Color.decode("#E93D2D"));
+        Rectangle rectOutline = new Rectangle(block.getXCenter(), block.getYCenter(), 110,
+                50, Color.decode("#E93D2D"));
+        Diamond diamOutline =  new Diamond(block.getXCenter(), block.getYCenter(), 61,
+                77, Color.decode("#E93D2D"));
+        if (block.getClass().equals(FunctionBlock.class)) {
+            currentlySelectedCodeBlockOutline = rectOutline;
+        }
+        else if (block.getClass().equals(IfBlock.class)) {
+            currentlySelectedCodeBlockOutline = diamOutline;
+        }
+        else if (block.getClass().equals(InstructionBlock.class)) {
+            currentlySelectedCodeBlockOutline = rectOutline;
+        }
+        else if (block.getClass().equals(LoopBlock.class)) {
+            currentlySelectedCodeBlockOutline = diamOutline;
+        }
+        else if (block.getClass().equals(StartBlock.class)) {
+            currentlySelectedCodeBlockOutline = circOutline;
+        }
+        else if (block.getClass().equals(StopBlock.class)) {
+            currentlySelectedCodeBlockOutline = circOutline;
+        }
+        else if (block.getClass().equals(VariableBlock.class)) {
+            currentlySelectedCodeBlockOutline = rectOutline;
+        }
+        currentlySelectedCodeBlock = block;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * getter for currently selected code block
+     * @return the Code Block object that was last clicked
+     */
+    public CodeBlock getCurrentlySelectedCodeBlock() {
+        return currentlySelectedCodeBlock;
+    }
+
+    /**
+     * getter for currently selected code block outline Shape
+     * @return the Shape object that is the correct outline for the currently selected shape
+     */
+    public Shape getCurrentlySelectedCodeBlockOutline() {
+        return currentlySelectedCodeBlockOutline;
     }
 
     /**
@@ -216,4 +274,5 @@ public class Repository extends Observable {
         setChanged();
         notifyObservers(mode);
     }
+
 }
