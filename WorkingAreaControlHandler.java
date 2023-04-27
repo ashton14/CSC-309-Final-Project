@@ -44,9 +44,11 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         // Create blockFactory and get selected CodeBlock/Drawable type
         BlockFactory blockFactory = new BlockFactory();
         String blockType = Repository.getInstance().getSelectedCodeBlock();
+        Repository.getInstance().updateStatusBar(blockType);
+
 
         // If we are drawing a connection
-        if (blockType.equals("Connection")) { //Connection is no longer an option, change to if a block is clicked
+        if (blockType.equals("Connection")) { //Connection should no longer be an option, change to if a block is clicked
             // If the mouse is inside a CodeBlock
             for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
                 if (block.isInBounds(e.getX(), e.getY())) {
@@ -89,7 +91,9 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseReleased(MouseEvent e) {
+
         dragging = null;
+        Repository.getInstance().updateStatusBar(Repository.getInstance().getSelectedCodeBlock());
     }
     /**
      * Implemented for interface

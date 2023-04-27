@@ -12,10 +12,20 @@ public class SidePanel extends JPanel {
      * Creates a SidePanel object
      */
     SidePanel() {
+
+        SidePanelControlHandler sideController = new SidePanelControlHandler(codeSection);
+
         this.setPreferredSize(new Dimension(300,400));
         codeSection = new JTextArea("//Code section");
         codeSection.setPreferredSize(new Dimension(280,300));
         this.add(codeSection);
+        codeSection.addMouseListener(sideController);
+
+        JButton submit = new JButton("Submit");
+        submit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        add(submit);
+
+        submit.addActionListener(sideController);
     }
 
     /**
