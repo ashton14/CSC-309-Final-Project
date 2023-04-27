@@ -91,7 +91,9 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseReleased(MouseEvent e) {
+
         dragging = null;
+        Repository.getInstance().updateStatusBar(Repository.getInstance().getSelectedCodeBlock());
     }
     /**
      * Implemented for interface

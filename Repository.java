@@ -195,6 +195,6 @@ public class Repository extends Observable {
      */
     public void repaintWorkingArea() {
         setChanged();
-        notifyObservers();
+        notifyObservers("Dragging "+Repository.getInstance().getSelectedCodeBlock()+" Block...");
     }
 }
