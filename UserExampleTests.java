@@ -2,11 +2,9 @@ import java.util.ArrayList;
 
 public class UserExampleTests {
 
-    public static void main(String [] args) {
-        ArrayList<String> t0;
-        ArrayList<CodeBlock> T0;
-        t0 = new ArrayList<>();
-        T0 = new ArrayList<>();
+    public static UserExample getEx0() {
+        ArrayList<String> t0 = new ArrayList<>();
+        ArrayList<CodeBlock> T0 = new ArrayList<>();
 
         t0.add("int a = 2;");
         t0.add("int b = 3;");
@@ -45,18 +43,21 @@ public class UserExampleTests {
         T0.add(cb5);
         T0.add(cb6);
 
+        return new UserExample(t0, T0, "ex0");
+    }
 
-        UserExample ex0 = new UserExample(t0, T0, "ex0");
+    public static void main(String [] args) {
 
         //User code Test
         ArrayList<String> usersCode = new ArrayList<>();
         usersCode.add("int a = 2;");
         usersCode.add("int b = 3;");
-        usersCode.add("int c");
+        usersCode.add("int c;");
         usersCode.add("c = a + b;");
-        usersCode.add("System.out.println(c);");
+        //usersCode.add("System.out.println(c);");
 
-        int result = ex0.compareCode(usersCode);
+        UserExample ex0 = getEx0();
+        int result = ex0.gradeUserCode(usersCode);
         System.out.println(result);
     }
 }

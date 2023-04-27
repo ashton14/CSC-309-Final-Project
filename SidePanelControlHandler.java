@@ -17,6 +17,13 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
         if(e.getActionCommand().equals("Submit")){
             Repository.getInstance().parseCode();
 
+            //Temporary code to test the UserExample class
+            UserExample ex0 = UserExampleTests.getEx0();
+            System.out.println("SUBMIT BUTTON PUSHED");
+            System.out.println(Repository.getInstance().getCodeBlocks().size());
+            System.out.println(ex0.getCodeBlocks().size());
+            int mistakeIndex = ex0.gradeUserDiagram(Repository.getInstance().getCodeBlocks());
+            System.out.println("mistake at CodeBlock index: "+mistakeIndex);
         }
     }
 
