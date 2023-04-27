@@ -17,49 +17,42 @@ public class BlockFactory {
     public CodeBlock makeBlock(String type, int xPosCenter, int yPosCenter){
         if(type == null)
             return null;
-        TextDecorator textDecorator;
         Shape shape;
         switch (type) {
             case "If" -> {
                 shape = new Diamond(xPosCenter, yPosCenter, 50, 60, Color.ORANGE);
-                textDecorator = new TextDecorator(shape, "IF");
-                return new IfBlock(textDecorator);
+                return new IfBlock(shape, "IF");
             }
             case "Instruction" -> {
                 shape = new Rectangle(xPosCenter, yPosCenter, 100, 40, Color.BLUE);
-                textDecorator = new TextDecorator(shape, "INSTRUCTION");
-                return new InstructionBlock(textDecorator);
+                return new InstructionBlock(shape, "INSTRUCTION");
             }
             case "Loop" -> {
                 shape = new Diamond(xPosCenter, yPosCenter, 50, 60, Color.PINK);
-                textDecorator = new TextDecorator(shape, "LOOP");
-                return new LoopBlock(textDecorator);
+                return new LoopBlock(shape, "LOOP");
             }
             case "Print" -> {
                 shape = new Parallelogram(xPosCenter, yPosCenter, 100, 40, Color.ORANGE);
-                textDecorator = new TextDecorator(shape, "PRINT");
-                return new PrintBlock(textDecorator);
+                return new PrintBlock(shape, "PRINT");
             }
             case "Start" -> {
                 shape = new Circle(xPosCenter, yPosCenter, 50, Color.GREEN);
-                return new StartBlock(shape);
+                return new StartBlock(shape, "START");
             }
             case "End" -> {
                 shape = new Circle(xPosCenter, yPosCenter, 50, Color.RED);
                 DotDecorator dotDecorator = new DotDecorator(shape);
-                return new StopBlock(dotDecorator);
+                return new StopBlock(dotDecorator, "STOP");
             }
             case "Variable" -> {
                 shape = new Rectangle(xPosCenter, yPosCenter, 100, 40, Color.decode("#f5f5dc"));
                 PerpendicularLineDecorator pld = new PerpendicularLineDecorator(shape);
-                textDecorator = new TextDecorator(pld, "VARIABLE");
-                return new VariableBlock(textDecorator);
+                return new VariableBlock(pld, "VARIABLE");
             }
             case "Function" -> {
                 shape = new Rectangle(xPosCenter, yPosCenter, 100, 40, Color.decode("#f5f5dc"));
                 ParallelLineDecorator pld = new ParallelLineDecorator(shape);
-                textDecorator = new TextDecorator(pld, "FUNCTION");
-                return new FunctionBlock(textDecorator);
+                return new FunctionBlock(pld, "FUNCTION");
             }
         }
         return null;

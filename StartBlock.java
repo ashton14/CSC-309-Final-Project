@@ -14,9 +14,10 @@ public class StartBlock extends CodeBlock{
      *
      * @param wrapper   A Shape representation of this StartBlock
      *                  that may contain more Shapes inside.
+     * @param label A label to label this CodeBlock with.
      */
-    public StartBlock(Shape wrapper){
-        super(wrapper, 0, 1);
+    public StartBlock(Shape wrapper, String label){
+        super(wrapper, 0, 1, label);
     }
 
 }

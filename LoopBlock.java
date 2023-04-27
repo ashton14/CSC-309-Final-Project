@@ -8,9 +8,10 @@
     /**
      * Constructs a new LoopBlock with the given shape (drawable).
      * @param drawable The Shape of the LoopBlock.
+     * @param label A label to label this CodeBlock with.
      */
-    public LoopBlock(Shape drawable) {
-        super(drawable, 2, 2);
+    public LoopBlock(Shape drawable, String label) {
+        super(drawable, 2, 2, label);
     }
 
 }

@@ -13,11 +13,13 @@ public class Repository extends Observable {
     private ArrayList<Line> lines;
     private ArrayList<Drawable> drawables;
 
+    private String mode;
 
     /**
      * Constructor to initialize data
      */
     private Repository(){
+        mode = "Sandbox";
         selectedCodeBlock = "Start";
         codeBlocks = new ArrayList<>();
         lines = new ArrayList<>();
@@ -146,8 +148,11 @@ public class Repository extends Observable {
         if (drawables != null && drawables.size() > 0) {
             if (drawables.get(drawables.size() - 1).getClass().equals(Line.class)) {
                 if (lines != null && lines.size() > 0) {
+                    Line line = lines.get((lines.size() - 1));
+                    line.getStart().removeConnection(line.getEnd());
                     lines.remove(lines.size() - 1);
                     drawables.remove(drawables.size()-1);
+
                 }
             }
             else {
@@ -196,5 +201,19 @@ public class Repository extends Observable {
     public void repaintWorkingArea() {
         setChanged();
         notifyObservers("Dragging "+Repository.getInstance().getSelectedCodeBlock()+" Block...");
+    }
+
+    /**
+     * Changes the mode of the DiagramApp
+     * (Sandbox, Code to Flowchart, Flowchart to Code.
+     * @param mode
+     */
+    public void changeMode(String mode){
+        if(this.mode.equals(mode)){
+            return;
+        }
+        this.mode = mode;
+        setChanged();
+        notifyObservers(mode);
     }
 }

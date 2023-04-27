@@ -14,9 +14,10 @@ public class StopBlock extends CodeBlock {
      *
      * @param wrapper   A Shape representation of this StopBlock
      *                  that may contain more Shapes inside.
+     * @param label A label to label this CodeBlock with.
      */
-    public StopBlock(Shape wrapper){
-        super(wrapper, 1, 0);
+    public StopBlock(Shape wrapper, String label){
+        super(wrapper, 1, 0, label);
     }
 
 }
