@@ -52,6 +52,7 @@ public class MenuBarControlHandler implements ActionListener {
                 if(loadFile != null && loadFile.length() > 0) {
                     FileManager.readFile(loadFile);
                     Repository.getInstance().repaintWorkingArea();
+                    Repository.getInstance().clear();
                 }
                 else {
                     System.out.println("Please select a valid save file");
