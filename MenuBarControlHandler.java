@@ -70,6 +70,15 @@ public class MenuBarControlHandler implements ActionListener {
                 Repository.getInstance().clear();
             case "Delete":
                 Repository.getInstance().deleteSelectedItem();
+            case "Sandbox":
+                Repository.getInstance().changeMode("Sandbox");
+                break;
+            case "Translate Code":
+                Repository.getInstance().changeMode("Translate Code");
+                break;
+            case "Translate Flowchart":
+                Repository.getInstance().changeMode("Translate Flowchart");
+                break;
 
         }
         if(e.getActionCommand().equals("comboBoxChanged")){

@@ -3,7 +3,7 @@ import java.awt.*;
 /**
  * A class to be instantiated to decorate Shapes in the center
  * with text.
- *
+ * @deprecated
  * @author Aaron Bettencourt
  */
 public class TextDecorator extends ShapeDecorator {

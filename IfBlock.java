@@ -12,8 +12,9 @@ public class IfBlock extends CodeBlock {
      *
      * @param wrapper   The Shape or ShapeDecorator to represent
      *                  this IfBlock.
+     * @param label A label to label this CodeBlock with.
      */
-    public IfBlock(Shape wrapper){
-        super(wrapper, 1, 2);
+    public IfBlock(Shape wrapper, String label){
+        super(wrapper, 1, 2, label);
     }
 }

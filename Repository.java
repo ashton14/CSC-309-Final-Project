@@ -13,11 +13,13 @@ public class Repository extends Observable {
     private ArrayList<Line> lines;
     private ArrayList<Drawable> drawables;
 
+    private String mode;
 
     /**
      * Constructor to initialize data
      */
     private Repository(){
+        mode = "Sandbox";
         selectedCodeBlock = "Start";
         codeBlocks = new ArrayList<>();
         lines = new ArrayList<>();
@@ -196,5 +198,19 @@ public class Repository extends Observable {
     public void repaintWorkingArea() {
         setChanged();
         notifyObservers("Dragging "+Repository.getInstance().getSelectedCodeBlock()+" Block...");
+    }
+
+    /**
+     * Changes the mode of the DiagramApp
+     * (Sandbox, Code to Flowchart, Flowchart to Code.
+     * @param mode
+     */
+    public void changeMode(String mode){
+        if(this.mode.equals(mode)){
+            return;
+        }
+        this.mode = mode;
+        setChanged();
+        notifyObservers(mode);
     }
 }

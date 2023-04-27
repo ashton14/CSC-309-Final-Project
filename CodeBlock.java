@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public abstract class CodeBlock implements Serializable, Drawable {
     private Shape shape;
+    private String text;
 
 //    private ArrayList<Line> inboundLines;
 //    private ArrayList<Line> outboundLines;
@@ -19,18 +20,68 @@ public abstract class CodeBlock implements Serializable, Drawable {
     private int maxInboundCount;
     private int maxOutboundCount;
 
+
     /**
      * Constructs a new CodeBlock with the given shape, max inbound count, and max outbound count.
      * @param shape The Shape of the CodeBlock.
      * @param maxInboundCount The maximum number of inbound connections.
      * @param maxOutboundCount The maximum number of outbound connections.
      */
-    public CodeBlock(Shape shape, int maxInboundCount, int maxOutboundCount) {
+    public CodeBlock(Shape shape, int maxInboundCount, int maxOutboundCount, String text) {
         this.shape = shape;
         this.inboundCodeBlocks = new ArrayList<>();
         this.outboundCodeBlocks = new ArrayList<>();
         this.maxInboundCount = maxInboundCount;
         this.maxOutboundCount = maxOutboundCount;
+        this.text = text;
+    }
+
+    /**
+     * Removes all connections from this CodeBlock and to other CodeBlocks.
+     */
+    public void removeAllConnections(){
+        for (CodeBlock inboundCodeBlock : inboundCodeBlocks) {
+            inboundCodeBlock.outboundCodeBlocks.remove(this);
+        }
+        for (CodeBlock outboundCodeBlock : outboundCodeBlocks) {
+            outboundCodeBlock.inboundCodeBlocks.remove(this);
+        }
+        inboundCodeBlocks.clear();
+        outboundCodeBlocks.clear();
+    }
+
+    /**
+     * Removes all connections to and from this CodeBlock that match a given
+     * reference of type CodeBlock.
+     * @param codeBlock   The CodeBlock to remove outgoing references to from this
+     *                    CodeBlock and to remove incoming connections to this CodeBlock
+     *                    from.
+     */
+    public void removeConnection(CodeBlock codeBlock){
+        for (CodeBlock inboundCodeBlock : inboundCodeBlocks) {
+            if(inboundCodeBlock == codeBlock) {
+                inboundCodeBlock.outboundCodeBlocks.remove(this);
+            }
+        }
+        for (CodeBlock outboundCodeBlock : outboundCodeBlocks) {
+            outboundCodeBlock.inboundCodeBlocks.remove(this);
+            if(outboundCodeBlock == codeBlock) {
+                outboundCodeBlock.outboundCodeBlocks.remove(this);
+            }
+        }
+        inboundCodeBlocks.remove(codeBlock);
+        outboundCodeBlocks.remove(codeBlock);
+    }
+
+    /**
+     * Setter method to set the text of this CodeBlock.
+     * @param text   The text to change the text of this
+     *               CodeBlock to.
+     */
+    public void setText(String text){
+        if(text != null){
+            this.text = text;
+        }
     }
 
     /**
@@ -177,6 +228,9 @@ public abstract class CodeBlock implements Serializable, Drawable {
      */
     public void draw(Graphics g){
         shape.draw(g);
+        int textWidth = g.getFontMetrics().stringWidth(text);
+        g.setColor(Color.BLACK);
+        g.drawString(text,  (getXCenter() - textWidth / 2), getYCenter());
     }
 
     /**
