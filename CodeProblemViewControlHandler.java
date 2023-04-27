@@ -22,6 +22,14 @@ public class CodeProblemViewControlHandler implements ActionListener {
             // call to repo function to make help
         } else if(commandString.equals("Submit")){
             // call to repo function to get feedback
+
+            //temporary code for testing purposes
+            UserExample ex1 = UserExampleTests.getEx1();
+            System.out.println("SUBMIT BUTTON PUSHED");
+            System.out.println(Repository.getInstance().getCodeBlocks().size());
+            System.out.println(ex1.getCodeBlocks().size());
+            int mistakeIndex = ex1.gradeUserDiagram(Repository.getInstance().getCodeBlocks());
+            System.out.println("mistake at CodeBlock index: "+mistakeIndex);
         }
     }
 }
