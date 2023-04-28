@@ -13,10 +13,10 @@ import java.util.ArrayList;
  * @author Patrick Whitlock
  */
 public class UserExample {
-    ArrayList<String> codeStatements;
-    ArrayList<CodeBlock> codeBlocks;
+    private ArrayList<String> codeStatements;
+    private ArrayList<CodeBlock> codeBlocks;
 
-    String exampleName;
+    private String exampleName;
 
     /**
      * Creates a new main.UserExample.
