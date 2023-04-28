@@ -43,8 +43,12 @@ public class UserExample {
         }
 
         //check for incomplete diagram
-        if(this.codeBlocks.size() != userCodeBlocks.size()) {
+        if(userCodeBlocks.size() < this.codeBlocks.size()) {
             maxIndex = userCodeBlocks.size();
+            sizeProblem = 1;
+        }
+        if(userCodeBlocks.size() > this.codeBlocks.size()) {
+            maxIndex = this.codeBlocks.size();
             sizeProblem = 1;
         }
         for(int i = 0; i < maxIndex; i++) {
@@ -99,15 +103,25 @@ public class UserExample {
      */
     public int gradeUserCode(ArrayList<String> userCodeStatements){
         //check if userCode is smaller than correct answer
-        int maxIndex = this.codeBlocks.size();
+        int maxIndex = this.codeStatements.size();
         int sizeProblem = 0;
 
-        if(this.codeStatements.size() != userCodeStatements.size()) {
+        System.out.println("User code size: "+userCodeStatements.size());
+        System.out.println("Correct code size: "+this.codeStatements.size());
+
+        if(userCodeStatements.size() < this.codeStatements.size()) {
             maxIndex = userCodeStatements.size();
+            sizeProblem = 1;
+        }
+        if(userCodeStatements.size() > this.codeStatements.size()) {
+            maxIndex = this.codeStatements.size();
             sizeProblem = 1;
         }
 
         for(int i = 0; i < maxIndex; i++) {
+            System.out.println("User code statement: "+userCodeStatements.get(i));
+            System.out.println("Correct answer code: "+this.codeStatements.get(i));
+
             if(i == maxIndex-1 && sizeProblem == 1) return i;
             if(!this.codeStatements.get(i).equals(userCodeStatements.get(i))) {
                 return i;

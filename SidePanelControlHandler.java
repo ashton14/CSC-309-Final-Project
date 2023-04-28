@@ -3,13 +3,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class SidePanelControlHandler implements ActionListener, MouseListener {
 
-    private final JTextArea jTextArea;
+    private final ArrayList<JTextArea> jTextAreas;
 
-    SidePanelControlHandler(JTextArea jTextArea){
-        this.jTextArea = jTextArea;
+    SidePanelControlHandler(ArrayList<JTextArea> jTextAreas){
+        this.jTextAreas = jTextAreas;
     }
 
     @Override
@@ -17,13 +18,24 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
         if(e.getActionCommand().equals("Submit")){
             Repository.getInstance().parseCode();
 
-            //Temporary code to test the UserExample class
-            UserExample ex0 = UserExampleTests.getEx0();
+            //The following code is temporary in order to quickly test the UserExample class
+            UserExample ex1 = UserExampleTests.getEx1();
             System.out.println("SUBMIT BUTTON PUSHED");
-            System.out.println(Repository.getInstance().getCodeBlocks().size());
-            System.out.println(ex0.getCodeBlocks().size());
-            int mistakeIndex = ex0.gradeUserDiagram(Repository.getInstance().getCodeBlocks());
-            System.out.println("mistake at CodeBlock index: "+mistakeIndex);
+
+            //grade text
+            System.out.println("user code at line 0: "+jTextAreas.get(0).getText());
+            System.out.println("user code at line 1: "+jTextAreas.get(1).getText());
+
+            //build ArrayList of strings
+            ArrayList<String> usersCode = new ArrayList<>();
+            for(int i = 0; i < jTextAreas.size(); i++) {
+                if(!jTextAreas.get(i).getText().equals("")) {
+                    usersCode.add(jTextAreas.get(i).getText());
+                }
+            }
+            int mistakeIndex = ex1.gradeUserCode(usersCode);
+            System.out.println("Code mistake at line: "+mistakeIndex);
+
         }
     }
 

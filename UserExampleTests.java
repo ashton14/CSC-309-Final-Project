@@ -67,14 +67,14 @@ public class UserExampleTests {
 
         BlockFactory factory = new BlockFactory();
 
-        CodeBlock cb0 = factory.makeBlock("Start", 100, 100);
-        CodeBlock cb1 = factory.makeBlock("Variable", 100, 150);
-        CodeBlock cb2 = factory.makeBlock("Variable", 100, 200);
-        CodeBlock cb3 = factory.makeBlock("If", 100, 250);
-        CodeBlock cb4 = factory.makeBlock("Print", 100, 300);
-        CodeBlock cb5 = factory.makeBlock("Print", 200, 350);
-        CodeBlock cb6 = factory.makeBlock("End", 100, 400);
-        CodeBlock cb7 = factory.makeBlock("End", 200, 400);
+        CodeBlock cb0 = factory.makeBlock("Start", 150, 100);
+        CodeBlock cb1 = factory.makeBlock("Variable", 150, 200);
+        CodeBlock cb2 = factory.makeBlock("Variable", 150, 250);
+        CodeBlock cb3 = factory.makeBlock("If", 150, 350);
+        CodeBlock cb4 = factory.makeBlock("Print", 150, 450);
+        CodeBlock cb5 = factory.makeBlock("Print", 300, 450);
+        CodeBlock cb6 = factory.makeBlock("End", 150, 550);
+        CodeBlock cb7 = factory.makeBlock("End", 300, 550);
 
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
