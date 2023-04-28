@@ -50,6 +50,11 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         BlockFactory blockFactory = new BlockFactory();
         String blockType = Repository.getInstance().getSelectedCodeBlock();
         Repository.getInstance().updateStatusBar(blockType);
+        if (Repository.getInstance().getCurrentlySelectedLine() != null) {
+            Repository.getInstance().getCurrentlySelectedLine().setColor(Color.BLACK);
+            Repository.getInstance().setCurrentlySelectedLine(null);
+        }
+
 
 
         // If we are drawing a connection
@@ -91,6 +96,8 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
                 if(line.pointDistanceFromLine(e.getX(), e.getY()) < 20) {
                     lineSelected = true;
                     Repository.getInstance().setCurrentlySelectedLine(line);
+                    Repository.getInstance().getCurrentlySelectedLine().setColor(Color.RED);
+                    Repository.getInstance().repaintWorkingArea();
                     System.out.print("Line selected");
                     break;
                 }
