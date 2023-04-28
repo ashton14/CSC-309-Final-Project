@@ -10,6 +10,7 @@ public class Repository extends Observable {
     private static Repository repository;
     private String selectedCodeBlock;
     private String selectedMenuItem;
+    private Line currentlySelectedLine;
     private CodeBlock currentlySelectedCodeBlock;
     private Shape currentlySelectedCodeBlockOutline;
     private ArrayList<CodeBlock> codeBlocks;
@@ -40,6 +41,14 @@ public class Repository extends Observable {
             repository = new Repository();
         }
         return repository;
+    }
+
+    public void setCurrentlySelectedLine(Line line) {
+        currentlySelectedLine = line;
+    }
+
+    public Line getCurrentlySelectedLine() {
+        return currentlySelectedLine;
     }
 
     /**

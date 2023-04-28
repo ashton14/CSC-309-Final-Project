@@ -77,6 +77,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             }
         }
         else {
+            boolean lineSelected = false;
             // If we click on a CodeBlock start dragging it
             for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
                 if(block.isInBounds(e.getX(), e.getY())) {
@@ -85,8 +86,17 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
                     draggingShape = Repository.getInstance().getCurrentlySelectedCodeBlockOutline();
                 }
             }
+
+            for(Line line : Repository.getInstance().getLines()) {
+                if(line.pointDistanceFromLine(e.getX(), e.getY()) < 20) {
+                    lineSelected = true;
+                    Repository.getInstance().setCurrentlySelectedLine(line);
+                    System.out.print("Line selected");
+                    break;
+                }
+            }
             // If we aren't dragging anything create corresponding CodeBlock
-            if(dragging == null) {
+            if(dragging == null && !lineSelected) {
                 Repository.getInstance().addCodeBlock(blockFactory.makeBlock(blockType, e.getX(), e.getY()));
             }
         }
