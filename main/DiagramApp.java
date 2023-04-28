@@ -61,7 +61,7 @@ public class DiagramApp extends JFrame implements Observer {
         JMenuItem translateFlowchart = new JMenuItem("Translate Flowchart");
 
 
-        String [] shapes = {"Start","End","Print","Loop","If","Instruction", "Function", "Variable", "Connection"};
+        String [] shapes = {"Start","Stop","Print","Loop","If","Instruction", "Function", "Variable", "Connection"};
 
         JComboBox<String> shape = new JComboBox<>(shapes);
 

@@ -135,6 +135,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             draggingShape.setYCenter(e.getY());
             Repository.getInstance().repaintWorkingArea();
         }
+
     }
 
     /**

@@ -41,7 +41,7 @@ public class BlockFactory {
                 shape = new Circle(xPosCenter, yPosCenter, 50, Color.GREEN);
                 return new StartBlock(shape, "START");
             }
-            case "End" -> {
+            case "Stop" -> {
                 shape = new Circle(xPosCenter, yPosCenter, 50, Color.RED);
                 DotDecorator dotDecorator = new DotDecorator(shape);
                 return new StopBlock(dotDecorator, "STOP");

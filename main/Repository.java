@@ -18,6 +18,7 @@ public class Repository extends Observable {
     private ArrayList<Line> lines;
     private ArrayList<Drawable> drawables;
     private String status;
+    private String currentlySelectedCodeBlockName;
 
     private String mode;
 
@@ -58,42 +59,41 @@ public class Repository extends Observable {
                 77, Color.decode("#E93D2D"));
         Parallelogram prlgrmOutline =  new Parallelogram(block.getXCenter(), block.getYCenter(), 110,
                 50, Color.decode("#E93D2D"));
-        String curBlockName = "";
         if (block.getClass().equals(FunctionBlock.class)) {
             currentlySelectedCodeBlockOutline = rectOutline;
-            curBlockName = "Function";
+            currentlySelectedCodeBlockName = "Function";
         }
         else if (block.getClass().equals(IfBlock.class)) {
             currentlySelectedCodeBlockOutline = diamOutline;
-            curBlockName = "If";
+            currentlySelectedCodeBlockName = "If";
         }
         else if (block.getClass().equals(InstructionBlock.class)) {
             currentlySelectedCodeBlockOutline = rectOutline;
-            curBlockName = "Instruction";
+            currentlySelectedCodeBlockName = "Instruction";
         }
         else if (block.getClass().equals(LoopBlock.class)) {
             currentlySelectedCodeBlockOutline = diamOutline;
-            curBlockName = "Loop";
+            currentlySelectedCodeBlockName = "Loop";
         }
         else if (block.getClass().equals(StartBlock.class)) {
             currentlySelectedCodeBlockOutline = circOutline;
-            curBlockName = "Start";
+            currentlySelectedCodeBlockName = "Start";
         }
         else if (block.getClass().equals(StopBlock.class)) {
             currentlySelectedCodeBlockOutline = circOutline;
-            curBlockName = "Stop";
+            currentlySelectedCodeBlockName = "Stop";
         }
         else if (block.getClass().equals(VariableBlock.class)) {
             currentlySelectedCodeBlockOutline = rectOutline;
-            curBlockName = "Variable";
+            currentlySelectedCodeBlockName = "Variable";
         }
         else if (block.getClass().equals(PrintBlock.class)) {
             currentlySelectedCodeBlockOutline = prlgrmOutline;
-            curBlockName = "Print";
+            currentlySelectedCodeBlockName ="Print";
         }
         currentlySelectedCodeBlock = block;
         setChanged();
-        notifyObservers(curBlockName+" Block selected.");
+        notifyObservers(currentlySelectedCodeBlockName+" Block selected.");
     }
 
     /**
@@ -102,6 +102,9 @@ public class Repository extends Observable {
      */
     public CodeBlock getCurrentlySelectedCodeBlock() {
         return currentlySelectedCodeBlock;
+    }
+    public String getCurrentlySelectedCodeBlockName() {
+        return currentlySelectedCodeBlockName;
     }
 
     /**
@@ -260,7 +263,8 @@ public class Repository extends Observable {
             setChanged();
             notifyObservers(status);
         }
-        lines.removeIf(l -> l.getStart().equals(currentlySelectedCodeBlock) || l.getEnd().equals(currentlySelectedCodeBlock));
+        lines.removeIf(l -> l.getStart().equals(currentlySelectedCodeBlock) ||
+                                                                    l.getEnd().equals(currentlySelectedCodeBlock));
         currentlySelectedCodeBlock = null;
     }
 
@@ -280,7 +284,7 @@ public class Repository extends Observable {
      */
     public void repaintWorkingArea() {
         setChanged();
-        notifyObservers("Dragging "+selectedCodeBlock+" Block...");
+        notifyObservers("Dragging " +Repository.getInstance().getCurrentlySelectedCodeBlockName()+" Block...");
     }
 
     /**

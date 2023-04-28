@@ -27,7 +27,7 @@ public class UserExampleTests {
         CodeBlock cb3 = factory.makeBlock("Variable", 100, 250);
         CodeBlock cb4 = factory.makeBlock("Instruction", 100, 300);
         CodeBlock cb5 = factory.makeBlock("Print", 100, 350);
-        CodeBlock cb6 = factory.makeBlock("End", 100, 400);
+        CodeBlock cb6 = factory.makeBlock("Stop", 100, 400);
 
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
@@ -75,8 +75,8 @@ public class UserExampleTests {
         CodeBlock cb3 = factory.makeBlock("If", 150, 350);
         CodeBlock cb4 = factory.makeBlock("Print", 150, 450);
         CodeBlock cb5 = factory.makeBlock("Print", 300, 450);
-        CodeBlock cb6 = factory.makeBlock("End", 150, 550);
-        CodeBlock cb7 = factory.makeBlock("End", 300, 550);
+        CodeBlock cb6 = factory.makeBlock("Stop", 150, 550);
+        CodeBlock cb7 = factory.makeBlock("Stop", 300, 550);
 
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
