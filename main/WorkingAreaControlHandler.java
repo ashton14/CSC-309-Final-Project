@@ -27,6 +27,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      * @Field draggingOutline - Outline shape of CodeBLock being dragged
      */
     private Shape draggingShape = null;
+    private String status;
 
     /**
      * Constructs the WorkingAreaControlHandler
@@ -90,6 +91,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
                 Repository.getInstance().addCodeBlock(blockFactory.makeBlock(blockType, e.getX(), e.getY()));
             }
         }
+        status = Repository.getInstance().getStatus();
     }
 
     /**
@@ -101,7 +103,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
 
         dragging = null;
         draggingShape = null;
-        Repository.getInstance().updateStatusBar(Repository.getInstance().getSelectedCodeBlock());
+        Repository.getInstance().updateStatusBar(status);
     }
     /**
      * Implemented for interface

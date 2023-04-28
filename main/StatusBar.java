@@ -26,7 +26,9 @@ public class StatusBar extends JTextArea implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         String status = (String)arg;
-        if(status != null)
+        if(status != null) {
             setText("Status: " + status);
+            Repository.getInstance().setStatus(status);
+        }
     }
 }

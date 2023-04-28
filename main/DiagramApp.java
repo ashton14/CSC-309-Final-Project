@@ -126,7 +126,7 @@ public class DiagramApp extends JFrame implements Observer {
         if(arg == null)
             return;
         String command = (String) arg;
-        System.out.println(command);
+        //System.out.println(command);
         if(command.equals("Sandbox")){
             westPanel.setVisible(false);
         } else if(command.equals("Translate Code")){
