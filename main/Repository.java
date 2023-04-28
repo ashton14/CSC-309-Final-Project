@@ -258,8 +258,9 @@ public class Repository extends Observable {
         currentlySelectedCodeBlockOutline = null;
         if(currentlySelectedCodeBlock != null) {
             setChanged();
-            notifyObservers(selectedCodeBlock + " Block deleted.");
+            notifyObservers(status);
         }
+        lines.removeIf(l -> l.getStart().equals(currentlySelectedCodeBlock) || l.getEnd().equals(currentlySelectedCodeBlock));
         currentlySelectedCodeBlock = null;
     }
 
