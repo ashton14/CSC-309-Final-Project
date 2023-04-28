@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -7,6 +8,7 @@ import java.awt.event.*;
  * Draws shapes and connections as selected
  * Controls dragging of shapes
  * @author Cameron Hardy
+ * @author Connor Hickey
  */
 public class WorkingAreaControlHandler implements MouseListener, MouseMotionListener {
     /**
@@ -78,6 +80,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             }
         }
         else {
+            boolean lineSelected = false;
             // If we click on a CodeBlock start dragging it
             for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
                 if(block.isInBounds(e.getX(), e.getY())) {
@@ -86,8 +89,19 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
                     draggingShape = Repository.getInstance().getCurrentlySelectedCodeBlockOutline();
                 }
             }
+
+            for(Line line : Repository.getInstance().getLines()) {
+                if(line.pointDistanceFromLine(e.getX(), e.getY()) < 20) {
+                    lineSelected = true;
+                    Repository.getInstance().setCurrentlySelectedLine(line);
+                    Repository.getInstance().getCurrentlySelectedLine().setColor(Color.RED);
+                    Repository.getInstance().repaintWorkingArea();
+                    System.out.print("Line selected");
+                    break;
+                }
+            }
             // If we aren't dragging anything create corresponding CodeBlock
-            if(dragging == null) {
+            if(dragging == null && !lineSelected) {
                 Repository.getInstance().addCodeBlock(blockFactory.makeBlock(blockType, e.getX(), e.getY()));
             }
         }

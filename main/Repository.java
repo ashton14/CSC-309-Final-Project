@@ -6,12 +6,14 @@ import java.util.Observable;
 
 /**
  * @author Ashton Alonge
+ * @author Connor Hickey
  * Repository class to handle data (Singleton)
  */
 public class Repository extends Observable {
     private static Repository repository;
     private String selectedCodeBlock;
     private String selectedMenuItem;
+    private Line currentlySelectedLine;
     private CodeBlock currentlySelectedCodeBlock;
     private Shape currentlySelectedCodeBlockOutline;
     private ArrayList<CodeBlock> codeBlocks;
@@ -44,6 +46,22 @@ public class Repository extends Observable {
             repository = new Repository();
         }
         return repository;
+    }
+
+    /**
+     * setter for selected line
+     * @param line - line to be set as selected
+     */
+    public void setCurrentlySelectedLine(Line line) {
+        currentlySelectedLine = line;
+    }
+
+    /**
+     * getter for selected line
+     * @return currently selected line
+     */
+    public Line getCurrentlySelectedLine() {
+        return currentlySelectedLine;
     }
 
     /**
