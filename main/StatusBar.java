@@ -28,7 +28,6 @@ public class StatusBar extends JTextArea implements Observer {
         String status = (String)arg;
         if(status != null) {
             setText("Status: " + status);
-            Repository.getInstance().setStatus(status);
         }
     }
 }
