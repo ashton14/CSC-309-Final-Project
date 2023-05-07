@@ -16,6 +16,8 @@ public class UserExample {
     private ArrayList<String> codeStatements;
     private ArrayList<CodeBlock> codeBlocks;
 
+    private ArrayList<Line> lines;
+
     private String exampleName;
 
     /**
@@ -24,9 +26,10 @@ public class UserExample {
      * @param codeBlocks ArrayList of CodeBlocks that represent the flowchart of this exercise
      * @param exampleName String representing the name of this exercise
      */
-    public UserExample(ArrayList<String> codeStatements, ArrayList<CodeBlock> codeBlocks, String exampleName) {
+    public UserExample(ArrayList<String> codeStatements, ArrayList<CodeBlock> codeBlocks, ArrayList<Line> lines, String exampleName) {
         this.codeStatements = codeStatements;
         this.codeBlocks = codeBlocks;
+        this.lines = lines;
         this.exampleName = exampleName;
     }
 
@@ -139,4 +142,6 @@ public class UserExample {
     public ArrayList<CodeBlock> getCodeBlocks() {
         return codeBlocks;
     }
+
+    public ArrayList<Line> getLines() {return lines;}
 }

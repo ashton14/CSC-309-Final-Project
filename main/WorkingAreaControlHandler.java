@@ -32,7 +32,6 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         DrawableData drawableData = (DrawableData) dataRepository.getData();
         StateRepository stateRepository = StateRepository.getInstance();
         StateData stateData = (StateData) stateRepository.getData();
-
         CodeBlock prevSelectedCodeBlock = stateData.getCurrentlySelectedCodeBlock();
         stateData.setCurrentlySelectedCodeBlock(getTopCodeBlock(e.getX(), e.getY()));
         System.out.println(getTopCodeBlock(e.getX(), e.getY()));

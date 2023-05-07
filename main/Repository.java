@@ -15,6 +15,10 @@ public interface Repository {
     public static Repository getInstance() {
         return null;
     }
+    public void removeCodeBlockSelection() {
+        currentlySelectedCodeBlock = null;
+        currentlySelectedCodeBlockOutline = new main.Rectangle(0, 0, 0, 0, Color.white);
+    }
 
     /**
      * An interface method to be overridden
@@ -23,6 +27,6 @@ public interface Repository {
      * @return The data Object within this
      * Repository.
      */
-    public Object getData();
 
+    public Object getData();
 }

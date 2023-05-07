@@ -65,13 +65,24 @@ public class MenuBarControlHandler implements ActionListener {
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),
                         "Welcome to version 1.1 of the Diagram App.\nThis is an overview of the features and how to use them.\nBy clicking on \"File\", you have the options to make a new diagram,\nsave your diagram, or load an existing diagram.\nBy clicking on help, you managed to open this dialog.\nClicking on Actions gives the options to clear the diagram or undo the last action.\nIf you click on Start, you can select which component you would like to draw.\nClicking anywhere in the area will draw the selected shape at that location.\nIf you scroll down in the shapes menu and select connections, you can draw lines\nbetween shapes by clicking them consecutively.\nAuthors:\nAshton Alonge\nAaron Bettencourt\nAlex Banham\nConnor Hickey" +
                                 "\nPatrick Whitlock\nCameron Hardy");
-            }
-            case "Undo" -> drawableData.undo();
-            case "Clear" -> drawableData.clear();
-            case "Delete" -> stateData.deleteSelectedItem();
-            case "Sandbox" -> stateData.changeMode("Sandbox");
-            case "Translate Code" -> stateData.changeMode("Translate Code");
-            case "Translate Flowchart" -> stateData.changeMode("Translate Flowchart");
+                break;
+            case "Undo":
+                drawableData.undo();
+                break;
+            case "Clear":
+                drawableData.clear();
+            case "Delete":
+               stateData.deleteSelectedItem();
+               break;
+            case "Sandbox":
+                stateData.changeMode("Sandbox");
+                break;
+            case "Translate Code":
+                stateData.changeMode("Translate Code");
+                break;
+            case "Translate Flowchart":
+                stateData.changeMode("Translate Flowchart");
+
         }
         if(e.getActionCommand().equals("comboBoxChanged")){
             JComboBox tmp = (JComboBox) e.getSource();

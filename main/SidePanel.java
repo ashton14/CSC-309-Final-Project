@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class SidePanel extends JPanel {
     ArrayList<JTextArea> codeSections;
+    ArrayList<JButton> buttons;
     /**
      * Creates a SidePanel object
      */
@@ -25,13 +26,20 @@ public class SidePanel extends JPanel {
             codeSection.addMouseListener(sideController);
         }
 
-
-
-        JButton submit = new JButton("Submit");
-        submit.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        add(submit);
-
-        submit.addActionListener(sideController);
+        //thanks Aaron
+        buttons = new ArrayList<>();
+        JPanel buttonPanel = new JPanel();
+        GridLayout buttonLayout = new GridLayout(1,4);
+        buttonPanel.setLayout(buttonLayout);
+        String[] buttonStrings = {"Submit", "Help", "Previous", "Next"};
+        for (String buttonString : buttonStrings) {
+            JButton jButton = new JButton(buttonString);
+            jButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            jButton.addActionListener(sideController);
+            buttonPanel.add(jButton);
+            buttons.add(jButton);
+        }
+        this.add(buttonPanel,BorderLayout.SOUTH);
         this.setPreferredSize(new Dimension(300,400));
     }
 
