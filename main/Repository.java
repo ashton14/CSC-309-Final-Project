@@ -23,6 +23,8 @@ public class Repository extends Observable {
     private String currentlySelectedCodeBlockName;
 
     private String mode;
+    private ArrayList<UserExample> problemSet;
+    private int problemSetIndex;
 
     /**
      * Constructor to initialize data
@@ -35,6 +37,10 @@ public class Repository extends Observable {
         drawables = new ArrayList<>();
         currentlySelectedCodeBlock = null;
         currentlySelectedCodeBlockOutline = new main.Rectangle(0, 0, 0, 0, Color.white);
+        problemSet = new ArrayList<>();
+        problemSet.add(UserExampleTests.getEx0());
+        problemSet.add(UserExampleTests.getEx1());
+        problemSetIndex = 0;
     }
 
     /**
@@ -173,6 +179,8 @@ public class Repository extends Observable {
      */
     public void setCodeBlocks(ArrayList<CodeBlock> codeBlocks) {
         this.codeBlocks = codeBlocks;
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -332,6 +340,34 @@ public class Repository extends Observable {
 
     public String getStatus(){
         return this.status;
+    }
+
+    public UserExample getCurrentProblem() {
+        return this.problemSet.get(this.problemSetIndex);
+    }
+    public void setCurrentProblem() {
+        this.setCodeBlocks(getCurrentProblem().getCodeBlocks());
+        this.setLines(getCurrentProblem().getLines());
+    }
+    public void setNextProblem() {
+        if(this.problemSetIndex == this.problemSet.size()-1) {
+            this.problemSetIndex = 0;
+        } else {
+            this.problemSetIndex++;
+        }
+//        this.problemSetIndex = 1;
+        this.setCodeBlocks(getCurrentProblem().getCodeBlocks());
+        this.setLines(getCurrentProblem().getLines());
+    }
+    public void setPreviousProblem() {
+        if(this.problemSetIndex == 0) {
+            this.problemSetIndex = this.problemSet.size()-1;
+        } else {
+            this.problemSetIndex--;
+        }
+//        this.problemSetIndex = 0;
+        this.setCodeBlocks(getCurrentProblem().getCodeBlocks());
+        this.setLines(getCurrentProblem().getLines());
     }
 
 }

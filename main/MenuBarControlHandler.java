@@ -82,10 +82,9 @@ public class MenuBarControlHandler implements ActionListener {
                 Repository.getInstance().changeMode("Translate Flowchart");
                 //remove the current selection
                 Repository.getInstance().removeCodeBlockSelection();
-                //temporary code to load an example flowchart for the user to type code for
-                UserExample ex1 = UserExampleTests.getEx1();
-                Repository.getInstance().setCodeBlocks(ex1.getCodeBlocks());
-                Repository.getInstance().setLines(ex1.getLines());
+
+                //load a flowchart for the user to write code for
+                Repository.getInstance().setCurrentProblem();
                 break;
 
         }

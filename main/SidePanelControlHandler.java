@@ -17,16 +17,13 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("a button was pushed: "+e.getActionCommand());
         if(e.getActionCommand().equals("Submit")){
             Repository.getInstance().parseCode();
 
             //The following code is temporary in order to quickly test the main.UserExample class
-            UserExample ex1 = UserExampleTests.getEx1();
+            UserExample ex1 = Repository.getInstance().getCurrentProblem();
             System.out.println("SUBMIT BUTTON PUSHED");
-
-            //grade text
-            System.out.println("user code at line 0: "+jTextAreas.get(0).getText());
-            System.out.println("user code at line 1: "+jTextAreas.get(1).getText());
 
             //build ArrayList of strings
             ArrayList<String> usersCode = new ArrayList<>();
@@ -38,6 +35,13 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
             int mistakeIndex = ex1.gradeUserCode(usersCode);
             System.out.println("Code mistake at line: "+mistakeIndex);
 
+        }
+        if(e.getActionCommand().equals("Next")) {
+            System.out.println("setting next problem");
+            Repository.getInstance().setNextProblem();
+        }
+        if(e.getActionCommand().equals("Previous")) {
+            Repository.getInstance().setPreviousProblem();
         }
     }
 

@@ -22,13 +22,13 @@ public class UserExampleTests {
 
         BlockFactory factory = new BlockFactory();
 
-        CodeBlock cb0 = factory.makeBlock("Start", 100, 100);
-        CodeBlock cb1 = factory.makeBlock("Variable", 100, 150);
-        CodeBlock cb2 = factory.makeBlock("Variable", 100, 200);
-        CodeBlock cb3 = factory.makeBlock("Variable", 100, 250);
-        CodeBlock cb4 = factory.makeBlock("Instruction", 100, 300);
-        CodeBlock cb5 = factory.makeBlock("Print", 100, 350);
-        CodeBlock cb6 = factory.makeBlock("Stop", 100, 400);
+        CodeBlock cb0 = factory.makeBlock("Start", 200, 100);
+        CodeBlock cb1 = factory.makeBlock("Variable", 200, 200);
+        CodeBlock cb2 = factory.makeBlock("Variable", 200, 270);
+        CodeBlock cb3 = factory.makeBlock("Variable", 200, 350);
+        CodeBlock cb4 = factory.makeBlock("Instruction", 200, 420);
+        CodeBlock cb5 = factory.makeBlock("Print", 200, 500);
+        CodeBlock cb6 = factory.makeBlock("Stop", 200, 600);
 
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
@@ -42,6 +42,13 @@ public class UserExampleTests {
         cb5.addToInbound(cb4);
         cb5.addToOutbound(cb6);
         cb6.addToInbound(cb5);
+
+        lines.add(new Line(cb0,cb1));
+        lines.add(new Line(cb1,cb2));
+        lines.add(new Line(cb2,cb3));
+        lines.add(new Line(cb3,cb4));
+        lines.add(new Line(cb4,cb5));
+        lines.add(new Line(cb5,cb6));
 
         T0.add(cb0);
         T0.add(cb1);
