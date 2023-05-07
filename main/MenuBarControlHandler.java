@@ -84,6 +84,7 @@ public class MenuBarControlHandler implements ActionListener {
                 //temporary code to load an example flowchart for the user to type code for
                 UserExample ex1 = UserExampleTests.getEx1();
                 Repository.getInstance().setCodeBlocks(ex1.getCodeBlocks());
+                Repository.getInstance().setLines(ex1.getLines());
                 break;
 
         }
