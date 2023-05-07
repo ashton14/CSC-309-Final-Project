@@ -1,36 +1,22 @@
 package main;
 
-import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * WorkingAreaControlHandler responsible for controlling the functionality of the WorkingArea
  * Draws shapes and connections as selected
  * Controls dragging of shapes
  * @author Cameron Hardy
- * @author Connor Hickey
  */
 public class WorkingAreaControlHandler implements MouseListener, MouseMotionListener {
-    /**
-     * @Field drawingLine - Boolean to keep track of when you have clicked on one CodeBlock
-     * and are waiting to connect the line to another
-     */
-    private boolean drawingLine = false;
-    /**
-     * @Field firstClicked - CodeBlock first clicked when trying to draw a connection
-     */
-    private CodeBlock firstClicked = null;
+
     /**
      * @Field dragging - CodeBlock being dragged
      */
-    private CodeBlock dragging = null;
-
-    /**
-     * @Field draggingOutline - Outline shape of CodeBLock being dragged
-     */
-    private Shape draggingShape = null;
-    private String status;
-
+    private CodeBlock draggedCodeBlock = null;
+    private int xOffset = 0;
+    private int yOffset = 0;
     /**
      * Constructs the WorkingAreaControlHandler
      */
@@ -41,71 +27,87 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      * @param e - MouseEvent
      */
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        Repository dataRepository = DataRepository.getInstance();
+        DrawableData drawableData = (DrawableData) dataRepository.getData();
+        StateRepository stateRepository = StateRepository.getInstance();
+        StateData stateData = (StateData) stateRepository.getData();
 
-    /**
-     * If mouse has been pressed, create corresponding block or connection
-     * @param e - MouseEvent used for position
-     */
+        CodeBlock prevSelectedCodeBlock = stateData.getCurrentlySelectedCodeBlock();
+        stateData.setCurrentlySelectedCodeBlock(getTopCodeBlock(e.getX(), e.getY()));
+        System.out.println(getTopCodeBlock(e.getX(), e.getY()));
+        if(prevSelectedCodeBlock != null) {
+            System.out.println("Attempt to make a line");
+           drawableData.addDrawable(makeLine(prevSelectedCodeBlock));
+        }
+    }
+
+    public CodeBlock getTopCodeBlock(int x, int y){
+        Repository dataRepository = DataRepository.getInstance();
+        DrawableData drawableData = (DrawableData) dataRepository.getData();
+        ArrayList<CodeBlock> codeBlocks = drawableData.getCodeBlocks();
+        CodeBlock topCodeBlock = null;
+        for (CodeBlock codeBlock: codeBlocks) {
+            if(codeBlock.isInBounds(x,y)){
+                topCodeBlock = codeBlock;
+            }
+        }
+        return topCodeBlock;
+    }
+
+    private Line makeLine(CodeBlock firstCodeBlock){
+        Repository dataRepository = DataRepository.getInstance();
+        DrawableData drawableData = (DrawableData) dataRepository.getData();
+        StateRepository stateRepository = StateRepository.getInstance();
+        StateData stateData = (StateData) stateRepository.getData();
+
+        CodeBlock lastCodeBlock = stateData.getCurrentlySelectedCodeBlock();
+        Line line = null;
+
+        System.out.println(firstCodeBlock.getInboundCodeBlocks().size());
+        System.out.println(firstCodeBlock.getOutboundCodeBlocks().size());
+        System.out.println(lastCodeBlock.getInboundCodeBlocks().size());
+        System.out.println(lastCodeBlock.getOutboundCodeBlocks().size());
+        if(firstCodeBlock != lastCodeBlock &&
+                firstCodeBlock.canAddOut(lastCodeBlock) &&
+                lastCodeBlock.canAddIn(firstCodeBlock)) {
+
+            firstCodeBlock.addToOutbound(lastCodeBlock);
+            lastCodeBlock.addToInbound(firstCodeBlock);
+            line = new Line(firstCodeBlock, lastCodeBlock);
+            System.out.println("Made a new line");
+            stateData.setStatus("Established A Connection");
+        } else {
+
+        }
+        return line;
+    }
+
+    private CodeBlock makeCodeBlock(int x, int y){
+        StateRepository stateRepository = StateRepository.getInstance();
+        StateData stateData = (StateData) stateRepository.getData();
+        BlockFactory blockFactory = new BlockFactory();
+        return blockFactory.makeBlock(stateData.getMenuBarCodeBlock(), x, y);
+
+    }
     @Override
     public void mousePressed(MouseEvent e) {
-        // Create blockFactory and get selected CodeBlock/Drawable type
-        BlockFactory blockFactory = new BlockFactory();
-        String blockType = Repository.getInstance().getSelectedCodeBlock();
-        Repository.getInstance().updateStatusBar(blockType);
+        Repository dataRepository = DataRepository.getInstance();
+        DrawableData drawableData = (DrawableData) dataRepository.getData();
 
-
-        // If we are drawing a connection
-        if (blockType.equals("Connection")) { //Connection should no longer be an option, change to if a block is clicked
-            // If the mouse is inside a CodeBlock
-            for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
-                if (block.isInBounds(e.getX(), e.getY())) {
-                    // If we are already drawing a connection
-                    if (drawingLine) {
-                        // If adding a connection respects adding in/outbound connections, and you are not clicking on the same CodeBlock
-                        if(block.canAddIn() && firstClicked.canAddOut() && !block.equals(firstClicked)) {
-                            // Add a line to Repository, clear firstClicked and reset drawingLine
-                            Repository.getInstance().addLine(new Line(firstClicked, block));
-                            firstClicked = null;
-                            drawingLine = false;
-                            Repository.getInstance().repaintWorkingArea();
-                            break;
-                        }
-                    }
-                    // We are not already drawing a line... set CodeBlock to firstClicked, and set drawingLine to true
-                    firstClicked = block;
-                    drawingLine = true;
-                    break;
-                }
-            }
+        StateRepository stateRepository = StateRepository.getInstance();
+        StateData stateData = (StateData) stateRepository.getData();
+        CodeBlock selectedCodeBlock = getTopCodeBlock(e.getX(),e.getY());
+        if(selectedCodeBlock == null) {
+            selectedCodeBlock = makeCodeBlock(e.getX(), e.getY());
+            drawableData.addDrawable(selectedCodeBlock);
+            stateData.setCurrentlySelectedCodeBlock(selectedCodeBlock);
+            stateData.setStatus("Placing " + selectedCodeBlock.toString() + " Blocks.");
+            return;
         }
-        else {
-            boolean lineSelected = false;
-            // If we click on a CodeBlock start dragging it
-            for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
-                if(block.isInBounds(e.getX(), e.getY())) {
-                    dragging = block;
-                    Repository.getInstance().setCurrentlySelectedCodeBlock(block);
-                    draggingShape = Repository.getInstance().getCurrentlySelectedCodeBlockOutline();
-                }
-            }
-
-            for(Line line : Repository.getInstance().getLines()) {
-                if(line.pointDistanceFromLine(e.getX(), e.getY()) < 20) {
-                    lineSelected = true;
-                    Repository.getInstance().setCurrentlySelectedLine(line);
-                    Repository.getInstance().getCurrentlySelectedLine().setColor(Color.RED);
-                    Repository.getInstance().repaintWorkingArea();
-                    System.out.print("Line selected");
-                    break;
-                }
-            }
-            // If we aren't dragging anything create corresponding CodeBlock
-            if(dragging == null && !lineSelected) {
-                Repository.getInstance().addCodeBlock(blockFactory.makeBlock(blockType, e.getX(), e.getY()));
-            }
-        }
-        status = Repository.getInstance().getStatus();
+        xOffset =  selectedCodeBlock.getXCenter() - e.getX();
+        yOffset = selectedCodeBlock.getYCenter() - e.getY();
+        draggedCodeBlock = selectedCodeBlock;
     }
 
     /**
@@ -114,10 +116,12 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-
-        dragging = null;
-        draggingShape = null;
-        Repository.getInstance().updateStatusBar(status);
+        if(draggedCodeBlock != null){
+            StateRepository stateRepository = StateRepository.getInstance();
+            StateData stateData = (StateData) stateRepository.getData();
+            stateData.setStatus("Placing: " + stateData.getMenuBarCodeBlock() + " Blocks");
+        }
+        draggedCodeBlock = null;
     }
     /**
      * Implemented for interface
@@ -133,7 +137,6 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
     /**
      * Handles mouse dragging CodeBlocks
@@ -141,15 +144,14 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseDragged(MouseEvent e) {
-        // If we are dragging a CodeBlock, set its position to the mouse position
-        if(dragging != null) {
-            dragging.setXCenter(e.getX());
-            dragging.setYCenter(e.getY());
-            draggingShape.setXCenter(e.getX());
-            draggingShape.setYCenter(e.getY());
-            Repository.getInstance().repaintWorkingArea();
+        if(draggedCodeBlock != null) {
+            StateData stateData = (StateData) StateRepository.getInstance().getData();
+            stateData.setStatus("Dragging ");
+            draggedCodeBlock.setXCenter(e.getX() + xOffset);
+            draggedCodeBlock.setYCenter(e.getY() + yOffset);
+            stateData.setCurrentlySelectedCodeBlock(draggedCodeBlock);
+            ((DrawableData)DataRepository.getInstance().getData()).modifiedDrawables();
         }
-
     }
 
     /**

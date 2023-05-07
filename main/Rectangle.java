@@ -18,6 +18,16 @@ public class Rectangle extends Shape {
     }
 
     /**
+     * Returns a deep copy of this Rectangle as a Shape.
+     * @return a deep copy of this Rectangle as a Shape.
+     */
+    @Override
+    public Shape copyShape() {
+        return new Rectangle(getXCenter(), getYCenter(), getWidth(),
+                getHeight(), getColor());
+    }
+
+    /**
      * Draws the shape on screen
      * @param g   An instance of type Graphics to draw a representation
      */

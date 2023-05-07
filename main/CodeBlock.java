@@ -10,13 +10,9 @@ import java.util.ArrayList;
  *
  * @author Connor Hickey
  */
-public abstract class CodeBlock implements Serializable, Drawable {
+public abstract class CodeBlock implements Drawable {
     private Shape shape;
     private String text;
-
-//    private ArrayList<Line> inboundLines;
-//    private ArrayList<Line> outboundLines;
-
     private ArrayList<CodeBlock> inboundCodeBlocks;
     private ArrayList<CodeBlock> outboundCodeBlocks;
     private int maxInboundCount;
@@ -140,7 +136,7 @@ public abstract class CodeBlock implements Serializable, Drawable {
      * @return true if the CodeBlock was added, false otherwise.
      */
     public boolean addToInbound(CodeBlock block) {
-        if (inboundCodeBlocks.size() < maxInboundCount) {
+        if (canAddIn(block)) {
             return inboundCodeBlocks.add(block);
         } else {
             return false;
@@ -153,7 +149,7 @@ public abstract class CodeBlock implements Serializable, Drawable {
      * @return true if the CodeBlock was added, false otherwise.
      */
     public boolean addToOutbound(CodeBlock block) {
-        if (outboundCodeBlocks.size() < maxOutboundCount) {
+        if (canAddOut(block)) {
             return outboundCodeBlocks.add(block);
         } else {
             return false;
@@ -251,5 +247,51 @@ public abstract class CodeBlock implements Serializable, Drawable {
      */
     public int getHeight(){
         return shape.getHeight();
+    }
+
+    /**
+     * Returns the height of the CodeBlock's shape.
+     * @return The height of the shape.
+     */
+    public int getWidth(){
+        return shape.getWidth();
+    }
+
+    /**
+     * Creates a deep copy of this Shape.
+     * @return A deep copy of this Shape as a Shape.
+     */
+    public Shape copyShape(){
+        return shape.copyShape();
+    }
+
+    /**
+     * Creates a String representation of this CodeBlock's type.
+     * @return a String representation of this CodeBlock's type.
+     */
+    @Override
+    public String toString(){
+        String str = getClass().toString();
+        str = str.replace("class main.", "");
+        str = str.replace("Block", "");
+        return str;
+    }
+
+    /**
+     * Returns if an inbound code block can be added.
+     * @return True if an inbound code block can be added, false otherwise.
+     */
+    public boolean canAddIn(CodeBlock block) {
+        return (inboundCodeBlocks.size() < maxInboundCount &&
+                !inboundCodeBlocks.contains(block));
+    }
+
+    /**
+     * Returns if an outbound code block can be added.
+     * @return True if an outbout code block can be added, false otherwise.
+     */
+    public boolean canAddOut(CodeBlock block) {
+        return (outboundCodeBlocks.size() < maxOutboundCount &&
+                !outboundCodeBlocks.contains(block));
     }
 }

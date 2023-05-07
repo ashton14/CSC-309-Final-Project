@@ -34,4 +34,39 @@ public class Circle extends Shape {
                 radius ,radius * 2, radius * 2);
         graphics2D.setStroke(defaultStroke);
     }
+
+
+    /**
+     * Sets the radius of this Circle
+     * to half the given width.
+     * @param width  The new width of this Circle
+     *               as an int.
+     */
+    @Override
+    public void setWidth(int width) {
+        this.radius = width / 2;
+        super.setWidth(width);
+    }
+
+    /**
+     * Sets the radius of this Circle
+     * to half the given height.
+     * @param height  The new height of this Circle
+     *               as an int.
+     */
+    @Override
+    public void setHeight(int height) {
+        this.radius = height / 2;
+        super.setHeight(height);
+    }
+
+    /**
+     * Returns a deep copy of this Circle as a Shape.
+     * @return a deep copy of this Circle as a Shape.
+     */
+    @Override
+    public Shape copyShape() {
+        return new Circle(getXCenter(), getYCenter(),
+                radius, getColor());
+    }
 }

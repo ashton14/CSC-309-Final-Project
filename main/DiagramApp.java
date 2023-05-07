@@ -12,14 +12,16 @@ import java.util.Observer;
  */
 public class DiagramApp extends JFrame implements Observer {
 
-
     private JPanel westPanel;
     /**
      * Constructor to add menu bar with 4 menus, a drawing area, and a status bar
      */
     public DiagramApp(){
-
         super("Diagram App");
+        Repository dataRepository = DataRepository.getInstance();
+        DrawableData drawableData = (DrawableData) dataRepository.getData();
+        StateRepository stateRepository = StateRepository.getInstance();
+        StateData stateData = (StateData) stateRepository.getData();
 
         westPanel = new JPanel();
         westPanel.setVisible(false);
@@ -27,9 +29,11 @@ public class DiagramApp extends JFrame implements Observer {
         JMenuBar menuBar = new JMenuBar();
         WorkingArea drawPanel = new WorkingArea();
         StatusBar statusBar = new StatusBar("Status");
-        Repository.getInstance().addObserver(drawPanel);
-        Repository.getInstance().addObserver(statusBar);
-        Repository.getInstance().addObserver(this);
+
+        drawableData.addObserver(drawPanel);
+        stateData.addObserver(statusBar);
+        stateData.addObserver(this);
+
         statusBar.setEnabled(false);
         statusBar.setFont(new Font(Font.DIALOG,Font.PLAIN,17));
         statusBar.setDisabledTextColor(Color.BLACK);
