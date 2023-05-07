@@ -12,6 +12,7 @@ public class UserExampleTests {
     public static UserExample getEx0() {
         ArrayList<String> t0 = new ArrayList<>();
         ArrayList<CodeBlock> T0 = new ArrayList<>();
+        ArrayList<Line> lines = new ArrayList<>();
 
         t0.add("int a = 2;");
         t0.add("int b = 3;");
@@ -50,12 +51,13 @@ public class UserExampleTests {
         T0.add(cb5);
         T0.add(cb6);
 
-        return new UserExample(t0, T0, "ex0");
+        return new UserExample(t0, T0,lines, "ex0");
     }
 
     public static UserExample getEx1() {
         ArrayList<String> t0 = new ArrayList<>();
         ArrayList<CodeBlock> T0 = new ArrayList<>();
+        ArrayList<Line> lines = new ArrayList<>();
 
         t0.add("public static void main(String[] args){");
         t0.add("int y = 1;");
@@ -71,7 +73,7 @@ public class UserExampleTests {
 
         CodeBlock cb0 = factory.makeBlock("Start", 150, 100);
         CodeBlock cb1 = factory.makeBlock("Variable", 150, 200);
-        CodeBlock cb2 = factory.makeBlock("Variable", 150, 250);
+        CodeBlock cb2 = factory.makeBlock("Variable", 150, 270);
         CodeBlock cb3 = factory.makeBlock("If", 150, 350);
         CodeBlock cb4 = factory.makeBlock("Print", 150, 450);
         CodeBlock cb5 = factory.makeBlock("Print", 300, 450);
@@ -96,6 +98,14 @@ public class UserExampleTests {
         cb6.addToInbound(cb4);
         cb7.addToInbound(cb5);
 
+        lines.add(new Line(cb0,cb1));
+        lines.add(new Line(cb1,cb2));
+        lines.add(new Line(cb2,cb3));
+        lines.add(new Line(cb3,cb4));
+        lines.add(new Line(cb3,cb5));
+        lines.add(new Line(cb4,cb6));
+        lines.add(new Line(cb5,cb7));
+
         T0.add(cb0);
         T0.add(cb1);
         T0.add(cb2);
@@ -105,7 +115,7 @@ public class UserExampleTests {
         T0.add(cb6);
         T0.add(cb7);
 
-        return new UserExample(t0,T0,"ex1");
+        return new UserExample(t0,T0,lines,"ex1");
     }
 
     public static void main(String [] args) {

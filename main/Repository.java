@@ -113,6 +113,10 @@ public class Repository extends Observable {
         setChanged();
         notifyObservers(currentlySelectedCodeBlockName+" Block selected.");
     }
+    public void removeCodeBlockSelection() {
+        currentlySelectedCodeBlock = null;
+        currentlySelectedCodeBlockOutline = new main.Rectangle(0, 0, 0, 0, Color.white);
+    }
 
     /**
      * getter for currently selected code block
@@ -317,6 +321,9 @@ public class Repository extends Observable {
         this.mode = mode;
         setChanged();
         notifyObservers(mode);
+    }
+    public String getMode() {
+        return this.mode;
     }
 
     public void setStatus(String s){

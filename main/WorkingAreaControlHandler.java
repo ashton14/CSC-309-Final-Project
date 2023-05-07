@@ -49,6 +49,12 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mousePressed(MouseEvent e) {
+        //check the current mode. Flowchart should not be editable in 'Translate Flowchart' mode
+        if(Repository.getInstance().getMode().equals("Translate Flowchart")) {
+            System.out.println("Cannot edit flowchart in this mode!");
+            return;
+        }
+
         // Create blockFactory and get selected CodeBlock/Drawable type
         BlockFactory blockFactory = new BlockFactory();
         String blockType = Repository.getInstance().getSelectedCodeBlock();
