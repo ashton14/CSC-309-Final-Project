@@ -1,17 +1,5 @@
 package tests;
 
-import static org.junit.Assert.*;
-
-import main.Rectangle;
-import main.Circle;
-import main.Diamond;
-import main.Shape;
-import main.*;
-import org.junit.Test;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class RepositoryTests {
 /*
     @Test
