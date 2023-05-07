@@ -18,6 +18,16 @@ public class Diamond extends Shape {
     }
 
     /**
+     * Returns a deep copy of this Diamond as a Shape.
+     * @return a deep copy of this Diamond as a Shape.
+     */
+    @Override
+    public Shape copyShape() {
+        return new Diamond(getXCenter(), getYCenter(), getWidth(),
+                getHeight(), getColor());
+    }
+
+    /**
      * Calculates the halfway points of the lines
      * of a rectangle, then connecting those points
      * with lines, resulting in a diamond

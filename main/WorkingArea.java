@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,13 +22,27 @@ public class WorkingArea extends JPanel implements Observer {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(Repository.getInstance().getCurrentlySelectedCodeBlockOutline() != null)
-            Repository.getInstance().getCurrentlySelectedCodeBlockOutline().draw(g);
-        for(CodeBlock codeBlock: Repository.getInstance().getCodeBlocks()) {
-            codeBlock.draw(g);
+        StateRepository stateRepository = StateRepository.getInstance();
+        StateData stateData = (StateData) stateRepository.getData();
+
+        Repository dataRepository = DataRepository.getInstance();
+        DrawableData drawableData = (DrawableData) dataRepository.getData();
+        drawableData.addObserver(this);
+
+        ArrayList<CodeBlock> codeBlocks = drawableData.getCodeBlocks();
+        CodeBlock currentlySelectedBlock = stateData.getCurrentlySelectedCodeBlock();
+        ArrayList<Line> lines = drawableData.getLines();
+
+        for (CodeBlock currentCodeBlock : codeBlocks) {
+            if (currentlySelectedBlock == currentCodeBlock) {
+                Shape codeBlockOutline = stateData.getCurrentlySelectedCodeBlockOutline();
+                codeBlockOutline.draw(g);
+            }
+            currentCodeBlock.draw(g);
         }
-        for(Line l : Repository.getInstance().getLines()) {
-            l.draw(g);
+
+        for (Line line : lines) {
+            line.draw(g);
         }
     }
 

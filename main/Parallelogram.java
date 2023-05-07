@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.*;
-
 /**
  * Parallelogram
  * @author Patrick Whitlock
@@ -21,6 +20,11 @@ public class Parallelogram extends Shape {
      */
     public Parallelogram(int xPosCenter, int yPosCenter, int width, int height, Color color) {
         super(xPosCenter, yPosCenter,width,height, color);
+    }
+
+    @Override
+    public Shape copyShape() {
+        return new Parallelogram(getXCenter(), getYCenter(), getWidth(), getHeight(), getColor());
     }
 
     /**

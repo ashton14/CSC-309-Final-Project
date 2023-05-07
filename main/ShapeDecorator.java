@@ -58,4 +58,14 @@ public abstract class ShapeDecorator extends main.Shape {
         super.setYCenter(yPosCenter);
         innerShape.setYCenter(yPosCenter);
     }
+
+    /**
+     * Creates a deep copy of the innermost Shape within this ShapeDecorator.
+     * @return   A deep copy of the innermost Shape within this ShapeDecorator
+     * as an object of type Shape.
+     */
+    @Override
+    public Shape copyShape(){
+        return innerShape.copyShape();
+    }
 }

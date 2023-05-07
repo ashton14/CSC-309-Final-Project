@@ -26,4 +26,5 @@ public class DotDecorator extends ShapeDecorator {
         g.fillOval(getXCenter() - radius, getYCenter() - radius,
                 radius * 2, radius * 2);
     }
+
 }

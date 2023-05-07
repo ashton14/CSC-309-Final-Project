@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Aaron Bettencourt
  */
-public interface Drawable {
+public interface Drawable extends Serializable {
 
     /**
      * Draws a representation of this Drawable onto Graphics g.

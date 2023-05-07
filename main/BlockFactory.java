@@ -34,7 +34,7 @@ public class BlockFactory {
                 return new LoopBlock(shape, "LOOP");
             }
             case "Print" -> {
-                shape = new Parallelogram(xPosCenter, yPosCenter, 100, 40, Color.ORANGE);
+                shape = new Parallelogram(xPosCenter, yPosCenter, 50, 60,Color.ORANGE);
                 return new PrintBlock(shape, "PRINT");
             }
             case "Start" -> {

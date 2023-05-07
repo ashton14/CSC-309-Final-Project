@@ -2,6 +2,7 @@ package main;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.Serializable;
 
 /**
  * Line class responsible for drawing connections between two CodeBlocks, with directionality

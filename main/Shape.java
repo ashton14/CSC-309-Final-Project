@@ -125,4 +125,37 @@ public abstract class Shape implements Drawable, Serializable {
     public Color getColor() {
         return color;
     }
+
+    /**
+     * Sets the color for this Shape.
+     * @param color   The new color of this Shape as
+     *                an object of type Color.
+     */
+    public void setColor(Color color) {
+        if(color == null)
+            return;
+        this.color = color;
+    }
+
+    /**
+     * Sets the width for this Shape.
+     * @param width   The width of this Shape as an int.
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    /**
+     * Sets the height for this Shape.
+     * @param height   The height of this Shape as an int.
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    /**
+     * Creates a deep copy of this Shape.
+     * @return  A deep copy of this Shape as an object of type Shape.
+     */
+    public abstract Shape copyShape();
 }
