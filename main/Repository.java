@@ -318,6 +318,9 @@ public class Repository extends Observable {
         setChanged();
         notifyObservers(mode);
     }
+    public String getMode() {
+        return this.mode;
+    }
 
     public void setStatus(String s){
         status = s;
