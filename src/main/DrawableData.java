@@ -34,6 +34,8 @@ public class DrawableData extends Observable {
      */
     public void addDrawable(Drawable drawable){
         if(drawable == null){
+            setChanged();
+            notifyObservers();
             return;
         }
         drawables.add(drawable);

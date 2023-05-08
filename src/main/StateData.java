@@ -165,13 +165,22 @@ public class StateData extends Observable {
      * @param mode   The mode to change the DiagramApp to as
      *               a String.
      */
-    public void changeMode(String mode){
+    public void setMode(String mode){
         if(this.mode.equals(mode)){
             return;
         }
         this.mode = mode;
         setChanged();
         notifyObservers(mode);
+    }
+
+
+    /**
+     * Returns the mode.
+     * @return The mode as a String.
+     */
+    public String getMode(){
+        return mode;
     }
 
     /**

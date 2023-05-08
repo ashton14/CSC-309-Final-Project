@@ -92,13 +92,13 @@ public class MenuBarControlHandler implements ActionListener {
                     stateData.setStatus("Renamed " + currentlySelectedCodeBlock.toString() + " Block");
                     break;
                 case "Sandbox":
-                    stateData.changeMode("Sandbox");
+                    stateData.setMode("Sandbox");
                     break;
                 case "Translate Code":
-                    stateData.changeMode("Translate Code");
+                    stateData.setMode("Translate Code");
                     break;
                 case "Translate Flowchart":
-                    stateData.changeMode("Translate Flowchart");
+                    stateData.setMode("Translate Flowchart");
 
             }
             if (e.getActionCommand().equals("comboBoxChanged")) {
