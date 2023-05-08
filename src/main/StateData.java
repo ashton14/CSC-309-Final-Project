@@ -55,10 +55,12 @@ public class StateData extends Observable {
      * @param block CodeBlock to be set as currently selected.
      */
     public void setCurrentlySelectedCodeBlock(CodeBlock block) {
+        currentlySelectedCodeBlock = block;
         if(block == null){
+            setChanged();
+            notifyObservers( "No Code Block selected");
             return;
         }
-        currentlySelectedCodeBlock = block;
         setChanged();
         notifyObservers( "Selected " + currentlySelectedCodeBlock.toString() + " Block");
     }
@@ -194,6 +196,15 @@ public class StateData extends Observable {
         status = s;
         setChanged();
         notifyObservers(s);
+    }
+
+    /**
+     * Returns the status of this StateData.
+     * @return  A String representation of the
+     * status of this StateData.
+     */
+    public String getStatus(){
+        return status;
     }
 
 }

@@ -34,8 +34,6 @@ public class DrawableData extends Observable {
      */
     public void addDrawable(Drawable drawable){
         if(drawable == null){
-            setChanged();
-            notifyObservers();
             return;
         }
         drawables.add(drawable);
@@ -77,6 +75,9 @@ public class DrawableData extends Observable {
      * Undo last drawn CodeBlock or Line and notify observers.
      */
     public void undo() {
+        if(drawables.isEmpty()){
+            return;
+        }
         Drawable lastDrawable = drawables.get(drawables.size()-1);
         if(lastDrawable.getClass() == Line.class){
             Line line = (Line) lastDrawable;
@@ -91,8 +92,7 @@ public class DrawableData extends Observable {
         Drawable selected = ((StateData)(StateRepository.getInstance()
                 .getData())).getCurrentlySelectedCodeBlock();
         if(selected == lastDrawable){
-            ((StateData)(StateRepository.getInstance()
-                    .getData())).setCurrentlySelectedCodeBlock(null);
+            ((StateData)(StateRepository.getInstance().getData())).setCurrentlySelectedCodeBlock(null);
         }
         ((StateData)(StateRepository.getInstance().getData())).setStatus("Action undone");
     }
@@ -131,8 +131,8 @@ public class DrawableData extends Observable {
     }
 
     /**
-     * Notifies observers that the list of type Drawable
-     * has been changed.
+     * Notifies observers that one or elements in
+     * the list of type Drawable has been changed.
      */
     public void modifiedDrawables(){
         setChanged();

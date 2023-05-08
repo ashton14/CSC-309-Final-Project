@@ -22,7 +22,7 @@ public class BlockFactory {
         Shape shape;
         switch (type) {
             case "If" -> {
-                shape = new Diamond(xPosCenter, yPosCenter, 50, 60, Color.ORANGE);
+                shape = new Diamond(xPosCenter, yPosCenter, 100, 100, Color.PINK);
                 return new IfBlock(shape, "IF");
             }
             case "Instruction" -> {
