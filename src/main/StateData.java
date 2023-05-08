@@ -31,8 +31,8 @@ public class StateData extends Observable {
 
 
     /**
-     * setter for selected line
-     * @param line - line to be set as selected
+     * Setter for selected line and notifies observers.
+     * @param line - line to be set as selected.
      */
     public void setCurrentlySelectedLine(Line line) {
         currentlySelectedLine = line;
@@ -41,38 +41,39 @@ public class StateData extends Observable {
     }
 
     /**
-     * getter for selected line
-     * @return currently selected line
+     * getter for selected line.
+     * @return currently selected line.
      */
     public Line getCurrentlySelectedLine() {
         return currentlySelectedLine;
     }
 
     /**
-     * Sets the clicked code block as the currently selected code block, along with populating the outlineShape field
-     * with the correct shape
-     * @param block code block to be set as currently selected
+     * Sets the clicked code block as the currently selected code block,
+     * along with populating the outlineShape field
+     * with the correct shape. Notifies observers.
+     * @param block CodeBlock to be set as currently selected.
      */
     public void setCurrentlySelectedCodeBlock(CodeBlock block) {
-        currentlySelectedCodeBlock = block;
-        if(currentlySelectedCodeBlock == null){
+        if(block == null){
             return;
         }
+        currentlySelectedCodeBlock = block;
         setChanged();
-        notifyObservers( currentlySelectedCodeBlock.toString() +" Block selected.");
+        notifyObservers( "Selected " + currentlySelectedCodeBlock.toString() + " Block");
     }
 
     /**
-     * getter for currently selected code block
-     * @return the Code Block object that was last clicked
+     * getter for currently selected code block.
+     * @return the CodeBlock object that was last clicked.
      */
     public CodeBlock getCurrentlySelectedCodeBlock() {
         return currentlySelectedCodeBlock;
     }
 
     /**
-     * getter for currently selected code block outline Shape
-     * @return the Shape object that is the correct outline for the currently selected shape
+     * getter for currently selected code block outline Shape.
+     * @return the Shape object that is the correct outline for the currently selected shape.
      */
     public main.Shape getCurrentlySelectedCodeBlockOutline() {
         Shape shapeOutline = currentlySelectedCodeBlock.copyShape();
@@ -83,7 +84,8 @@ public class StateData extends Observable {
     }
 
     /**
-     * Sets the currently selected code block from menu
+     * Sets the currently selected code block from menu.
+     * Notifies observers.
      * @param s code block as a string
      */
     public void setMenuBarCodeBlock(String s){
@@ -101,8 +103,10 @@ public class StateData extends Observable {
     }
 
     /**
-     * Sets selected menu item from menu bar
-     * @param s
+     * Sets selected menu item from menu bar and
+     * notifies observers.
+     * @param s The String representation of the
+     *          selected menu item.
      */
     public void setSelectedMenuItem(String s){
         selectedMenuItem = s;
@@ -118,7 +122,7 @@ public class StateData extends Observable {
 
     /**
      * Removes the selected Drawable from the DrawableData in
-     * the DataRepository.
+     * the DataRepository and notifies observers.
      */
     public void deleteSelectedItem(){
         Repository dataRepository = DataRepository.getInstance();

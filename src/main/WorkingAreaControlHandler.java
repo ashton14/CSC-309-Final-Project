@@ -36,9 +36,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         StateData stateData = (StateData) stateRepository.getData();
         CodeBlock prevSelectedCodeBlock = stateData.getCurrentlySelectedCodeBlock();
         stateData.setCurrentlySelectedCodeBlock(getTopCodeBlock(e.getX(), e.getY()));
-        System.out.println(getTopCodeBlock(e.getX(), e.getY()));
         if(prevSelectedCodeBlock != null) {
-            System.out.println("Attempt to make a line");
            drawableData.addDrawable(makeLine(prevSelectedCodeBlock));
         }
     }
@@ -65,10 +63,6 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         CodeBlock lastCodeBlock = stateData.getCurrentlySelectedCodeBlock();
         Line line = null;
 
-        System.out.println(firstCodeBlock.getInboundCodeBlocks().size());
-        System.out.println(firstCodeBlock.getOutboundCodeBlocks().size());
-        System.out.println(lastCodeBlock.getInboundCodeBlocks().size());
-        System.out.println(lastCodeBlock.getOutboundCodeBlocks().size());
         if(firstCodeBlock != lastCodeBlock &&
                 firstCodeBlock.canAddOut(lastCodeBlock) &&
                 lastCodeBlock.canAddIn(firstCodeBlock)) {
@@ -103,7 +97,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             selectedCodeBlock = makeCodeBlock(e.getX(), e.getY());
             drawableData.addDrawable(selectedCodeBlock);
             stateData.setCurrentlySelectedCodeBlock(selectedCodeBlock);
-            stateData.setStatus("Placing " + selectedCodeBlock.toString() + " Blocks.");
+            //stateData.setStatus("Placing " + selectedCodeBlock.toString() + " Blocks.");
             return;
         }
         xOffset =  selectedCodeBlock.getXCenter() - e.getX();
@@ -120,7 +114,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         if(draggedCodeBlock != null){
             StateRepository stateRepository = StateRepository.getInstance();
             StateData stateData = (StateData) stateRepository.getData();
-            stateData.setStatus("Placing: " + stateData.getMenuBarCodeBlock() + " Blocks");
+            stateData.setStatus("Placing " + stateData.getMenuBarCodeBlock() + " Blocks");
         }
         draggedCodeBlock = null;
     }
@@ -147,11 +141,11 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
     public void mouseDragged(MouseEvent e) {
         if(draggedCodeBlock != null) {
             StateData stateData = (StateData) StateRepository.getInstance().getData();
-            stateData.setStatus("Dragging ");
             draggedCodeBlock.setXCenter(e.getX() + xOffset);
             draggedCodeBlock.setYCenter(e.getY() + yOffset);
             stateData.setCurrentlySelectedCodeBlock(draggedCodeBlock);
             ((DrawableData) DataRepository.getInstance().getData()).modifiedDrawables();
+            stateData.setStatus("Dragging " + stateData.getCurrentlySelectedCodeBlock().toString());
         }
     }
 
