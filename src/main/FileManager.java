@@ -14,11 +14,10 @@ public class FileManager {
      * @param filename - String representing filename to read from
      */
     public static void readFile(String filename) {
-        Repository dataRepository = DataRepository.getInstance();
-        DrawableData drawableData = (DrawableData) dataRepository.getData();
-        drawableData.clear();
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        dataRepository.clear();
 
-        StateData stateData = (StateData) StateRepository.getInstance().getData();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         // List to store read in blocks
         try {
             // Create an input stream, read in the file, casting to ArrayList
@@ -26,32 +25,31 @@ public class FileManager {
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<Drawable> drawables = (ArrayList<Drawable>) ois.readObject();
             ois.close();
-            drawableData.addAll(drawables);
-            stateData.setStatus("File Loaded");
+            dataRepository.addAll(drawables);
+            stateRepository.setStatus("File Loaded");
         } catch (IOException | ClassNotFoundException e) {
             // Print Error if file not read
             e.printStackTrace();
-            stateData.setStatus("Error reading file");
+            stateRepository.setStatus("Error reading file");
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
 
     public static void writeFile(String filename) {
-        StateData stateData = (StateData) StateRepository.getInstance().getData();
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         try {
-            Repository dataRepository = DataRepository.getInstance();
-            DrawableData drawableData = (DrawableData) dataRepository.getData();
             // Open output stream, write the CodeBlocks from Repository
             FileOutputStream fos = new FileOutputStream(filename + ".diag");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(drawableData.getDrawables());
+            oos.writeObject(dataRepository.getDrawables());
             oos.flush();
             oos.close();
-            stateData.setStatus("File " + filename + ".diag saved");
+            stateRepository.setStatus("File " + filename + ".diag saved");
         } catch (IOException e) {
             // Print error if it could not write to file
             e.printStackTrace();
-            stateData.setStatus("Error writing to " + filename + ".diag");
+            stateRepository.setStatus("Error writing to " + filename + ".diag");
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }

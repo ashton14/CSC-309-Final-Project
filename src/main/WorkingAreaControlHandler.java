@@ -30,25 +30,19 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        Repository dataRepository = DataRepository.getInstance();
-        DrawableData drawableData = (DrawableData) dataRepository.getData();
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
-        if(stateData.getMode().equals("Translate Flowchart")){
-            stateData.setStatus("Cannot edit flowchart in this mode");
-            return;
-        }
-        CodeBlock prevSelectedCodeBlock = stateData.getCurrentlySelectedCodeBlock();
-        stateData.setCurrentlySelectedCodeBlock(getTopCodeBlock(e.getX(), e.getY()));
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+        CodeBlock prevSelectedCodeBlock = stateRepository.getCurrentlySelectedCodeBlock();
+        stateRepository.setCurrentlySelectedCodeBlock(getTopCodeBlock(e.getX(), e.getY()));
         if(prevSelectedCodeBlock != null) {
-           drawableData.addDrawable(makeLine(prevSelectedCodeBlock));
+            System.out.println("Attempt to make a line");
+            dataRepository.addDrawable(makeLine(prevSelectedCodeBlock));
         }
     }
 
     public CodeBlock getTopCodeBlock(int x, int y){
-        Repository dataRepository = DataRepository.getInstance();
-        DrawableData drawableData = (DrawableData) dataRepository.getData();
-        ArrayList<CodeBlock> codeBlocks = drawableData.getCodeBlocks();
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        ArrayList<CodeBlock> codeBlocks = dataRepository.getCodeBlocks();
         CodeBlock topCodeBlock = null;
         for (CodeBlock codeBlock: codeBlocks) {
             if(codeBlock.isInBounds(x,y)){
@@ -59,12 +53,10 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
     }
 
     private Line makeLine(CodeBlock firstCodeBlock){
-        Repository dataRepository = DataRepository.getInstance();
-        DrawableData drawableData = (DrawableData) dataRepository.getData();
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
-        CodeBlock lastCodeBlock = stateData.getCurrentlySelectedCodeBlock();
+        CodeBlock lastCodeBlock = stateRepository.getCurrentlySelectedCodeBlock();
         Line line = null;
 
         if(firstCodeBlock != lastCodeBlock &&
@@ -75,7 +67,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             lastCodeBlock.addToInbound(firstCodeBlock);
             line = new Line(firstCodeBlock, lastCodeBlock);
             System.out.println("Made a new line");
-            stateData.setStatus("Established A Connection");
+            stateRepository.setStatus("Established A Connection");
         } else {
 
         }
@@ -83,29 +75,22 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
     }
 
     private CodeBlock makeCodeBlock(int x, int y){
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         BlockFactory blockFactory = new BlockFactory();
-        return blockFactory.makeBlock(stateData.getMenuBarCodeBlock(), x, y);
+        return blockFactory.makeBlock(stateRepository.getMenuBarCodeBlock(), x, y);
 
     }
     @Override
     public void mousePressed(MouseEvent e) {
-        Repository dataRepository = DataRepository.getInstance();
-        DrawableData drawableData = (DrawableData) dataRepository.getData();
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
 
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
-        if(stateData.getMode().equals("Translate Flowchart")){
-            stateData.setStatus("Cannot edit flowchart in this mode");
-            return;
-        }
-
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         CodeBlock selectedCodeBlock = getTopCodeBlock(e.getX(),e.getY());
         if(selectedCodeBlock == null) {
             selectedCodeBlock = makeCodeBlock(e.getX(), e.getY());
-            drawableData.addDrawable(selectedCodeBlock);
-            stateData.setCurrentlySelectedCodeBlock(selectedCodeBlock);
+            dataRepository.addDrawable(selectedCodeBlock);
+            stateRepository.setCurrentlySelectedCodeBlock(selectedCodeBlock);
+            stateRepository.setStatus("Placing " + selectedCodeBlock.toString() + " Blocks.");
             return;
         }
         xOffset =  selectedCodeBlock.getXCenter() - e.getX();
@@ -119,15 +104,9 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
-        if(stateData.getMode().equals("Translate Flowchart")){
-            stateData.setStatus("Cannot edit flowchart in this mode");
-            return;
-        }
-
         if(draggedCodeBlock != null){
-            stateData.setStatus("Placing " + stateData.getMenuBarCodeBlock() + " Blocks");
+            StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+            stateRepository.setStatus("Placing " + stateRepository.getMenuBarCodeBlock() + " Blocks");
         }
         draggedCodeBlock = null;
     }
@@ -152,19 +131,15 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseDragged(MouseEvent e) {
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
-        if(stateData.getMode().equals("Translate Flowchart")){
-            stateData.setStatus("Cannot edit flowchart in this mode");
-            return;
-        }
-
         if(draggedCodeBlock != null) {
+            StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+            stateRepository.setStatus("Dragging ");
             draggedCodeBlock.setXCenter(e.getX() + xOffset);
             draggedCodeBlock.setYCenter(e.getY() + yOffset);
-            stateData.setCurrentlySelectedCodeBlock(draggedCodeBlock);
-            ((DrawableData) DataRepository.getInstance().getData()).modifiedDrawables();
-            stateData.setStatus("Dragging " + stateData.getCurrentlySelectedCodeBlock().toString());
+            stateRepository.setCurrentlySelectedCodeBlock(draggedCodeBlock);
+
+            DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+            dataRepository.modifiedDrawables();
         }
     }
 

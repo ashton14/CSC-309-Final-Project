@@ -1,5 +1,6 @@
 package main;
 import java.awt.*;
+
 /**
  * DotDecorator class responsible for dot inside EndBlock
  * @author Cameron Hardy

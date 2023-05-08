@@ -8,8 +8,8 @@ import java.awt.*;
  *
  * @author Aaron Bettencourt
  */
-public abstract class ShapeDecorator extends main.Shape {
-    private main.Shape innerShape;
+public abstract class ShapeDecorator extends Shape {
+    private Shape innerShape;
 
     /**
      * Constructs an instance of ShapeDecorator given a Shape
@@ -17,7 +17,7 @@ public abstract class ShapeDecorator extends main.Shape {
      *
      * @param innerShape   The Shape to decorate.
      */
-    public ShapeDecorator(main.Shape innerShape){
+    public ShapeDecorator(Shape innerShape){
         super(innerShape.getXCenter(), innerShape.getYCenter(),
                 innerShape.getWidth(), innerShape.getHeight(),
                 innerShape.getColor());

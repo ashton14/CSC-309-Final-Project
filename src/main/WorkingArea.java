@@ -22,20 +22,18 @@ public class WorkingArea extends JPanel implements Observer {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
-        Repository dataRepository = DataRepository.getInstance();
-        DrawableData drawableData = (DrawableData) dataRepository.getData();
-        drawableData.addObserver(this);
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        dataRepository.addObserver(this);
 
-        ArrayList<CodeBlock> codeBlocks = drawableData.getCodeBlocks();
-        CodeBlock currentlySelectedBlock = stateData.getCurrentlySelectedCodeBlock();
-        ArrayList<Line> lines = drawableData.getLines();
+        ArrayList<CodeBlock> codeBlocks = dataRepository.getCodeBlocks();
+        CodeBlock currentlySelectedBlock = stateRepository.getCurrentlySelectedCodeBlock();
+        ArrayList<Line> lines = dataRepository.getLines();
 
         for (CodeBlock currentCodeBlock : codeBlocks) {
             if (currentlySelectedBlock == currentCodeBlock) {
-                Shape codeBlockOutline = stateData.getCurrentlySelectedCodeBlockOutline();
+                Shape codeBlockOutline = stateRepository.getCurrentlySelectedCodeBlockOutline();
                 codeBlockOutline.draw(g);
             }
             currentCodeBlock.draw(g);

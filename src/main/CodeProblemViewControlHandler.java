@@ -30,9 +30,8 @@ public class CodeProblemViewControlHandler implements ActionListener {
             System.out.println("SUBMIT BUTTON PUSHED");
             //System.out.println(Repository.getInstance().g.size());
             System.out.println(ex1.getCodeBlocks().size());
-            Repository dataRepository = DataRepository.getInstance();
-            DrawableData drawableData = (DrawableData) dataRepository.getData();
-            int mistakeIndex = ex1.gradeUserDiagram(drawableData.getCodeBlocks());
+            DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+            int mistakeIndex = ex1.gradeUserDiagram(dataRepository.getCodeBlocks());
             System.out.println("mistake at CodeBlock index: "+mistakeIndex);
         }
     }

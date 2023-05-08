@@ -1,16 +1,5 @@
 package Repo.tests;
 
-import static org.junit.Assert.*;
-
-import main.*;
-import main.Rectangle;
-import main.Shape;
-import org.junit.Test;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-
 public class RepositoryTests {
 /*
     @Test

@@ -14,13 +14,4 @@ public interface Repository {
     public static Repository getInstance() {
         return null;
     }
-    /**
-     * An interface method to be overridden
-     * to get the data stored within this
-     * Repository.
-     * @return The data Object within this
-     * Repository.
-     */
-
-    public Object getData();
 }

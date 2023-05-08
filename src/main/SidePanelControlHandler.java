@@ -18,9 +18,8 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Submit")){
-            StateRepository stateRepository = StateRepository.getInstance();
-            StateData stateData = (StateData) stateRepository.getData();
-            stateData.setStatus("Parsed code");
+            StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+            stateRepository.setStatus("Parsed code");
 
             //The following code is temporary in order to quickly test the UserExample class
             //UserExample ex1 = UserExampleTests.getEx1();
@@ -45,9 +44,8 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
-        stateData.setStatus("Coding...");
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+        stateRepository.setStatus("Coding...");
     }
 
     @Override

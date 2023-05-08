@@ -18,10 +18,8 @@ public class DiagramApp extends JFrame implements Observer {
      */
     public DiagramApp(){
         super("Diagram App");
-        Repository dataRepository = DataRepository.getInstance();
-        DrawableData drawableData = (DrawableData) dataRepository.getData();
-        StateRepository stateRepository = StateRepository.getInstance();
-        StateData stateData = (StateData) stateRepository.getData();
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
         westPanel = new JPanel();
         westPanel.setVisible(false);
@@ -30,9 +28,9 @@ public class DiagramApp extends JFrame implements Observer {
         WorkingArea drawPanel = new WorkingArea();
         StatusBar statusBar = new StatusBar("Status");
 
-        drawableData.addObserver(drawPanel);
-        stateData.addObserver(statusBar);
-        stateData.addObserver(this);
+        dataRepository.addObserver(drawPanel);
+        stateRepository.addObserver(statusBar);
+        stateRepository.addObserver(this);
 
         statusBar.setEnabled(false);
         statusBar.setFont(new Font(Font.DIALOG,Font.PLAIN,17));
@@ -133,6 +131,7 @@ public class DiagramApp extends JFrame implements Observer {
         if(arg == null)
             return;
         String command = (String) arg;
+        //System.out.println(command);
         if(command.equals("Sandbox")){
             westPanel.setVisible(false);
         } else if(command.equals("Translate Code")){

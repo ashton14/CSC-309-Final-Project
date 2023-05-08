@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * @author Patrick Whitlock
  */
 public class SidePanel extends JPanel {
-    ArrayList<JTextArea> codeSections;
-    ArrayList<JButton> buttons;
+    private ArrayList<JTextArea> codeSections;
+    private ArrayList<JButton> buttons;
     /**
      * Creates a SidePanel object
      */
