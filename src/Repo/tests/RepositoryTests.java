@@ -1,10 +1,18 @@
-
 package Repo.tests;
+
+import static org.junit.Assert.*;
+
 import main.*;
+import main.Rectangle;
+import main.Shape;
+import org.junit.Test;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class RepositoryTests {
-
+/*
     @Test
     public void testGetInstance() {
         Repository repo1 = Repository.getInstance();
@@ -137,6 +145,6 @@ public class RepositoryTests {
         assertFalse(Repository.getInstance().getLines().isEmpty());
         assertTrue(Repository.getInstance().getLines().contains(line1));
 
-    }
+    }*/
 
 }

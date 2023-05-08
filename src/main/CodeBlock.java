@@ -277,7 +277,7 @@ public abstract class CodeBlock implements Drawable {
     @Override
     public String toString(){
         String str = getClass().toString();
-        str = str.replace("class ", "");
+        str = str.replace("class main.", "");
         str = str.replace("Block", "");
         return str;
     }

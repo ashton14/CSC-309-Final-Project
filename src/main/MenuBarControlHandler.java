@@ -77,13 +77,19 @@ public class MenuBarControlHandler implements ActionListener {
                     stateData.deleteSelectedItem();
                     break;
                 case "Change Text":
+                    CodeBlock currentlySelectedCodeBlock = stateData.getCurrentlySelectedCodeBlock();
+                    if(currentlySelectedCodeBlock == null){
+                        stateData.setStatus("No code block is selected");
+                        break;
+                    }
                     String text = (String) JOptionPane.showInputDialog(
                             null,
-                            "Rename text from: \"" + stateData.getCurrentlySelectedCodeBlock().getText() + "\" to:",
-                            "Rename the " + stateData.getCurrentlySelectedCodeBlock().toString() + " Block",
+                            "Rename text from: \"" + currentlySelectedCodeBlock.getText() + "\" to:",
+                            "Rename the " + currentlySelectedCodeBlock.toString() + " Block",
                             1, null, null, "");
                     stateData.getCurrentlySelectedCodeBlock().setText(text);
                     drawableData.modifiedDrawables();
+                    stateData.setStatus("Renamed " + currentlySelectedCodeBlock.toString() + " Block");
                     break;
                 case "Sandbox":
                     stateData.changeMode("Sandbox");
