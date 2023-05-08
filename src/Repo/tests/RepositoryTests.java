@@ -1,7 +1,10 @@
-package tests;
+
+package Repo.tests;
+import main.*;
+
 
 public class RepositoryTests {
-/*
+
     @Test
     public void testGetInstance() {
         Repository repo1 = Repository.getInstance();
@@ -134,6 +137,6 @@ public class RepositoryTests {
         assertFalse(Repository.getInstance().getLines().isEmpty());
         assertTrue(Repository.getInstance().getLines().contains(line1));
 
-    }*/
+    }
 
 }

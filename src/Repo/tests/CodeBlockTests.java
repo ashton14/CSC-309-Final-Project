@@ -1,7 +1,10 @@
-package main;
+package Repo.tests;
 
 import static org.junit.Assert.*;
 
+import main.*;
+import main.Rectangle;
+import main.Shape;
 import org.junit.Test;
 import java.awt.*;
 
@@ -9,9 +12,9 @@ public class CodeBlockTests {
 
     @Test
     public void testAddingAndRemovingConnections() {
-        Shape rect = new Rectangle(100, 100, 50, 50, Color.BLACK);
-        Shape circ = new Circle(100, 100, 50, Color.BLACK);
-        Shape diam = new Diamond(100, 100, 50, 50, Color.BLACK);
+        main.Shape rect = new main.Rectangle(100, 100, 50, 50, Color.BLACK);
+        main.Shape circ = new Circle(100, 100, 50, Color.BLACK);
+        main.Shape diam = new Diamond(100, 100, 50, 50, Color.BLACK);
         CodeBlock funcBlock = new FunctionBlock(rect, "");
         CodeBlock startBlock = new StartBlock(circ, "");
         CodeBlock loopBlock = new LoopBlock(diam, "");
