@@ -1,4 +1,4 @@
-package main;
+package src.main;
 /**
  * Print Code Block
  * @author Patrick Whitlock

@@ -1,4 +1,4 @@
-package main;
+package src.main;
 
 /**
  * Represents a LoopBlock, which is a specialized type of CodeBlock for loops.

@@ -1,4 +1,4 @@
-package main;
+package src.main;
 
 /**
  * Represents an if statement with at most 1 inbound line,

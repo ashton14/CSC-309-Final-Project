@@ -1,9 +1,9 @@
-package Repo.tests;
+package src.Repo.tests;
 
-import main.Rectangle;
-import main.Shape;
-import main.*;
+import src.main.*;
 import org.junit.Test;
+import src.main.Rectangle;
+import src.main.Shape;
 
 import java.awt.*;
 

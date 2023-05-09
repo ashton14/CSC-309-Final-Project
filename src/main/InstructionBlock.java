@@ -1,4 +1,4 @@
-package main;
+package src.main;
 /**
  * Represents an InstructionBlock which extends CodeBlock.
  *

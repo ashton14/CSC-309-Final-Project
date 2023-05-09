@@ -1,4 +1,4 @@
-package main;
+package src.main;
 /**
  * Defines the StopBlock class, which is to
  * be used to be instantiated to make objects

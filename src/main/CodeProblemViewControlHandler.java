@@ -1,4 +1,6 @@
-package main;
+package src.main;
+
+import tests.UserExampleTests;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,4 +1,4 @@
-package main;
+package src.main;
 /**
  * An interface to be implemented for
  * the creation of multiple Singleton

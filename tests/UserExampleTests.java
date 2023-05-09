@@ -1,5 +1,6 @@
-package Repo.main;
+package tests;
 import java.util.ArrayList;
+import src.main.*;
 
 /**
  * This is a temporary class to test my UserExample functions

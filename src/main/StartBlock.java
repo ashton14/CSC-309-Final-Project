@@ -1,4 +1,4 @@
-package main;
+package src.main;
 
 /**
  * Defines the StartBlock class, which is to
