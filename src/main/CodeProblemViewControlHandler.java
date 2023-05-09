@@ -1,6 +1,6 @@
 package src.main;
 
-import tests.UserExampleTests;
+import src.test.UserExampleTests;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

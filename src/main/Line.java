@@ -16,6 +16,7 @@ public class Line implements Drawable {
     private CodeBlock start;
     private CodeBlock end;
 
+    private int strokeWidth;
     private Color color = Color.BLACK;
 
     /**
@@ -30,6 +31,7 @@ public class Line implements Drawable {
      * @param e - Ending CodeBlock
      */
     public Line(CodeBlock s, CodeBlock e) {
+        strokeWidth = 2;
         start = s;
         end = e;
         s.addToOutbound(e);
@@ -50,6 +52,10 @@ public class Line implements Drawable {
      */
     public CodeBlock getEnd(){
         return end;
+    }
+
+    public void setStrokeWidth(int strokeWidth){
+        this.strokeWidth = strokeWidth;
     }
 
     /**
@@ -73,7 +79,7 @@ public class Line implements Drawable {
 
         // Set the color, stroke, and draw line and arrow head
         g.setColor(color);
-        g2d.setStroke(new BasicStroke(2));
+        g2d.setStroke(new BasicStroke(strokeWidth));
         g2d.drawLine(startPos.x, startPos.y, endPos.x, endPos.y);
         g2d.drawLine(endPos.x, endPos.y, ahead1.x, ahead1.y);
         g2d.drawLine(endPos.x, endPos.y, ahead2.x, ahead2.y);

@@ -107,7 +107,7 @@ public class DataRepository extends Observable implements Repository {
         notifyObservers();
         Drawable selected = stateRepository.getCurrentlySelectedCodeBlock();
         if(selected == lastDrawable){
-            stateRepository.setCurrentlySelectedCodeBlock(null);
+            stateRepository.setCurrentlySelectedDrawable(null);
         }
         stateRepository.setStatus("Action undone");
     }
@@ -122,6 +122,15 @@ public class DataRepository extends Observable implements Repository {
         setChanged();
         notifyObservers();
         stateRepository.setStatus("Board cleared");
+    }
+
+    /**
+     * A method to remove a Drawable from this DataRepository.
+     * @param drawable The Drawable to remove from this
+     *                 DataRepository.
+     */
+    public void removeDrawable(Drawable drawable){
+        drawables.remove(drawable);
     }
 
 

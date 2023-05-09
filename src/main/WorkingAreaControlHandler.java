@@ -33,7 +33,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         CodeBlock prevSelectedCodeBlock = stateRepository.getCurrentlySelectedCodeBlock();
-        stateRepository.setCurrentlySelectedCodeBlock(getTopCodeBlock(e.getX(), e.getY()));
+        stateRepository.setCurrentlySelectedDrawable(getTopCodeBlock(e.getX(), e.getY()));
         if(prevSelectedCodeBlock != null) {
             System.out.println("Attempt to make a line");
             dataRepository.addDrawable(makeLine(prevSelectedCodeBlock));
@@ -89,7 +89,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         if(selectedCodeBlock == null) {
             selectedCodeBlock = makeCodeBlock(e.getX(), e.getY());
             dataRepository.addDrawable(selectedCodeBlock);
-            stateRepository.setCurrentlySelectedCodeBlock(selectedCodeBlock);
+            stateRepository.setCurrentlySelectedDrawable(selectedCodeBlock);
             stateRepository.setStatus("Placing " + selectedCodeBlock.toString() + " Blocks.");
             return;
         }
@@ -136,7 +136,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             stateRepository.setStatus("Dragging ");
             draggedCodeBlock.setXCenter(e.getX() + xOffset);
             draggedCodeBlock.setYCenter(e.getY() + yOffset);
-            stateRepository.setCurrentlySelectedCodeBlock(draggedCodeBlock);
+            stateRepository.setCurrentlySelectedDrawable(draggedCodeBlock);
 
             DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
             dataRepository.modifiedDrawables();

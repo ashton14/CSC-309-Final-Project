@@ -12,8 +12,7 @@ import java.util.Observable;
 public class StateRepository extends Observable implements Repository {
     private String menuBarCodeBlock;
     private String selectedMenuItem;
-    private Line currentlySelectedLine;
-    private CodeBlock currentlySelectedCodeBlock;
+    private Drawable currentlySelectedDrawable;
     private String status;
     private String mode;
 
@@ -26,8 +25,7 @@ public class StateRepository extends Observable implements Repository {
         mode = "Sandbox";
         menuBarCodeBlock = "Start";
         selectedMenuItem = null;
-        currentlySelectedLine = null;
-        currentlySelectedCodeBlock = null;
+        currentlySelectedDrawable = null;
         status = "Placing Start Blocks";
     }
 
@@ -42,58 +40,114 @@ public class StateRepository extends Observable implements Repository {
         return repository;
     }
 
-
-
     /**
-     * setter for selected line
-     * @param line - line to be set as selected
+     * Function used to reset this StateRepository
+     * to constructor defaults. Exists
+     * only for the purposes of unit testing
      */
-    public void setCurrentlySelectedLine(Line line) {
-        currentlySelectedLine = line;
-        setChanged();
-        notifyObservers( "Line Selected");
+    public void reset(){
+        mode = "Sandbox";
+        menuBarCodeBlock = "Start";
+        selectedMenuItem = null;
+        currentlySelectedDrawable = null;
+        status = "Placing Start Blocks";
     }
 
-    /**
-     * getter for selected line
-     * @return currently selected line
-     */
-    public Line getCurrentlySelectedLine() {
-        return currentlySelectedLine;
-    }
 
     /**
-     * Sets the clicked code block as the currently selected code block, along with populating the outlineShape field
-     * with the correct shape
-     * @param block code block to be set as currently selected
+     * setter for selected element as a Drawable
+     * @param drawable - The drawable to be selected.
      */
-    public void setCurrentlySelectedCodeBlock(CodeBlock block) {
-        currentlySelectedCodeBlock = block;
-        if(currentlySelectedCodeBlock == null){
-            return;
+    public void setCurrentlySelectedDrawable(Drawable drawable) {
+        String message;
+        if(drawable == null){
+            message = "Element Unselected";
+        } else {
+            message = "Element Selected";
         }
+        currentlySelectedDrawable = drawable;
         setChanged();
-        notifyObservers( currentlySelectedCodeBlock.toString() +" Block selected.");
+        notifyObservers(message);
     }
 
     /**
-     * getter for currently selected code block
-     * @return the Code Block object that was last clicked
+     * getter for selected Drawable
+     * @return currently selected Drawable
      */
-    public CodeBlock getCurrentlySelectedCodeBlock() {
-        return currentlySelectedCodeBlock;
+    public Drawable getCurrentlySelectedDrawable() {
+        return currentlySelectedDrawable;
     }
 
     /**
-     * getter for currently selected code block outline Shape
-     * @return the Shape object that is the correct outline for the currently selected shape
+     * Returns the currently selected Drawable as a Line
+     * if possible, otherwise null.
+     * @return The currently selected Drawable as a Line
+     * if possible, otherwise null.
      */
-    public Shape getCurrentlySelectedCodeBlockOutline() {
-        Shape shapeOutline = currentlySelectedCodeBlock.copyShape();
-        shapeOutline.setColor(Color.YELLOW);
-        shapeOutline.setWidth(shapeOutline.getWidth() + 5);
-        shapeOutline.setHeight(shapeOutline.getHeight() + 5);
-        return shapeOutline;
+    public Line getCurrentlySelectedLine(){
+        if(currentlySelectedDrawable instanceof Line){
+            return (Line) currentlySelectedDrawable;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the currently selected Drawable as a CodeBlock
+     * if possible, otherwise null.
+     * @return The currently selected Drawable as a CodeBlock
+     * if possible, otherwise null.
+     */
+    public CodeBlock getCurrentlySelectedCodeBlock(){
+        if(currentlySelectedDrawable instanceof CodeBlock){
+            return (CodeBlock) currentlySelectedDrawable;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the outline for the currently selected
+     * Drawable if it is a CodeBlock instance as a Shape.
+     * @return The outline for the currently selected
+     * Drawable if it is a CodeBlock instance as a Shape.
+     */
+    public Shape getCurrentlySelectedCodeBlockOutline(){
+        if(currentlySelectedDrawable instanceof CodeBlock) {
+            Shape shapeOutline = ((CodeBlock) currentlySelectedDrawable).copyShape();
+            shapeOutline.setColor(Color.YELLOW);
+            shapeOutline.setWidth(shapeOutline.getWidth() + 5);
+            shapeOutline.setHeight(shapeOutline.getHeight() + 5);
+            return shapeOutline;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the outline for the currently selected
+     * Drawable if it is a Line instance as a Line.
+     * @return The outline for the currently selected
+     * Drawable if it is a Line instance as a Line.
+     */
+    public Line getCurrentlySelectedLineOutline(){
+        if (currentlySelectedDrawable instanceof Line) {
+            Line line = (Line) currentlySelectedDrawable;
+            line.setColor(Color.YELLOW);
+            Line lineOutline = new Line(line.getStart(), line.getEnd());
+            lineOutline.setStrokeWidth(5);
+            return lineOutline;
+        }
+        return null;
+    }
+
+    /**
+     * Getter for the currently selected drawable outline as a Drawable.
+     * @return The currently selected drawable outline as a Drawable.
+     */
+    public Drawable getCurrentlySelectedDrawableOutline() {
+        Drawable result = getCurrentlySelectedCodeBlockOutline();
+        if(result == null){
+            result = getCurrentlySelectedLineOutline();
+        }
+        return result;
     }
 
     /**
@@ -136,34 +190,8 @@ public class StateRepository extends Observable implements Repository {
      */
     public void deleteSelectedItem(){
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
-        ArrayList<Drawable> drawables = dataRepository.getDrawables();
-        ArrayList<Drawable> copy = new ArrayList<>();
-
-        if(currentlySelectedLine != null){
-            drawables.remove(currentlySelectedLine);
-            currentlySelectedLine.getStart().removeConnection(currentlySelectedLine.getEnd());
-            dataRepository.getDrawables().remove(currentlySelectedLine);
-        }
-        if(currentlySelectedCodeBlock != null) {
-            for (Drawable drawable : drawables) {
-                if (drawable.getClass() == Line.class) {
-                    Line line = (Line) drawable;
-                    if (line.getStart() != currentlySelectedCodeBlock &&
-                            line.getEnd() != currentlySelectedCodeBlock) {
-                        copy.add(drawable);
-                    }
-                } else {
-                    if (drawable != currentlySelectedCodeBlock) {
-                        copy.add(drawable);
-                    }
-                }
-            }
-            currentlySelectedCodeBlock.removeAllConnections();
-            dataRepository.getDrawables().remove(currentlySelectedCodeBlock);
-            dataRepository.clear();
-            dataRepository.addAll(copy);
-        }
-        currentlySelectedCodeBlock = null;
+        dataRepository.removeDrawable(currentlySelectedDrawable);
+        currentlySelectedDrawable = null;
         setChanged();
         notifyObservers("Selected element deleted");
     }

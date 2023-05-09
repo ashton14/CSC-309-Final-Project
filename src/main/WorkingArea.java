@@ -23,7 +23,6 @@ public class WorkingArea extends JPanel implements Observer {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
-
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         dataRepository.addObserver(this);
 

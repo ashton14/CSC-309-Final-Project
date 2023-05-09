@@ -14,6 +14,11 @@ import static org.junit.Assert.*;
  */
 public class DataRepositoryTest {
 
+    public CodeBlock makeTestBlock(){
+        BlockFactory blockFactory = new BlockFactory();
+        return blockFactory.makeBlock("Variable", 0,0);
+    }
+
     /**
      * Ensures that multiple instances of the DataRepository
      * can be gotten from DataRepository.getInstance().
@@ -183,7 +188,7 @@ public class DataRepositoryTest {
         CodeBlock varBlock1 = blockFactory.makeBlock("Variable", 0,0);
         CodeBlock varBlock2 = blockFactory.makeBlock("Variable", 0,0);
         repository.clear();
-        stateRepository.setCurrentlySelectedCodeBlock(varBlock1);
+        stateRepository.setCurrentlySelectedDrawable(varBlock1);
         repository.addDrawable(varBlock1);
         repository.addDrawable(varBlock2);
         repository.undo();
@@ -278,5 +283,54 @@ public class DataRepositoryTest {
         repository.clear();
         repository.modifiedDrawables();
     }
+
+    /**
+     * Tests the removeDrawable method in the DataRepository
+     * to ensure that only selected elements get removed.
+     */
+    @Test
+    public void remove(){
+        DataRepository repository = (DataRepository) DataRepository.getInstance();
+        ArrayList<Drawable> drawables = new ArrayList<>();
+        for(int i = 0; i < 10; ++i){
+            drawables.add(makeTestBlock());
+            repository.addDrawable(drawables.get(i));
+        }
+        repository.removeDrawable(drawables.get(0));
+        repository.removeDrawable(drawables.get(5));
+        repository.removeDrawable(drawables.get(9));
+        for (int i = 0; i < 10; i++) {
+            boolean result = repository.getDrawables().contains(drawables.get(i));
+            if(i == 0 || i == 5 || i == 9){
+                assertFalse(result);
+            } else {
+                assertTrue(result);
+            }
+        }
+    }
+
+    /**
+     * Tests the removeDrawable method in the DataRepository
+     * to ensure that passing null does not crash the program.
+     */
+    @Test
+    public void removeNull(){
+        DataRepository repository = (DataRepository) DataRepository.getInstance();
+        repository.removeDrawable(null);
+    }
+
+    /**
+     * Tests the removeDrawable method in the DataRepository
+     * to ensure that passing a Drawable that is not in the
+     * DataRepository does not crash the program.
+     */
+    @Test
+    public void removeNotIn(){
+        DataRepository repository = (DataRepository) DataRepository.getInstance();
+        CodeBlock codeBlock = makeTestBlock();
+        repository.removeDrawable(codeBlock);
+    }
+
+
 
 }
