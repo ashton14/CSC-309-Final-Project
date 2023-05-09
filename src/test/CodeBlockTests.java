@@ -1,4 +1,4 @@
-package src.Repo.tests;
+package src.test;
 
 import src.main.*;
 import org.junit.Test;
