@@ -145,11 +145,10 @@ public class StateRepositoryTest {
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         stateRepository.reset();
         Line testLine = makeTestLine();
-        Line testDrawable = (Line) stateRepository.getCurrentlySelectedDrawable();
         stateRepository.setCurrentlySelectedDrawable(testLine);
+        Line testDrawable = (Line) stateRepository.getCurrentlySelectedDrawable();
         assertNull(stateRepository.getCurrentlySelectedCodeBlockOutline());
-
-        Line repoLine = stateRepository.getCurrentlySelectedLine();
+        Line repoLine = stateRepository.getCurrentlySelectedLineOutline();
         assertEquals(repoLine.getStart(), testLine.getStart());
         assertEquals(repoLine.getEnd(), testLine.getEnd());
         assertEquals(repoLine.getStart(), testDrawable.getStart());
@@ -172,7 +171,7 @@ public class StateRepositoryTest {
 
     /**
      * Validates getters and setters for StateRepository.selectedMenuItem. Also
-     * ensures that the initial value is null.
+     * ensures that the initial value is null and this method works with null values.
      */
     @Test
     public void setSelectedMenuItem() {
@@ -181,6 +180,8 @@ public class StateRepositoryTest {
         assertNull(stateRepository.getSelectedMenuItem());
         stateRepository.setSelectedMenuItem("test item");
         assertEquals(stateRepository.getSelectedMenuItem(), "test item");
+        stateRepository.setSelectedMenuItem(null);
+        assertNull(stateRepository.getSelectedMenuItem());
     }
 
     /**
@@ -227,7 +228,8 @@ public class StateRepositoryTest {
 
     /**
      * Validates getters and setters for StateRepository.status. Also
-     * ensures that the initial value is "Placing Start Blocks".
+     * ensures that the initial value is "Placing Start Blocks"
+     * and works with null.
      */
     @Test
     public void setStatus() {
@@ -236,5 +238,7 @@ public class StateRepositoryTest {
         assertEquals("Placing Start Blocks", stateRepository.getStatus());
         stateRepository.setStatus("New Status");
         assertEquals("New Status", stateRepository.getStatus());
+        stateRepository.setStatus(null);
+        assertNull(stateRepository.getStatus());
     }
 }

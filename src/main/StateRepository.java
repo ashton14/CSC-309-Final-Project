@@ -128,7 +128,10 @@ public class StateRepository extends Observable implements Repository {
      * Drawable if it is a Line instance as a Line.
      */
     public Line getCurrentlySelectedLineOutline(){
-        if (currentlySelectedDrawable instanceof Line) {
+        if(currentlySelectedDrawable == null)
+            return null;
+        if (currentlySelectedDrawable.getClass() == Line.class
+        || currentlySelectedDrawable instanceof Line) {
             Line line = (Line) currentlySelectedDrawable;
             line.setColor(Color.YELLOW);
             Line lineOutline = new Line(line.getStart(), line.getEnd());
