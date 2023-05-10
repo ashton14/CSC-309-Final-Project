@@ -52,6 +52,12 @@ public class Repository extends Observable {
      * @param block code block to be set as currently selected
      */
     public void setCurrentlySelectedCodeBlock(CodeBlock block) {
+        if (block == null) {
+            currentlySelectedCodeBlock = null;
+            currentlySelectedCodeBlockOutline = null;
+            return;
+        }
+
         Circle circOutline = new Circle(block.getXCenter(), block.getYCenter(), 60, Color.decode("#E93D2D"));
         Rectangle rectOutline = new Rectangle(block.getXCenter(), block.getYCenter(), 110,
                 50, Color.decode("#E93D2D"));
@@ -284,7 +290,7 @@ public class Repository extends Observable {
      */
     public void repaintWorkingArea() {
         setChanged();
-        notifyObservers("Dragging " +Repository.getInstance().getCurrentlySelectedCodeBlockName()+" Block...");
+        notifyObservers("Dragging " + Repository.getInstance().getCurrentlySelectedCodeBlockName()+" Block...");
     }
 
     /**

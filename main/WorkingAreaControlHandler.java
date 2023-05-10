@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -9,6 +10,7 @@ import java.awt.event.*;
  * @author Cameron Hardy
  */
 public class WorkingAreaControlHandler implements MouseListener, MouseMotionListener {
+    private int lineSelectDistance  = 10;
     /**
      * @Field drawingLine - Boolean to keep track of when you have clicked on one CodeBlock
      * and are waiting to connect the line to another
@@ -24,15 +26,20 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
     private CodeBlock dragging = null;
 
     /**
+     * @Field offset - Offset for codeblock being dragged
+     */
+    private Point offset = null;
+
+    /**
      * @Field draggingOutline - Outline shape of CodeBLock being dragged
      */
-    private Shape draggingShape = null;
+    private Shape dragShape = null;
     private String status;
 
     /**
      * Constructs the WorkingAreaControlHandler
      */
-    public WorkingAreaControlHandler(){ }
+    public WorkingAreaControlHandler() {}
 
     /**
      * Implemented for interface
@@ -52,46 +59,65 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         String blockType = Repository.getInstance().getSelectedCodeBlock();
         Repository.getInstance().updateStatusBar(blockType);
 
-
-        // If we are drawing a connection
-        if (blockType.equals("Connection")) { //Connection should no longer be an option, change to if a block is clicked
-            // If the mouse is inside a CodeBlock
+        // If a block is selected we try to connect or split line
+        // Otherwise Select or Place new block
+        CodeBlock selected = Repository.getInstance().getCurrentlySelectedCodeBlock();
+        if (selected != null) {
             for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
-                if (block.isInBounds(e.getX(), e.getY())) {
-                    // If we are already drawing a connection
-                    if (drawingLine) {
-                        // If adding a connection respects adding in/outbound connections, and you are not clicking on the same CodeBlock
-                        if(block.canAddIn() && firstClicked.canAddOut() && !block.equals(firstClicked)) {
-                            // Add a line to Repository, clear firstClicked and reset drawingLine
-                            Repository.getInstance().addLine(new Line(firstClicked, block));
-                            firstClicked = null;
-                            drawingLine = false;
-                            Repository.getInstance().repaintWorkingArea();
-                            break;
-                        }
-                    }
-                    // We are not already drawing a line... set CodeBlock to firstClicked, and set drawingLine to true
-                    firstClicked = block;
-                    drawingLine = true;
+                // Try to connect CodeBlock, break if successful
+                if(selected.equals(block)) {
+                    // Click on selected code block
+                    continue;
+                }
+                else if(tryConnectBlocks(selected, block, e)) {
+                    Repository.getInstance().repaintWorkingArea();
+                    Repository.getInstance().updateStatusBar("Drawing line...");//+  + " and " + "");
+                    Repository.getInstance().setCurrentlySelectedCodeBlock(null);
                     break;
                 }
             }
+            Repository.getInstance().setCurrentlySelectedCodeBlock(null);
         }
         else {
             // If we click on a CodeBlock start dragging it
-            for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
-                if(block.isInBounds(e.getX(), e.getY())) {
-                    dragging = block;
-                    Repository.getInstance().setCurrentlySelectedCodeBlock(block);
-                    draggingShape = Repository.getInstance().getCurrentlySelectedCodeBlockOutline();
+            if(!trySelect(e) &&
+                    !trySplitLine(e)) {
+                if(dragging == null) {
+                    Repository.getInstance().addCodeBlock(blockFactory.makeBlock(blockType, e.getX(), e.getY()));
                 }
             }
             // If we aren't dragging anything create corresponding CodeBlock
-            if(dragging == null) {
-                Repository.getInstance().addCodeBlock(blockFactory.makeBlock(blockType, e.getX(), e.getY()));
-            }
         }
         status = Repository.getInstance().getStatus();
+    }
+    public boolean trySplitLine(MouseEvent e) {
+        for(Line l : Repository.getInstance().getLines()) {
+            if(l.pointDistanceFromLine(e.getX(), e.getY()) <= lineSelectDistance) {
+                l.split(e);
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean trySelect(MouseEvent e) {
+        for(CodeBlock block : Repository.getInstance().getCodeBlocks()) {
+            if(block.isInBounds(e.getX(), e.getY())) {
+                dragging = block;
+                Repository.getInstance().setCurrentlySelectedCodeBlock(block);
+                offset = new Point(e.getX() - block.getXCenter(), e.getY() - block.getYCenter());
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean tryConnectBlocks(CodeBlock first, CodeBlock second, MouseEvent e) {
+        if (second.isInBounds(e.getX(), e.getY()) && first.canAddOut() && second.canAddIn()) {
+            Line connection = new Line(first, second);
+            ArrowDecorator arrow = new ArrowDecorator(connection);
+            Repository.getInstance().addLine(arrow);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -100,10 +126,6 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-
-        dragging = null;
-        draggingShape = null;
-        Repository.getInstance().updateStatusBar(status);
     }
     /**
      * Implemented for interface
@@ -127,15 +149,20 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
      */
     @Override
     public void mouseDragged(MouseEvent e) {
-        // If we are dragging a CodeBlock, set its position to the mouse position
+        if(offset == null) {
+            return;
+        }
+        dragging = Repository.getInstance().getCurrentlySelectedCodeBlock();
+        dragShape = Repository.getInstance().getCurrentlySelectedCodeBlockOutline();
+        if(dragShape != null) {
+            dragShape.setXCenter((int) (e.getX() - offset.getX()));
+            dragShape.setYCenter((int) (e.getY() - offset.getY()));
+        }
         if(dragging != null) {
-            dragging.setXCenter(e.getX());
-            dragging.setYCenter(e.getY());
-            draggingShape.setXCenter(e.getX());
-            draggingShape.setYCenter(e.getY());
+            dragging.setXCenter((int) (e.getX() - offset.getX()));
+            dragging.setYCenter((int) (e.getY() - offset.getY()));
             Repository.getInstance().repaintWorkingArea();
         }
-
     }
 
     /**
