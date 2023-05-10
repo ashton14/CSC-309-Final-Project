@@ -61,7 +61,7 @@ public class DiagramApp extends JFrame implements Observer {
         JMenuItem translateFlowchart = new JMenuItem("Translate Flowchart");
 
 
-        String [] shapes = {"Start","Stop","Print","Loop","If","Instruction", "Function", "Variable", "Connection"};
+        String [] shapes = {"Start","Stop","Print","Loop","If","Instruction", "Function", "Variable"};
 
         JComboBox<String> shape = new JComboBox<>(shapes);
 
@@ -126,7 +126,6 @@ public class DiagramApp extends JFrame implements Observer {
         if(arg == null)
             return;
         String command = (String) arg;
-        //System.out.println(command);
         if(command.equals("Sandbox")){
             westPanel.setVisible(false);
         } else if(command.equals("Translate Code")){
