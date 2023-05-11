@@ -213,6 +213,9 @@ public class StateRepository extends Observable implements Repository {
         setChanged();
         notifyObservers(mode);
     }
+    public String getMode() {
+        return this.mode;
+    }
 
     /**
      * Notifies observers with the new status of this StateData.

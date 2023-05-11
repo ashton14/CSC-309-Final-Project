@@ -88,6 +88,8 @@ public class MenuBarControlHandler implements ActionListener {
                     break;
                 case "Translate Code":
                     stateRepository.changeMode("Translate Code");
+                    //clear flowchart
+                    dataRepository.clear();
                     break;
                 case "Translate Flowchart":
                     stateRepository.changeMode("Translate Flowchart");
