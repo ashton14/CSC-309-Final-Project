@@ -162,8 +162,4 @@ public class DataRepository extends Observable implements Repository {
         setChanged();
         notifyObservers();
     }
-
-    public void setDrawables(ArrayList<Drawable> drawables) {
-        this.drawables = drawables;
-    }
 }

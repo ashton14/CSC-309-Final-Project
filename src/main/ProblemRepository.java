@@ -61,18 +61,20 @@ public class ProblemRepository extends Observable implements Repository{
 
     public void setCurrentProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
-        dRepo.setDrawables(this.getCurrentProblem().getFlowChart());
+        dRepo.clear();
+        dRepo.addAll(this.getCurrentProblem().getFlowChart());
     }
     public void setNextProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         this.setNextProblemIndex();
-        dRepo.setDrawables(this.getCurrentProblem().getFlowChart());
-        dRepo.modifiedDrawables();
+        dRepo.clear();
+        dRepo.addAll(this.getCurrentProblem().getFlowChart());
     }
     public void setPreviousProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         setPrevProblemIndex();
-        dRepo.setDrawables( this.getCurrentProblem().getFlowChart());
+        dRepo.clear();
+        dRepo.addAll( this.getCurrentProblem().getFlowChart());
         dRepo.modifiedDrawables();
     }
 }
