@@ -1,24 +1,25 @@
 package src.main;
 import java.util.ArrayList;
-import src.main.*;
 
 /**
  * This is a temporary class to test my UserExample functions
  * as well as to hold some user exercises to get started
  * @author Patrick Whitlock
  */
-public class UserExampleTests {
+public class UserExampleFactory {
 
     public static UserExample getEx0() {
         ArrayList<String> t0 = new ArrayList<>();
         ArrayList<CodeBlock> T0 = new ArrayList<>();
         ArrayList<Line> lines = new ArrayList<>();
 
+        t0.add("public static void main(String[] args){");
         t0.add("int a = 2;");
         t0.add("int b = 3;");
         t0.add("int c;");
         t0.add("c = a + b;");
         t0.add("System.out.println(c);");
+        t0.add("return;");
 
         String codeHTML = "<HTML> " +
                 "    <p> public static void main(String[] args){\n" +
@@ -39,6 +40,12 @@ public class UserExampleTests {
         CodeBlock cb4 = factory.makeBlock("Instruction", 200, 420);
         CodeBlock cb5 = factory.makeBlock("Print", 200, 500);
         CodeBlock cb6 = factory.makeBlock("Stop", 200, 600);
+
+        cb1.setText("int a = 2");
+        cb2.setText("int b = 3");
+        cb3.setText("int c");
+        cb4.setText("c = a + b");
+        cb5.setText("print c");
 
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
@@ -108,6 +115,13 @@ public class UserExampleTests {
         CodeBlock cb6 = factory.makeBlock("Stop", 150, 550);
         CodeBlock cb7 = factory.makeBlock("Stop", 300, 550);
 
+        cb1.setText("int y = 1");
+        cb2.setText("int x = 2");
+        cb3.setText("if(x == y)");
+        cb4.setText("\"X is the\n same as y\"");
+        cb5.setText("\"X is not the\n same as y\"");
+
+
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
         cb1.addToOutbound(cb2);
@@ -144,20 +158,5 @@ public class UserExampleTests {
         T0.add(cb7);
 
         return new UserExample(t0, codeHTML, T0,lines,"Exercise 1");
-    }
-
-    public static void main(String [] args) {
-
-        //User code Test
-        ArrayList<String> usersCode = new ArrayList<>();
-        usersCode.add("int a = 2;");
-        usersCode.add("int b = 3;");
-        usersCode.add("int c;");
-        usersCode.add("c = a + b;");
-        //usersCode.add("System.out.println(c);");
-
-        UserExample ex0 = getEx0();
-        int result = ex0.gradeUserCode(usersCode);
-        System.out.println(result);
     }
 }
