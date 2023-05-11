@@ -20,6 +20,16 @@ public class UserExampleTests {
         t0.add("c = a + b;");
         t0.add("System.out.println(c);");
 
+        String codeHTML = "<HTML> " +
+                "    <p> public static void main(String[] args){\n" +
+                "    <p>    &nbsp int a = 2; </p>" +
+                "    <p>    &nbsp int b = 3; </p>" +
+                "    <p>    &nbsp int c; </p>" +
+                "    <p>    &nbsp c = a + b; </p>" +
+                "    <p>    &nbsp System.out.println(c); </p>" +
+                "    <p>    &nbsp return; </p>" +
+                "} </HTML>";
+
         BlockFactory factory = new BlockFactory();
 
         CodeBlock cb0 = factory.makeBlock("Start", 200, 100);
@@ -58,7 +68,7 @@ public class UserExampleTests {
         T0.add(cb5);
         T0.add(cb6);
 
-        return new UserExample(t0, T0,lines, "ex0");
+        return new UserExample(t0, codeHTML,T0,lines, "Exercise 0");
     }
 
     public static UserExample getEx1() {
@@ -75,6 +85,17 @@ public class UserExampleTests {
         t0.add("}");
         t0.add("System.out.println(\"X is not the same as y\");");
         t0.add("}");
+
+        String codeHTML = "<HTML> " +
+                "    <p> public static void main(String[] args){\n" +
+                "    <p>    &nbsp int y = 1; </p>" +
+                "    <p>    &nbsp int x = 2; </p>" +
+                "    <p> &nbsp if(x == y){ </p>" +
+                "    <p>    &nbsp &nbsp System.out.println(\"X is the same as y\"); </p>" +
+                "    <p>    &nbsp &nbsp return; </p>" +
+                "    <p>&nbsp }</p>" +
+                "    <p>&nbsp System.out.println(\"X is not the same as y\"); </p>" +
+                "} </HTML>";
 
         BlockFactory factory = new BlockFactory();
 
@@ -122,7 +143,7 @@ public class UserExampleTests {
         T0.add(cb6);
         T0.add(cb7);
 
-        return new UserExample(t0,T0,lines,"ex1");
+        return new UserExample(t0, codeHTML, T0,lines,"Exercise 1");
     }
 
     public static void main(String [] args) {

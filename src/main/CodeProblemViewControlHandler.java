@@ -15,18 +15,21 @@ public class CodeProblemViewControlHandler implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         String commandString = e.getActionCommand();
         if(commandString.equals("Next")){
             // call to repo function to change code problem
-        } else if(commandString.equals("Prev")){
+            pRepo.setNextProblemIndex();
+        } else if(commandString.equals("Previous")){
             // call to repo function to change code problem
+            pRepo.setPrevProblemIndex();
         } else if(commandString.equals("Help")){
             // call to repo function to make help
         } else if(commandString.equals("Submit")){
             // call to repo function to get feedback
 
             //temporary code for testing purposes
-            UserExample ex1 = UserExampleTests.getEx1();
+            UserExample ex1 = pRepo.getCurrentProblem();
             System.out.println("SUBMIT BUTTON PUSHED");
             System.out.println(ex1.getFlowChart().size());
             DataRepository dataRepository = (DataRepository) DataRepository.getInstance();

@@ -38,6 +38,26 @@ public class ProblemRepository extends Observable implements Repository{
         return this.problemSet.get(this.problemSetIndex);
     }
 
+    public void setNextProblemIndex() {
+        if(this.problemSetIndex == this.problemSet.size()-1) {
+            this.problemSetIndex = 0;
+        } else {
+            this.problemSetIndex++;
+        }
+        System.out.println("current problem index: "+this.problemSetIndex);
+        setChanged();
+        notifyObservers();
+    }
+    public void setPrevProblemIndex() {
+        if(this.problemSetIndex == 0) {
+            this.problemSetIndex = this.problemSet.size()-1;
+        } else {
+            this.problemSetIndex--;
+        }
+        System.out.println("current problem index: "+this.problemSetIndex);
+        setChanged();
+        notifyObservers();
+    }
 
     public void setCurrentProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
@@ -45,22 +65,13 @@ public class ProblemRepository extends Observable implements Repository{
     }
     public void setNextProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
-        if(this.problemSetIndex == this.problemSet.size()-1) {
-            this.problemSetIndex = 0;
-        } else {
-            this.problemSetIndex++;
-        }
-        System.out.println("current problem index: "+this.problemSetIndex);
+        this.setNextProblemIndex();
         dRepo.setDrawables(this.getCurrentProblem().getFlowChart());
         dRepo.modifiedDrawables();
     }
     public void setPreviousProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
-        if(this.problemSetIndex == 0) {
-            this.problemSetIndex = this.problemSet.size()-1;
-        } else {
-            this.problemSetIndex--;
-        }
+        setPrevProblemIndex();
         dRepo.setDrawables( this.getCurrentProblem().getFlowChart());
         dRepo.modifiedDrawables();
     }
