@@ -21,6 +21,7 @@ public class DiagramApp extends JFrame implements Observer {
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
+
         westPanel = new JPanel();
         westPanel.setVisible(false);
 
@@ -31,6 +32,7 @@ public class DiagramApp extends JFrame implements Observer {
         dataRepository.addObserver(drawPanel);
         stateRepository.addObserver(statusBar);
         stateRepository.addObserver(this);
+
 
         statusBar.setEnabled(false);
         statusBar.setFont(new Font(Font.DIALOG,Font.PLAIN,17));
@@ -128,6 +130,7 @@ public class DiagramApp extends JFrame implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
+        ProblemRepository problemRepository = (ProblemRepository) ProblemRepository.getInstance();
         if(arg == null)
             return;
         String command = (String) arg;
@@ -138,6 +141,7 @@ public class DiagramApp extends JFrame implements Observer {
             remove(westPanel);
             CodeProblemView codeProblemView = new CodeProblemView();
             CodeProblemViewControlHandler handler = new CodeProblemViewControlHandler();
+            problemRepository.addObserver(codeProblemView);
             codeProblemView.addActionListener(handler);
             add(codeProblemView, BorderLayout.WEST);
             westPanel = codeProblemView;

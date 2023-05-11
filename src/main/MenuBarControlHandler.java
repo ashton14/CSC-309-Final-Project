@@ -88,9 +88,16 @@ public class MenuBarControlHandler implements ActionListener {
                     break;
                 case "Translate Code":
                     stateRepository.changeMode("Translate Code");
+                    //clear flowchart
+                    dataRepository.clear();
                     break;
                 case "Translate Flowchart":
                     stateRepository.changeMode("Translate Flowchart");
+                    //DataRepository.getInstance().removeCodeBlockSelection();
+                    //load a flowchart for the user to write code for
+                    ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+                        pRepo.setCurrentProblem();
+                    break;
 
             }
             if (e.getActionCommand().equals("comboBoxChanged")) {

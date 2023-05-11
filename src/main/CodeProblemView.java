@@ -26,17 +26,17 @@ public class CodeProblemView extends JPanel implements Observer {
                     "    <p>&nbsp System.out.println(\"X is not the same as y\"); </p>" +
                     "} </HTML>";
     private String defaultProblemLabel = "Problem 1";
+    JLabel codeProblemLabel;
+    JLabel problemTitle;
 
     /**
      * A helper method to make the JLabel for the constructor of the CodeProblemView
      * class that contains the code problem.
-     * @param codeProblemText   A String of text representing a code problem to turn
-     *                          into a JLabel.
      * @return A JLabel formatted and with the code problem text given through the
      * parameter.
      */
-    private JLabel makeCodeProblemLabel(String codeProblemText){
-        JLabel codeProblem = new JLabel(codeProblemText);
+    private JLabel makeCodeProblemLabel(){
+        JLabel codeProblem = new JLabel();
         codeProblem.setSize(100, getHeight());
         codeProblem.setBorder(new EmptyBorder(10, 10, 10,10));
         codeProblem.setVerticalAlignment(SwingConstants.TOP);
@@ -72,9 +72,10 @@ public class CodeProblemView extends JPanel implements Observer {
     public CodeProblemView(){
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
-        JLabel problemTitle = new JLabel(defaultProblemLabel);
-        problemTitle.setBorder(new EmptyBorder(10, 10, 10,10));
-        JLabel codeProblemLabel = makeCodeProblemLabel(defaultCodeProblem);
+        this.problemTitle = new JLabel();
+        this.problemTitle.setBorder(new EmptyBorder(10, 10, 10,10));
+        this.codeProblemLabel = makeCodeProblemLabel();
+        this.updateCodeText();
 
         JPanel buttonPanel = makeButtonPanel();
         add(problemTitle, BorderLayout.NORTH);
@@ -95,6 +96,12 @@ public class CodeProblemView extends JPanel implements Observer {
         }
     }
 
+    public void updateCodeText() {
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+        this.problemTitle.setText(pRepo.getCurrentProblem().getProblemName());
+        this.codeProblemLabel.setText(pRepo.getCurrentProblem().getHtml_code());
+    }
+
     /**
      * A method to change the problem number and associated code
      * when the next and previous buttons are pressed.
@@ -104,6 +111,8 @@ public class CodeProblemView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-
+        System.out.println("new code problem!");
+        updateCodeText();
+        repaint();
     }
 }
