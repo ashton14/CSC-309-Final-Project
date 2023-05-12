@@ -2,6 +2,7 @@ package src.main;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.event.MouseEvent;
 
 /**
  * Line class responsible for drawing connections between two CodeBlocks, with directionality
@@ -69,22 +70,20 @@ public class Line implements Drawable {
         Point startPos = new Point(start.getXCenter(), start.getYCenter() + (start.getHeight() / 2));
         Point endPos = new Point(end.getXCenter(), end.getYCenter() - (end.getHeight() / 2));
 
-        // Calculates the angle the line makes
-        double theta = Math.atan2((double) (endPos.y - startPos.y), (double)(endPos.x - startPos.x));
-        // Calculate the points for arrow head drawing
-        Point ahead1 = new Point(endPos.x - (int) (arrowLen * Math.cos(theta - Math.toRadians(45))),
-                endPos.y - (int) (arrowLen * Math.sin(theta - Math.toRadians(45))));
-        Point ahead2 = new Point(endPos.x - (int) (arrowLen * Math.cos(theta + Math.toRadians(45))),
-                endPos.y - (int) (arrowLen * Math.sin(theta + Math.toRadians(45))));
-
         // Set the color, stroke, and draw line and arrow head
         g.setColor(color);
         g2d.setStroke(new BasicStroke(strokeWidth));
         g2d.drawLine(startPos.x, startPos.y, endPos.x, endPos.y);
-        g2d.drawLine(endPos.x, endPos.y, ahead1.x, ahead1.y);
-        g2d.drawLine(endPos.x, endPos.y, ahead2.x, ahead2.y);
     }
-
+    public void split(MouseEvent e) {
+        Node midpt = new Node(new Circle(e.getX(), e.getY(), 8, new Color(0, 0, 0)));
+        Line newL = new Line(start, midpt);
+        Repository.getInstance().addLine(newL);
+        Repository.getInstance().addCodeBlock(midpt);
+        System.out.println(start.toString());
+        start = midpt;
+        System.out.println(start.toString());
+    }
     /**
      * Returns the distance from the line to the given point
      * @param x - x coordinate of the point
