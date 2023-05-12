@@ -160,10 +160,7 @@ public class LoginPage extends JFrame{
      */
     private void login() {
         setVisible(false);
-        DiagramApp app = new DiagramApp();
-        app.setVisible(true);
-        app.setSize(700,700);
-        app.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        CoursesPage coursesPage = new CoursesPage();
     }
 
 }

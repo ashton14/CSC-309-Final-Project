@@ -43,7 +43,7 @@ public class CoursesPage {
 
         JPanel dashboardPanel = new JPanel();
         dashboardPanel.setBackground(generateRandomColor());
-        dashboardPanel.setPreferredSize(new Dimension(70, frame.getHeight()));
+        dashboardPanel.setPreferredSize(new Dimension(100, frame.getHeight()));
         dashboardPanel.setLayout(new BorderLayout());
 
         
@@ -56,6 +56,33 @@ public class CoursesPage {
         addCourse("Course 1");
         addCourse("Course 2");
         addCourse("Course 3");
+
+        JButton sandboxButton = new JButton("Sandbox");
+        sandboxButton.setForeground(Color.WHITE);
+        sandboxButton.setBackground(generateRandomColor());
+        sandboxButton.setBorderPainted(false);
+        sandboxButton.setFocusPainted(false);
+        sandboxButton.setContentAreaFilled(true);
+        sandboxButton.setOpaque(true);
+        sandboxButton.setFont(new Font("Arial", Font.BOLD, 13));
+        sandboxButton.addActionListener(e -> showSandbox());
+        sandboxButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                sandboxButton.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(shadowColor, 4),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                ));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                sandboxButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            }
+        });
+        sandboxButton.setUI(new BasicButtonUI());
+        dashboardPanel.add(sandboxButton);
+
 
         assignmentPanel = new JPanel();
         assignmentPanel.setLayout(new BoxLayout(assignmentPanel, BoxLayout.Y_AXIS));
@@ -193,8 +220,12 @@ public class CoursesPage {
         frame.repaint();
     }
 
-    public static void main(String[] args) {
-        CoursesPage coursesPage = new CoursesPage();
+    private void showSandbox() {
+        frame.setVisible(false);
+        DiagramApp app = new DiagramApp();
+        app.setVisible(true);
+        app.setSize(700,700);
+        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public class RoundedButtonUI extends BasicButtonUI {
