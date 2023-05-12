@@ -159,4 +159,106 @@ public class UserExampleFactory {
 
         return new UserExample(t0, codeHTML, T0,lines,"Exercise 1");
     }
+    public static UserExample getEx2() {
+        ArrayList<String> t0 = new ArrayList<>();
+        ArrayList<CodeBlock> T0 = new ArrayList<>();
+        ArrayList<Line> lines = new ArrayList<>();
+
+        t0.add("public static void main(String[] args){");
+        t0.add("int n = 100;");
+        t0.add("int t1 = 0;");
+        t0.add("int t2 = 1;");
+        t0.add("while(t1 <= n){");
+        t0.add("int sum = t1+t2;");
+        t0.add("t1 = t2;");
+        t0.add("t2 = sum;");
+        t0.add("System.out.println(\"sum: \"+sum);");
+        t0.add("}");
+        t0.add("}");
+
+        String codeHTML = "<HTML> " +
+                "    <p> public static void main(String[] args){\n" +
+                "    <p>    &nbsp int n = 100; </p>" +
+                "    <p>    &nbsp int t1 = 0; </p>" +
+                "    <p>    &nbsp int t2 = 1; </p>" +
+                "    <p> &nbsp while(t1 <= n){ </p>" +
+                "    <p>    &nbsp &nbsp int sum = t1+t2; </p>" +
+                "    <p>    &nbsp &nbsp t1 = t2; </p>" +
+                "    <p>    &nbsp &nbsp t2 = sum; </p>" +
+                "    <p>    &nbsp &nbsp int sum = t1+t2; </p>" +
+                "    <p>    &nbsp &nbsp System.out.println(\"sum: \"+sum); </p>" +
+                "    <p>&nbsp }</p>" +
+                "} </HTML>";
+
+        BlockFactory factory = new BlockFactory();
+
+        CodeBlock cb0 = factory.makeBlock("Start", 150, 60);
+        CodeBlock cb1 = factory.makeBlock("Variable", 150, 160);
+        CodeBlock cb2 = factory.makeBlock("Variable", 150, 230);
+        CodeBlock cb3 = factory.makeBlock("Variable", 150, 300);
+        CodeBlock cb4 = factory.makeBlock("Loop", 150, 370);
+        CodeBlock cb5 = factory.makeBlock("Stop", 70, 500);
+        CodeBlock cb6 = factory.makeBlock("Variable", 250, 450);
+        CodeBlock cb7 = factory.makeBlock("Instruction", 250, 520);
+        CodeBlock cb8 = factory.makeBlock("Instruction", 250, 590);
+        CodeBlock cb9 = factory.makeBlock("Print", 250, 670);
+
+        cb1.setText("int n = 100");
+        cb2.setText("int t1 = 0");
+        cb3.setText("int t2 = 1");
+        cb4.setText("t1<=n");
+        cb6.setText("int sum = t1+t2");
+        cb7.setText("t1 = t2");
+        cb8.setText("t2 = sum");
+        cb9.setText("\"sum: \"+sum");
+
+        cb0.addToOutbound(cb1);
+        cb1.addToInbound(cb0);
+        cb1.addToOutbound(cb2);
+        cb2.addToInbound(cb1);
+        cb2.addToOutbound(cb3);
+        cb3.addToInbound(cb2);
+        cb3.addToOutbound(cb4);
+
+        cb4.addToInbound(cb3);
+        cb4.addToInbound(cb9);
+        cb4.addToOutbound(cb5);
+        cb4.addToOutbound(cb6);
+
+        cb5.addToInbound(cb4);
+        cb6.addToInbound(cb4);
+        cb6.addToOutbound(cb7);
+        cb7.addToInbound(cb6);
+        cb7.addToOutbound(cb8);
+        cb8.addToInbound(cb7);
+        cb8.addToOutbound(cb9);
+        cb9.addToInbound(cb8);
+        cb9.addToOutbound(cb4);
+
+        lines.add(new Line(cb0,cb1));
+        lines.add(new Line(cb1,cb2));
+        lines.add(new Line(cb2,cb3));
+        lines.add(new Line(cb3,cb4));
+        lines.add(new Line(cb4,cb5));
+        lines.add(new Line(cb4,cb6));
+        lines.add(new Line(cb6,cb7));
+        lines.add(new Line(cb7,cb8));
+        lines.add(new Line(cb8,cb9));
+        lines.add(new Line(cb9,cb4));
+
+
+        T0.add(cb0);
+        T0.add(cb1);
+        T0.add(cb2);
+        T0.add(cb3);
+        T0.add(cb4);
+        T0.add(cb5);
+        T0.add(cb6);
+        T0.add(cb7);
+        T0.add(cb8);
+        T0.add(cb9);
+
+        return new UserExample(t0,codeHTML,T0,lines, "Excercise 2");
+    }
+
 }

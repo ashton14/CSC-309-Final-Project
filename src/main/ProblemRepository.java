@@ -19,6 +19,7 @@ public class ProblemRepository extends Observable implements Repository{
         problemSet = new ArrayList<>();
         problemSet.add(UserExampleFactory.getEx0());
         problemSet.add(UserExampleFactory.getEx1());
+        problemSet.add(UserExampleFactory.getEx2());
         problemSetIndex = 0;
     }
 
