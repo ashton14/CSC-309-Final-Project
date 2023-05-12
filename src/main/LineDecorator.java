@@ -7,12 +7,7 @@ public class LineDecorator extends Line {
      * @Field parentLine - Line being decorated
      */
     private Line parentLine;
-    /**
-     * Constructor for objects of type Shape to construct shapes using a pair of x
-     * and y coordinates, width, height and color.
-     *
-     * @param innerLine - the line being decorated (parentLine)
-     */
+
     public LineDecorator(Line innerLine){
         super(innerLine.getStart(), innerLine.getEnd());
     }
