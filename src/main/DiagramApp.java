@@ -111,17 +111,6 @@ public class DiagramApp extends JFrame implements Observer {
     }
 
     /**
-     * main method
-     * @param args
-     */
-    public static void main(String [] args){
-        DiagramApp app = new DiagramApp();
-        app.setSize(700,700);
-        app.setVisible(true);
-        app.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    /**
      * Update method to update the view depending on the notification received
      * from the repository.
      * @param o     the observable object.
