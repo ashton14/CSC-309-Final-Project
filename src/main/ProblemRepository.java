@@ -1,6 +1,5 @@
 package src.main;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -18,8 +17,9 @@ public class ProblemRepository extends Observable implements Repository{
      */
     private ProblemRepository(){
         problemSet = new ArrayList<>();
-        problemSet.add(UserExampleTests.getEx0());
-        problemSet.add(UserExampleTests.getEx1());
+        problemSet.add(UserExampleFactory.getEx0());
+        problemSet.add(UserExampleFactory.getEx1());
+        problemSet.add(UserExampleFactory.getEx2());
         problemSetIndex = 0;
     }
 
