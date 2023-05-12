@@ -84,6 +84,7 @@ public class Line implements Drawable {
      */
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+
         // Sets the start and end positions
         Point startPos = new Point(start.getXCenter(), start.getYCenter() + (start.getHeight() / 2));
         Point endPos = new Point(end.getXCenter(), end.getYCenter() - (end.getHeight() / 2));
