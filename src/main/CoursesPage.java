@@ -9,15 +9,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Connor Hickey
+ */
+
 public class CoursesPage {
     private JFrame frame;
-    private JPanel coursePanel;
-    private JPanel assignmentPanel;
+    public JPanel coursePanel;
+    public JPanel assignmentPanel;
     private JButton backButton;
-    private Map<String, List<String>> courseAssignments;
+    public Map<String, List<String>> courseAssignments;
     private Color shadowColor = new Color(0, 0, 0, 50);
 
-    private Color generateRandomColor() {
+    public Color generateRandomColor() {
         float hue = (float) Math.random();
         float saturation = (float) (Math.random() * 0.5f + 0.5f);
         float brightness = (float) (Math.random() * 0.5f + 0.5f);
@@ -46,7 +50,7 @@ public class CoursesPage {
         dashboardPanel.setPreferredSize(new Dimension(100, frame.getHeight()));
         dashboardPanel.setLayout(new BorderLayout());
 
-        
+
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(Color.WHITE);
@@ -107,7 +111,7 @@ public class CoursesPage {
         courseAssignments.put("Course 3", List.of("Assignment 7", "Assignment 8", "Assignment 9"));
     }
 
-    private void addCourse(String courseName) {
+    public void addCourse(String courseName) {
         JButton courseButton = new JButton(courseName);
         courseButton.setForeground(Color.WHITE);
         courseButton.setBackground(generateRandomColor());
@@ -143,7 +147,7 @@ public class CoursesPage {
         coursePanel.add(courseButton);
     }
 
-    private void showAssignmentsForCourse(String courseName) {
+    public void showAssignmentsForCourse(String courseName) {
         coursePanel.setVisible(false);
         assignmentPanel.removeAll();
         assignmentPanel.revalidate();
@@ -211,7 +215,7 @@ public class CoursesPage {
     }
 
 
-    private void showCourseList() {
+    public void showCourseList() {
         coursePanel.setVisible(true);
         assignmentPanel.removeAll();
         assignmentPanel.revalidate();
