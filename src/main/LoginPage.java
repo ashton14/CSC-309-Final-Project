@@ -5,6 +5,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.UIManager;
 
 /**
  * @author Alex Banham
@@ -22,7 +24,11 @@ public class LoginPage extends JFrame{
      * Constructor to initialize basic layout of login form
      */
     public LoginPage() {
-
+        try {
+            UIManager.setLookAndFeel( new FlatLightLaf() );
+        } catch( Exception ex ) {
+            System.err.println( "Failed to initialize theme. Using fallback." );
+        }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 391, 218);
         contentPane = new JPanel();
@@ -31,7 +37,7 @@ public class LoginPage extends JFrame{
         contentPane.setLayout(null);
 
         JLabel loginLabel = new JLabel("User Login");
-        loginLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+        loginLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         loginLabel.setBounds(37, 22, 102, 28);
         contentPane.add(loginLabel);
 
