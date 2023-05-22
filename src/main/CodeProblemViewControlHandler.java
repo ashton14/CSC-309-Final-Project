@@ -32,9 +32,10 @@ public class CodeProblemViewControlHandler implements ActionListener {
             evaluate.grade();
 
         } else if(commandString.equals("Submit")){
-            ArrayList<CodeBlock> codeBlocks = ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
-            ArrayList<CodeBlock> solution = ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
-            GradeFlowchart evaluate = new GradeFlowchart(solution, codeBlocks, false);
+            UserExample solution = pRepo.getCurrentProblem();
+            ArrayList<CodeBlock> studentAnswerBlocks =
+                    ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
+            GradeFlowchart evaluate = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, false);
             evaluate.grade();
             // call to repo function to get feedback
 

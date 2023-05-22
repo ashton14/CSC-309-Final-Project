@@ -56,6 +56,7 @@ public class GradeFlowchart {
      */
     private void sendNegativeFeedback(String feedback){
         FeedbackRepository hintRepository = (FeedbackRepository) FeedbackRepository.getInstance();
+        isCorrect = false;
         if(isVerbose) {
             hintRepository.setFeedback(feedback);
         } else {
@@ -409,10 +410,8 @@ public class GradeFlowchart {
             }
             CodeBlock nextStudentBlock = findEquivalent(nextStudentBlocks, nextSolutionBlock);
             if (nextStudentBlock == null) {
-                isCorrect = false;
-                System.out.println("*");
                 if(solutionToStudentBlock.get(nextSolutionBlock) != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled:\" "
+                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
                             + nextSolutionBlock.getText() + "\" is missing a connection. It should have an incoming " +
                             " connection from the "
                             + previousCodeBlock.toString() + " labeled: \"" + previousCodeBlock.getText() + "\".");
@@ -420,7 +419,7 @@ public class GradeFlowchart {
                 }
                 CodeBlock nextStudentWrongType = findWrongType(nextStudentBlocks, nextSolutionBlock);
                 if(nextStudentWrongType != null){
-                    sendNegativeFeedback("The " + nextStudentWrongType.toString() + " labeled:\" "
+                    sendNegativeFeedback("The " + nextStudentWrongType.toString() + " labeled: \""
                             + nextStudentWrongType.getText() + "\" might be the wrong type. Did you mean to make it a" +
                             " \"" + nextSolutionBlock.toString() + "\"?");
                     return;
@@ -429,7 +428,7 @@ public class GradeFlowchart {
 
                 CodeBlock nextStudentBlockTypo = findMisspelled(nextStudentBlocks, nextSolutionBlock, 5);
                 if(nextStudentBlockTypo != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled:\" "
+                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
                             + nextStudentBlockTypo.getText() + "\" might be mislabeled. Did you mean to label it" +
                             " \"" + nextSolutionBlock.getText() + "\"?");
                     return;
@@ -437,15 +436,14 @@ public class GradeFlowchart {
 
                 CodeBlock nextStudentBlockTypoTypeIgnored = findMisspelledIgnoreType(nextStudentBlocks, nextSolutionBlock,5);
                 if(nextStudentBlockTypoTypeIgnored != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled:\" "
+                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
                             + nextStudentBlockTypoTypeIgnored.getText() + "\" might be mislabeled and of the wrong type. " +
-                            "Did you mean to label it" +
+                            "Did you mean to label it:" +
                             " \"" + nextSolutionBlock.getText() + "\" and make it a \"" + nextSolutionBlock.toString() + "\"?");
                     return;
                 }
-
-                sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: "
-                        + nextSolutionBlock.getText() + " is missing or not properly connected. " +
+                sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
+                        + nextSolutionBlock.getText() + "\" is missing or not properly connected. " +
                         "This block should be executed after the " + previousCodeBlock.toString() + " labeled: \"" +
                         previousCodeBlock.getText() + "\".");
                 return;
@@ -482,14 +480,12 @@ public class GradeFlowchart {
         CodeBlock solutionStart = findStart(solutionChart);
         CodeBlock studentStart = findStart(studentChart);
         if(studentStart == null){
-            isCorrect = false;
             sendNegativeFeedback("It looks like a Start Block is missing. This block" +
                     " is important because it tells the program where to start.");
             return isCorrect;
         }
 
         if(!hasOneStart(studentChart)){
-            isCorrect = false;
             sendNegativeFeedback("It looks like there are more than one Start Blocks in the program. The program " +
                     " in this exercise can only start from one place. This means that there should be only one Start Block.");
             return isCorrect;
@@ -499,7 +495,6 @@ public class GradeFlowchart {
         CodeBlock disjointBlock = findDisjoint(studentChart);
 
         if(disjointBlock != null){
-            isCorrect = false;
             sendNegativeFeedback("The " + disjointBlock.toString() + " labeled: \"" +
                     disjointBlock.getText() + "\" has no connections entering it. Without" +
                     " an incoming connection this codeBlock cannot be executed.");
