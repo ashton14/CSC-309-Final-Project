@@ -133,6 +133,8 @@ public class DiagramApp extends JFrame implements Observer {
             CodeProblemViewControlHandler handler = new CodeProblemViewControlHandler();
             problemRepository.addObserver(codeProblemView);
             codeProblemView.addActionListener(handler);
+            FeedbackRepository feedbackRepository = (FeedbackRepository) FeedbackRepository.getInstance();
+            feedbackRepository.addObserver(codeProblemView);
             add(codeProblemView, BorderLayout.WEST);
             westPanel = codeProblemView;
         } else if (command.equals("Translate Flowchart")) {
