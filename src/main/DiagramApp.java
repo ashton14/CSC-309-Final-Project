@@ -1,3 +1,4 @@
+
 package src.main;
 
 import javax.swing.*;
@@ -120,7 +121,6 @@ public class DiagramApp extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         ProblemRepository problemRepository = (ProblemRepository) ProblemRepository.getInstance();
-        FeedbackRepository hintRepository = (FeedbackRepository) FeedbackRepository.getInstance();
         if(arg == null)
             return;
         String command = (String) arg;
@@ -133,7 +133,6 @@ public class DiagramApp extends JFrame implements Observer {
             CodeProblemViewControlHandler handler = new CodeProblemViewControlHandler();
             problemRepository.addObserver(codeProblemView);
             codeProblemView.addActionListener(handler);
-            hintRepository.addObserver(codeProblemView);
             add(codeProblemView, BorderLayout.WEST);
             westPanel = codeProblemView;
         } else if (command.equals("Translate Flowchart")) {
