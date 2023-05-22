@@ -15,7 +15,7 @@ public abstract class CodeBlock implements Drawable {
     private ArrayList<CodeBlock> outboundCodeBlocks;
     private int maxInboundCount;
     private int maxOutboundCount;
-
+    private ArrayList<Boolean> discovered;
 
     /**
      * Constructs a new CodeBlock with the given shape, max inbound count, and max outbound count.
@@ -30,6 +30,31 @@ public abstract class CodeBlock implements Drawable {
         this.maxInboundCount = maxInboundCount;
         this.maxOutboundCount = maxOutboundCount;
         this.text = text;
+    }
+
+    /**
+     * Returns an ArrayList of type Boolean
+     * with one index per inbound CodeBlock.
+     * @return   An ArrayList of type Boolean
+     *           with one index per inbound CodeBlock.
+     */
+    public ArrayList<Boolean> getDiscovered(){
+        if(discovered == null){
+            resetDiscovered();
+        }
+        return discovered;
+    }
+
+    /**
+     * Creates a new ArrayList of type
+     * Boolean with one index per inbound CodeBlock
+     * and all values set to false.
+     */
+    public void resetDiscovered(){
+        discovered = new ArrayList<>();
+        for (int i = 0; i < inboundCodeBlocks.size(); i++) {
+            discovered.add(false);
+        }
     }
 
     /**
@@ -277,7 +302,7 @@ public abstract class CodeBlock implements Drawable {
     @Override
     public String toString(){
         String str = getClass().toString();
-        str = str.replace("class main.", "");
+        str = str.replace("class main.src.", "");
         str = str.replace("Block", "");
         return str;
     }

@@ -130,7 +130,42 @@ public class DataRepository extends Observable implements Repository {
      *                 DataRepository.
      */
     public void removeDrawable(Drawable drawable){
+        if(!drawables.contains(drawable)){
+            return;
+        }
+        if(drawable instanceof CodeBlock){
+            CodeBlock codeBlock = (CodeBlock) drawable;
+            ArrayList<Line> linesRemove = new ArrayList<>();
+            for(int i = 0; i < codeBlock.getOutboundCodeBlocks().size(); ++i){
+                linesRemove.add(new Line(codeBlock, codeBlock.getOutboundCodeBlocks().get(i)));
+            }
+            for(int i = 0; i < codeBlock.getInboundCodeBlocks().size(); ++i){
+                linesRemove.add(new Line(codeBlock.getInboundCodeBlocks().get(i), codeBlock));
+            }
+
+            for(int i = 0; i < linesRemove.size(); ++i){
+                for(int j = 0; j < drawables.size(); ++j){
+                    if(drawables.get(j) instanceof Line){
+                        Line line = (Line) drawables.get(j);
+                        if(line.getStart() == linesRemove.get(i).getStart()
+                        && line.getEnd() == linesRemove.get(i).getEnd()){
+                            drawables.remove(line);
+                        }
+                    }
+                }
+            }
+
+            codeBlock.removeAllConnections();
+
+
+        } else if(drawable instanceof Line){
+            Line line = (Line) drawable;
+            line.getStart().removeConnection(line.getEnd());
+            line.getEnd().removeConnection(line.getStart());
+        }
         drawables.remove(drawable);
+        setChanged();
+        notifyObservers();
     }
 
 

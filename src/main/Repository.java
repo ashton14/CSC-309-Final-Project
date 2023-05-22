@@ -1,4 +1,7 @@
 package src.main;
+
+import java.util.Observable;
+
 /**
  * An interface to be implemented for
  * the creation of multiple Singleton
