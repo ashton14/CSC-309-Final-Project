@@ -147,6 +147,12 @@ public class UserExample {
         return drawables;
     }
 
+    /**
+     * Returns the CodeBlocks from this UserExample
+     * in an ArrayList of type CodeBlock.
+     * @return   The CodeBlocks from this UserExample
+     *           in an ArrayList of type CodeBlock.
+     */
     public ArrayList<CodeBlock> getCodeBlocks(){
         return codeBlocks;
     }

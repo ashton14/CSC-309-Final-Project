@@ -1,13 +1,17 @@
 package src.main;
-
-import java.util.ArrayList;
 import java.util.Observable;
 
+/**
+ * Repository to hold feedback to send to the user.
+ */
 public class FeedbackRepository extends Observable implements Repository {
 
     private static FeedbackRepository repository;
     private String feedback;
 
+    /**
+     * Private constructor to enforce singleton.
+     */
     private FeedbackRepository(){
     }
 
@@ -22,6 +26,11 @@ public class FeedbackRepository extends Observable implements Repository {
         return repository;
     }
 
+    /**
+     * Sets the feedback String and notifies observers.
+     * @param feedback   The feedback String to send to
+     *                   the user.
+     */
     public void setFeedback(String feedback){
         if(feedback == null)
             return;

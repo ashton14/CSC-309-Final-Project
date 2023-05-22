@@ -32,6 +32,12 @@ public abstract class CodeBlock implements Drawable {
         this.text = text;
     }
 
+    /**
+     * Returns an ArrayList of type Boolean
+     * with one index per inbound CodeBlock.
+     * @return   An ArrayList of type Boolean
+     *           with one index per inbound CodeBlock.
+     */
     public ArrayList<Boolean> getDiscovered(){
         if(discovered == null){
             resetDiscovered();
@@ -39,6 +45,11 @@ public abstract class CodeBlock implements Drawable {
         return discovered;
     }
 
+    /**
+     * Creates a new ArrayList of type
+     * Boolean with one index per inbound CodeBlock
+     * and all values set to false.
+     */
     public void resetDiscovered(){
         discovered = new ArrayList<>();
         for (int i = 0; i < inboundCodeBlocks.size(); i++) {
