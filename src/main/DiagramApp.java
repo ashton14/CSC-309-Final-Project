@@ -1,3 +1,4 @@
+
 package src.main;
 
 import javax.swing.*;
@@ -111,17 +112,6 @@ public class DiagramApp extends JFrame implements Observer {
     }
 
     /**
-     * main method
-     * @param args
-     */
-    public static void main(String [] args){
-        DiagramApp app = new DiagramApp();
-        app.setSize(700,700);
-        app.setVisible(true);
-        app.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    /**
      * Update method to update the view depending on the notification received
      * from the repository.
      * @param o     the observable object.
@@ -143,6 +133,8 @@ public class DiagramApp extends JFrame implements Observer {
             CodeProblemViewControlHandler handler = new CodeProblemViewControlHandler();
             problemRepository.addObserver(codeProblemView);
             codeProblemView.addActionListener(handler);
+            FeedbackRepository feedbackRepository = (FeedbackRepository) FeedbackRepository.getInstance();
+            feedbackRepository.addObserver(codeProblemView);
             add(codeProblemView, BorderLayout.WEST);
             westPanel = codeProblemView;
         } else if (command.equals("Translate Flowchart")) {

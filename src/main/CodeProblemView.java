@@ -2,6 +2,7 @@ package src.main;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -26,8 +27,10 @@ public class CodeProblemView extends JPanel implements Observer {
                     "    <p>&nbsp System.out.println(\"X is not the same as y\"); </p>" +
                     "} </HTML>";
     private String defaultProblemLabel = "Problem 1";
-    JLabel codeProblemLabel;
-    JLabel problemTitle;
+
+    private JTextArea tutorFeedback;
+    private JLabel codeProblemLabel;
+    private JLabel problemTitle;
 
     /**
      * A helper method to make the JLabel for the constructor of the CodeProblemView
@@ -77,9 +80,24 @@ public class CodeProblemView extends JPanel implements Observer {
         this.codeProblemLabel = makeCodeProblemLabel();
         this.updateCodeText();
 
+        JPanel problemPanel = new JPanel();
+        problemPanel.setLayout(new BoxLayout(problemPanel, BoxLayout.PAGE_AXIS));
+        problemPanel.add(problemTitle);
+        problemPanel.add(codeProblemLabel);
+        tutorFeedback = new JTextArea();
+        JScrollPane chatScrollPane = new JScrollPane(tutorFeedback);
+        tutorFeedback.setWrapStyleWord(true);
+        tutorFeedback.setLineWrap(true);
+        ((DefaultCaret)tutorFeedback.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        tutorFeedback.setText("Jimbo: Hello its nice to meet you!\n" +
+                "Jimbo: I am your tutor today.\n" +
+                "Jimbo: I can check if your work is correct and give hints when requested.\n");
+        tutorFeedback.setEnabled(false);
+
+
         JPanel buttonPanel = makeButtonPanel();
-        add(problemTitle, BorderLayout.NORTH);
-        add(codeProblemLabel, BorderLayout.CENTER);
+        add(problemPanel, BorderLayout.NORTH);
+        add(chatScrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
@@ -111,8 +129,12 @@ public class CodeProblemView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("new code problem!");
-        updateCodeText();
+        if(o == FeedbackRepository.getInstance()) {
+            String string = (String) arg;
+            tutorFeedback.append(string);
+        } else {
+            updateCodeText();
+        }
         repaint();
     }
 }

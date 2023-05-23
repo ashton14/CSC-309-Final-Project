@@ -16,7 +16,6 @@ public class UserExample {
     private ArrayList<String> codeStatements;
     private String html_code;
     private ArrayList<CodeBlock> codeBlocks;
-
     private ArrayList<Line> lines;
 
     private String exampleName;
@@ -146,6 +145,16 @@ public class UserExample {
         drawables.addAll(codeBlocks);
         drawables.addAll(lines);
         return drawables;
+    }
+
+    /**
+     * Returns the CodeBlocks from this UserExample
+     * in an ArrayList of type CodeBlock.
+     * @return   The CodeBlocks from this UserExample
+     *           in an ArrayList of type CodeBlock.
+     */
+    public ArrayList<CodeBlock> getCodeBlocks(){
+        return codeBlocks;
     }
     public String getHtml_code() {
         return this.html_code;
