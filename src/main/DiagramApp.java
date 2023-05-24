@@ -143,6 +143,7 @@ public class DiagramApp extends JFrame implements Observer {
         } else if (command.equals("Translate Flowchart")) {
             remove(westPanel);
             SidePanel flowchartProblemView = new SidePanel();
+            problemRepository.addObserver(flowchartProblemView);
             add(flowchartProblemView, BorderLayout.WEST);
             westPanel = flowchartProblemView;
         }

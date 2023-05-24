@@ -39,6 +39,8 @@ public class ProblemRepository extends Observable implements Repository{
     }
 
     public void setNextProblemIndex() {
+        DataRepository dRepo = (DataRepository) DataRepository.getInstance();
+        dRepo.clear();
         if(this.problemSetIndex == this.problemSet.size()-1) {
             this.problemSetIndex = 0;
         } else {
@@ -49,6 +51,8 @@ public class ProblemRepository extends Observable implements Repository{
         notifyObservers();
     }
     public void setPrevProblemIndex() {
+        DataRepository dRepo = (DataRepository) DataRepository.getInstance();
+        dRepo.clear();
         if(this.problemSetIndex == 0) {
             this.problemSetIndex = this.problemSet.size()-1;
         } else {
