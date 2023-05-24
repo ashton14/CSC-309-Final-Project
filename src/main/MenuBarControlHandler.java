@@ -60,6 +60,9 @@ public class MenuBarControlHandler implements ActionListener {
                     stateRepository.setStatus("Please select a valid save file");
                 }
                 break;
+            case "Courses":
+                new CoursesPage();
+                break;
             case  "About":
                 stateRepository.setSelectedMenuItem("About");
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),

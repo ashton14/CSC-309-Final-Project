@@ -189,6 +189,21 @@ public class CoursesPage {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // handle assignment button click
+                    System.out.println("Assignment button clicked! "+e.getActionCommand());
+                    StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+                    ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+                    showSandbox();
+
+                    switch(e.getActionCommand()) {
+                        case "Assignment 1":
+                            stateRepository.changeMode("Translate Code");
+                            break;
+                        case "Assignment 2":
+                            stateRepository.changeMode("Translate Flowchart");
+                            pRepo.setCurrentProblem();
+                            break;
+                    }
+
                 }
             });
             assignmentButton.addMouseListener(new MouseAdapter() {
