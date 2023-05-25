@@ -190,17 +190,23 @@ public class CoursesPage {
                 public void actionPerformed(ActionEvent e) {
                     // handle assignment button click
                     System.out.println("Assignment button clicked! "+e.getActionCommand());
-                    StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+                    StateRepository sRepo = (StateRepository) StateRepository.getInstance();
                     ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
                     showSandbox();
 
                     switch(e.getActionCommand()) {
                         case "Assignment 1":
-                            stateRepository.changeMode("Translate Code");
+                            sRepo.changeMode("Translate Code");
+                            pRepo.setAssignmentIndex(0);
                             break;
                         case "Assignment 2":
-                            stateRepository.changeMode("Translate Flowchart");
+                            sRepo.changeMode("Translate Flowchart");
+                            pRepo.setAssignmentIndex(1);
                             pRepo.setCurrentProblem();
+                            break;
+                        case "Assignment 3":
+                            sRepo.changeMode("Translate Code");
+                            pRepo.setAssignmentIndex(2);
                             break;
                     }
 

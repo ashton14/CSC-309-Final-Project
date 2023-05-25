@@ -61,6 +61,7 @@ public class MenuBarControlHandler implements ActionListener {
                 }
                 break;
             case "Courses":
+                stateRepository.changeMode("Courses");
                 new CoursesPage();
                 break;
             case  "About":

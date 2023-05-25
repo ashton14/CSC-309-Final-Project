@@ -162,4 +162,8 @@ public class UserExample {
     public String getProblemName() {
         return this.exampleName;
     }
+
+    public void setExampleName(String exampleName) {
+        this.exampleName = exampleName;
+    }
 }
