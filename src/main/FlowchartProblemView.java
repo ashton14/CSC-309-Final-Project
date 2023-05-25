@@ -2,25 +2,35 @@ package src.main;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Class responsible for holding the code snippet, and perhaps
  * other tutor-related items
  * @author Patrick Whitlock
  */
-public class FlowchartProblemView extends JPanel {
+public class FlowchartProblemView extends JPanel implements Observer {
     private ArrayList<JTextArea> codeSections;
     private ArrayList<JButton> buttons;
 
     private JTextArea tutorFeedback;
+    private JLabel problemTitle;
     /**
      * Creates a SidePanel object
      */
     FlowchartProblemView() {
+        this.problemTitle = new JLabel("problumo uno");
+        this.problemTitle.setHorizontalAlignment(SwingConstants.LEFT);
+        this.problemTitle.setBorder(new EmptyBorder(10, 10, 10,10));
+
         codeSections = new ArrayList<>();
         SidePanelControlHandler sideController = new SidePanelControlHandler(codeSections);
+
+        this.add(problemTitle);
         for(int i = 0; i < 12; i++) {
             JTextArea codeSection = new JTextArea("");
             codeSection.setPreferredSize(new Dimension(280,20));
@@ -57,6 +67,11 @@ public class FlowchartProblemView extends JPanel {
         this.add(buttonPanel,BorderLayout.SOUTH);
         this.add(chatScrollPane, BorderLayout.CENTER);
         this.setPreferredSize(new Dimension(300,400));
+        this.updateProblemTitle();
+    }
+    public void updateProblemTitle() {
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+        this.problemTitle.setText(pRepo.getCurrentProblem().getProblemName());
     }
 
     /**
@@ -65,5 +80,10 @@ public class FlowchartProblemView extends JPanel {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        updateProblemTitle();
     }
 }

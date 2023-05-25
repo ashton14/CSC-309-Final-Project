@@ -173,8 +173,9 @@ public class CoursesPage {
         assignmentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         List<String> assignments = courseAssignments.get(courseName);
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         for (String assignment : assignments) {
-            JButton assignmentButton = new JButton(assignment);
+            JButton assignmentButton = new JButton(assignment+" ("+pRepo.getNumAssignmentProblems(assignment)+" problems)");
             assignmentButton.setForeground(Color.WHITE);
             assignmentButton.setBackground(generateRandomColor());
             assignmentButton.setBorderPainted(false);
@@ -189,6 +190,27 @@ public class CoursesPage {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // handle assignment button click
+                    System.out.println("Assignment button clicked! "+e.getActionCommand());
+                    StateRepository sRepo = (StateRepository) StateRepository.getInstance();
+                    ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+                    showSandbox();
+
+                    switch(e.getActionCommand().substring(0,12)) {
+                        case "Assignment 1":
+                            sRepo.changeMode("Translate Code");
+                            pRepo.setAssignmentIndex(0);
+                            break;
+                        case "Assignment 2":
+                            sRepo.changeMode("Translate Flowchart");
+                            pRepo.setAssignmentIndex(1);
+                            pRepo.setCurrentProblem();
+                            break;
+                        case "Assignment 3":
+                            sRepo.changeMode("Translate Code");
+                            pRepo.setAssignmentIndex(2);
+                            break;
+                    }
+
                 }
             });
             assignmentButton.addMouseListener(new MouseAdapter() {

@@ -1,5 +1,7 @@
 package src.main;
 
+import com.google.api.services.sqladmin.model.User;
+
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -9,18 +11,40 @@ import java.util.Observable;
  */
 public class ProblemRepository extends Observable implements Repository{
     private static ProblemRepository repository;
-    private ArrayList<UserExample> problemSet;
-    private int problemSetIndex;
+    private ArrayList<Assignment> assignments;
+    private int assignmentIndex;
+    private int problemIndex;
 
     /**
      * Constructor to initialize data
      */
     private ProblemRepository(){
-        problemSet = new ArrayList<>();
-        problemSet.add(UserExampleFactory.getEx0());
-        problemSet.add(UserExampleFactory.getEx1());
-        problemSet.add(UserExampleFactory.getEx2());
-        problemSetIndex = 0;
+        ArrayList<UserExample> probSet1 = new ArrayList<>();
+        probSet1.add(UserExampleFactory.getFutureExercise("1-1",0));
+        probSet1.add(UserExampleFactory.getFutureExercise("1-2",1));
+        probSet1.add(UserExampleFactory.getFutureExercise("1-3",2));
+        Assignment a1 = new Assignment(probSet1,"Assignment 1");
+        ArrayList<UserExample> probSet2 = new ArrayList<>();
+        probSet2.add(UserExampleFactory.getFutureExercise("2-1",0));
+        probSet2.add(UserExampleFactory.getFutureExercise("2-2",1));
+        probSet2.add(UserExampleFactory.getFutureExercise("2-3",2));
+        probSet2.add(UserExampleFactory.getFutureExercise("2-4",1));
+        probSet2.add(UserExampleFactory.getFutureExercise("2-5",0));
+        Assignment a2 = new Assignment(probSet2,"Assignment 2");
+        ArrayList<UserExample> probSet3 = new ArrayList<>();
+        probSet3.add(UserExampleFactory.getFutureExercise("3-1",0));
+        probSet3.add(UserExampleFactory.getFutureExercise("3-2",1));
+        probSet3.add(UserExampleFactory.getFutureExercise("3-3",2));
+        probSet3.add(UserExampleFactory.getFutureExercise("3-4",0));
+        Assignment a3 = new Assignment(probSet3,"Assignment 3");
+
+        assignments = new ArrayList<>();
+        assignments.add(a1);
+        assignments.add(a2);
+        assignments.add(a3);
+
+        assignmentIndex = 0;
+        problemIndex = 0;
     }
 
     /**
@@ -35,26 +59,30 @@ public class ProblemRepository extends Observable implements Repository{
     }
 
     public UserExample getCurrentProblem() {
-        return this.problemSet.get(this.problemSetIndex);
+        return this.assignments.get(this.assignmentIndex).getProblem(problemIndex);
     }
 
     public void setNextProblemIndex() {
-        if(this.problemSetIndex == this.problemSet.size()-1) {
-            this.problemSetIndex = 0;
+        DataRepository dRepo = (DataRepository) DataRepository.getInstance();
+        dRepo.clear();
+        if(this.problemIndex == this.assignments.get(assignmentIndex).getAssignmentProblemSet().size()-1) {
+            this.problemIndex = 0;
         } else {
-            this.problemSetIndex++;
+            this.problemIndex++;
         }
-        System.out.println("current problem index: "+this.problemSetIndex);
+        System.out.println("current problem index: "+this.problemIndex);
         setChanged();
         notifyObservers();
     }
     public void setPrevProblemIndex() {
-        if(this.problemSetIndex == 0) {
-            this.problemSetIndex = this.problemSet.size()-1;
+        DataRepository dRepo = (DataRepository) DataRepository.getInstance();
+        dRepo.clear();
+        if(this.problemIndex == 0) {
+            this.problemIndex = this.assignments.get(assignmentIndex).getAssignmentProblemSet().size()-1;
         } else {
-            this.problemSetIndex--;
+            this.problemIndex--;
         }
-        System.out.println("current problem index: "+this.problemSetIndex);
+        System.out.println("current problem index: "+this.problemIndex);
         setChanged();
         notifyObservers();
     }
@@ -76,5 +104,19 @@ public class ProblemRepository extends Observable implements Repository{
         dRepo.clear();
         dRepo.addAll( this.getCurrentProblem().getFlowChart());
         dRepo.modifiedDrawables();
+    }
+    public void setAssignmentIndex(int assNum) {
+        if(assNum < assignments.size()) {
+            this.assignmentIndex = assNum;
+            this.problemIndex = 0;
+            setChanged();
+            notifyObservers();
+        }
+        else System.out.println("could not find assignment at index "+assNum);
+    }
+    public int getNumAssignmentProblems(String assignmentName) {
+        int assignmentIndex = Integer.parseInt(assignmentName.substring(11))-1;
+        if(assignmentIndex < this.assignments.size()) return this.assignments.get(assignmentIndex).getAssignmentProblemSet().size();
+        return 0;
     }
 }

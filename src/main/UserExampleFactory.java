@@ -261,4 +261,14 @@ public class UserExampleFactory {
         return new UserExample(t0,codeHTML,T0,lines, "Excercise 2");
     }
 
+    public static UserExample getFutureExercise(String name,int id) {
+        UserExample problem;
+        if(id == 0) problem = getEx0();
+        else if(id == 1) problem = getEx1();
+        else problem = getEx2();
+
+        problem.setExampleName("Exercise A"+name);
+        return problem;
+    }
+
 }

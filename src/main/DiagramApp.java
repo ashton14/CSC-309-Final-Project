@@ -57,6 +57,7 @@ public class DiagramApp extends JFrame implements Observer {
         JMenuItem newFile = new JMenuItem("New");
         JMenuItem save = new JMenuItem("Save");
         JMenuItem load = new JMenuItem("Load");
+        JMenuItem courses = new JMenuItem("Courses");
         JMenuItem about = new JMenuItem("About");
         JMenuItem undo = new JMenuItem("Undo");
         JMenuItem clear = new JMenuItem("Clear");
@@ -74,6 +75,7 @@ public class DiagramApp extends JFrame implements Observer {
         file.add(newFile);
         file.add(save);
         file.add(load);
+        file.add(courses);
         help.add(about);
         actions.add(undo);
         actions.add(clear);
@@ -88,6 +90,7 @@ public class DiagramApp extends JFrame implements Observer {
         newFile.addActionListener(menuController);
         save.addActionListener(menuController);
         load.addActionListener(menuController);
+        courses.addActionListener(menuController);
         about.addActionListener(menuController);
         shape.addActionListener(menuController);
         undo.addActionListener(menuController);
@@ -138,8 +141,11 @@ public class DiagramApp extends JFrame implements Observer {
         } else if (command.equals("Translate Flowchart")) {
             remove(westPanel);
             FlowchartProblemView flowchartProblemView = new FlowchartProblemView();
+            problemRepository.addObserver(flowchartProblemView);
             add(flowchartProblemView, BorderLayout.WEST);
             westPanel = flowchartProblemView;
+        } else if(command.equals("Courses")) {
+            this.setVisible(false);
         }
     }
 
