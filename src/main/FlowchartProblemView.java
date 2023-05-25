@@ -1,6 +1,7 @@
 package src.main;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,14 +13,16 @@ import java.util.Observer;
  * other tutor-related items
  * @author Patrick Whitlock
  */
-public class SidePanel extends JPanel implements Observer {
+public class FlowchartProblemView extends JPanel implements Observer {
     private ArrayList<JTextArea> codeSections;
     private ArrayList<JButton> buttons;
+
+    private JTextArea tutorFeedback;
     private JLabel problemTitle;
     /**
      * Creates a SidePanel object
      */
-    SidePanel() {
+    FlowchartProblemView() {
         this.problemTitle = new JLabel("problumo uno");
         this.problemTitle.setHorizontalAlignment(SwingConstants.LEFT);
         this.problemTitle.setBorder(new EmptyBorder(10, 10, 10,10));
@@ -49,7 +52,20 @@ public class SidePanel extends JPanel implements Observer {
             buttonPanel.add(jButton);
             buttons.add(jButton);
         }
+
+        tutorFeedback = new JTextArea();
+        JScrollPane chatScrollPane = new JScrollPane(tutorFeedback);
+        tutorFeedback.setWrapStyleWord(true);
+        tutorFeedback.setLineWrap(true);
+        ((DefaultCaret)tutorFeedback.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        tutorFeedback.setText("Jimbo: Hello its nice to meet you!\n" +
+                "Jimbo: I am your tutor today.\n" +
+                "Jimbo: I can check if your work is correct and give hints when requested.\n");
+        tutorFeedback.setEnabled(false);
+        chatScrollPane.setPreferredSize(new Dimension(300,500));
+
         this.add(buttonPanel,BorderLayout.SOUTH);
+        this.add(chatScrollPane, BorderLayout.CENTER);
         this.setPreferredSize(new Dimension(300,400));
         this.updateProblemTitle();
     }

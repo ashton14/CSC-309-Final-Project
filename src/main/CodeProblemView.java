@@ -15,18 +15,6 @@ import java.util.Observer;
 public class CodeProblemView extends JPanel implements Observer {
 
     ArrayList<JButton> buttons;
-    private String defaultCodeProblem =
-            "<HTML> " +
-                    "    <p> public static void main(String[] args){\n" +
-                    "    <p>    &nbsp int y = 1; </p>" +
-                    "    <p>    &nbsp int x = 2; </p>" +
-                    "    <p> &nbsp if(x == y){ </p>" +
-                    "    <p>    &nbsp &nbsp System.out.println(\"X is the same as y\"); </p>" +
-                    "    <p>    &nbsp &nbsp return; </p>" +
-                    "    <p>&nbsp }</p>" +
-                    "    <p>&nbsp System.out.println(\"X is not the same as y\"); </p>" +
-                    "} </HTML>";
-    private String defaultProblemLabel = "Problem 1";
 
     private JTextArea tutorFeedback;
     private JLabel codeProblemLabel;
@@ -58,11 +46,15 @@ public class CodeProblemView extends JPanel implements Observer {
         JPanel buttonPanel = new JPanel();
         GridLayout buttonLayout = new GridLayout(1,4);
         buttonPanel.setLayout(buttonLayout);
-        String[] buttonStrings = {"Submit", "Help", "Previous", "Next"};
-        for (String buttonString : buttonStrings) {
-            JButton jButton = new JButton(buttonString);
-            buttonPanel.add(jButton);
-            buttons.add(jButton);
+        JButton[] options = {new JButton("Submit"), new JButton("Help"),
+                        new JButton("Previous"), new JButton("Next")};
+        CodeProblemViewControlHandler codeProblemViewControlHandler = new CodeProblemViewControlHandler(options[3]);
+        for (JButton b : options) {
+            b.addActionListener(codeProblemViewControlHandler);
+            if(b.getText().equals("Next"))
+                b.setEnabled(false);
+            buttonPanel.add(b);
+            buttons.add(b);
         }
         return buttonPanel;
     }
