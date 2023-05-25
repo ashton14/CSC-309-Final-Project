@@ -28,11 +28,14 @@ public class ProblemRepository extends Observable implements Repository{
         probSet2.add(UserExampleFactory.getFutureExercise("2-1",0));
         probSet2.add(UserExampleFactory.getFutureExercise("2-2",1));
         probSet2.add(UserExampleFactory.getFutureExercise("2-3",2));
+        probSet2.add(UserExampleFactory.getFutureExercise("2-4",1));
+        probSet2.add(UserExampleFactory.getFutureExercise("2-5",0));
         Assignment a2 = new Assignment(probSet2,"Assignment 2");
         ArrayList<UserExample> probSet3 = new ArrayList<>();
         probSet3.add(UserExampleFactory.getFutureExercise("3-1",0));
         probSet3.add(UserExampleFactory.getFutureExercise("3-2",1));
         probSet3.add(UserExampleFactory.getFutureExercise("3-3",2));
+        probSet3.add(UserExampleFactory.getFutureExercise("3-4",0));
         Assignment a3 = new Assignment(probSet3,"Assignment 3");
 
         assignments = new ArrayList<>();
@@ -110,5 +113,10 @@ public class ProblemRepository extends Observable implements Repository{
             notifyObservers();
         }
         else System.out.println("could not find assignment at index "+assNum);
+    }
+    public int getNumAssignmentProblems(String assignmentName) {
+        int assignmentIndex = Integer.parseInt(assignmentName.substring(11))-1;
+        if(assignmentIndex < this.assignments.size()) return this.assignments.get(assignmentIndex).getAssignmentProblemSet().size();
+        return 0;
     }
 }
