@@ -9,10 +9,13 @@ public class FeedbackRepository extends Observable implements Repository {
     private static FeedbackRepository repository;
     private String feedback;
 
+    private int errorIndex;
+
     /**
      * Private constructor to enforce singleton.
      */
     private FeedbackRepository(){
+        this.errorIndex = -1;
     }
 
     /**
@@ -39,5 +42,12 @@ public class FeedbackRepository extends Observable implements Repository {
         notifyObservers("Jimbo: " + feedback + "\n");
     }
 
-
+    public void setErrorIndex(int index) {
+        this.errorIndex = index;
+        setChanged();
+        notifyObservers();
+    }
+    public int getErrorIndex() {
+        return this.errorIndex;
+    }
 }

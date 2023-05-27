@@ -85,5 +85,18 @@ public class FlowchartProblemView extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         updateProblemTitle();
+
+        //make error'd line of code red
+        this.clearRedCode();
+        FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+        System.out.println("view update: err index = "+fRepo.getErrorIndex());
+        if(fRepo.getErrorIndex() >= 0) {
+            this.codeSections.get(fRepo.getErrorIndex()).setBackground(Color.RED);
+        }
+    }
+    private void clearRedCode() {
+        for(int i = 0; i < this.codeSections.size(); i++) {
+            this.codeSections.get(i).setBackground(Color.WHITE);
+        }
     }
 }

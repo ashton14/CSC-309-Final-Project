@@ -128,7 +128,7 @@ public class UserExample {
             System.out.println("User code statement: "+userCodeStatements.get(i));
             System.out.println("Correct answer code: "+this.codeStatements.get(i));
 
-            if(i == maxIndex-1 && sizeProblem == 1) return i;
+            if(i == maxIndex-1 && sizeProblem == 1) return i+1;
             if(!this.codeStatements.get(i).equals(userCodeStatements.get(i))) {
                 return i;
             }

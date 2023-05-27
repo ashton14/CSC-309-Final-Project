@@ -19,7 +19,7 @@ public class UserExampleFactory {
         t0.add("int c;");
         t0.add("c = a + b;");
         t0.add("System.out.println(c);");
-        t0.add("return;");
+        t0.add("}");
 
         String codeHTML = "<HTML> " +
                 "    <p> public static void main(String[] args){\n" +

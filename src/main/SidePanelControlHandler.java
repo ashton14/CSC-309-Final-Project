@@ -36,7 +36,8 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
             }
             int mistakeIndex = ex1.gradeUserCode(usersCode);
             System.out.println("Code mistake at line: "+mistakeIndex);
-
+            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+            fRepo.setErrorIndex(mistakeIndex);
         }
         if(e.getActionCommand().equals("Next")) {
             System.out.println("setting next problem");
