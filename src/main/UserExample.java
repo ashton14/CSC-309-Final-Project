@@ -107,42 +107,40 @@ public class UserExample {
      * @param userCodeStatements ArrayList of strings, to be extracted from the code snippet panel
      * @return the index of the first mistake, or -1 for no mistakes
      */
-    public int gradeUserCode(ArrayList<String> userCodeStatements){
+    public int gradeUserCode(ArrayList<String> userCodeStatements,boolean verbose){
         FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
 
         //check if userCode is smaller than correct answer
         int maxIndex = this.codeStatements.size();
         int sizeProblem = 0;
 
-        System.out.println("User code size: "+userCodeStatements.size());
-        System.out.println("Correct code size: "+this.codeStatements.size());
-
         if(userCodeStatements.size() == 0) {
-            fRepo.setFeedback("Where's the code?");
+            if(!verbose)fRepo.setFeedback("Where's the code?");
+            if(verbose) fRepo.setFeedback("This should get you started: "+this.codeStatements.get(0));
             return 0;
         }
-
         if(userCodeStatements.size() < this.codeStatements.size()) {
             maxIndex = userCodeStatements.size();
             sizeProblem = 1;
-            fRepo.setFeedback("The provided code has fewer lines than expected.");
-
+            if(!verbose) fRepo.setFeedback("The code has fewer lines than expected.");
         }
         if(userCodeStatements.size() > this.codeStatements.size()) {
             maxIndex = this.codeStatements.size();
             sizeProblem = 1;
-            fRepo.setFeedback("The provided code has more lines than expected.");
+            if(!verbose) fRepo.setFeedback("The code has more lines than expected.");
         }
 
         for(int i = 0; i < maxIndex; i++) {
-            System.out.println("User code statement: "+userCodeStatements.get(i));
-            System.out.println("Correct answer code: "+this.codeStatements.get(i));
-
             if(!this.codeStatements.get(i).equals(userCodeStatements.get(i))) {
-                fRepo.setFeedback("There is a mistake on line "+i);
+                int lineNumber = i + 1;
+                fRepo.setFeedback("There is a mistake on line "+lineNumber);
+                if(verbose) fRepo.setFeedback("The correct code for this line is: "+this.codeStatements.get(i));
                 return i;
             }
-            if(i == maxIndex-1 && sizeProblem == 1) return i+1;
+            if(i == maxIndex-1 && sizeProblem == 1) {
+                if(verbose) fRepo.setFeedback("The correct code for this line is: "+this.codeStatements.get(i+1));
+                return i+1;
+            }
         }
         fRepo.setFeedback("The code is correct! Great job!");
         return -1;

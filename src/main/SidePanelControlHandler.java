@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class SidePanelControlHandler implements ActionListener, MouseListener {
 
-    private final ArrayList<JTextArea> jTextAreas;
+    private final ArrayList<JTextField> jTextAreas;
 
-    SidePanelControlHandler(ArrayList<JTextArea> jTextAreas){
+    SidePanelControlHandler(ArrayList<JTextField> jTextAreas){
         this.jTextAreas = jTextAreas;
     }
 
@@ -22,22 +22,10 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
         if(e.getActionCommand().equals("Submit")){
             StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
             stateRepository.setStatus("Parsed code");
-
-            //The following code is temporary in order to quickly test the UserExample class
-            UserExample ex1 = pRepo.getCurrentProblem();
-            System.out.println("SUBMIT BUTTON PUSHED");
-
-            //build ArrayList of strings
-            ArrayList<String> usersCode = new ArrayList<>();
-            for(int i = 0; i < jTextAreas.size(); i++) {
-                if(!jTextAreas.get(i).getText().equals("")) {
-                    usersCode.add(jTextAreas.get(i).getText());
-                }
-            }
-            int mistakeIndex = ex1.gradeUserCode(usersCode);
-            System.out.println("Code mistake at line: "+mistakeIndex);
-            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-            fRepo.setErrorIndex(mistakeIndex);
+            gradeCode(false);
+        }
+        if(e.getActionCommand().equals("Help")){
+            gradeCode(true);
         }
         if(e.getActionCommand().equals("Next")) {
             System.out.println("setting next problem");
@@ -46,6 +34,20 @@ public class SidePanelControlHandler implements ActionListener, MouseListener {
         if(e.getActionCommand().equals("Previous")) {
             pRepo.setPreviousProblem();
         }
+    }
+    public void gradeCode(boolean help) {
+        ProblemRepository pRepo = (ProblemRepository)ProblemRepository.getInstance();
+        UserExample currentProblem = pRepo.getCurrentProblem();
+
+        ArrayList<String> usersCode = new ArrayList<>();
+        for(int i = 0; i < jTextAreas.size(); i++) {
+            if(!jTextAreas.get(i).getText().equals("")) {
+                usersCode.add(jTextAreas.get(i).getText());
+            }
+        }
+        int mistakeIndex = currentProblem.gradeUserCode(usersCode,help);
+        FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+        fRepo.setErrorIndex(mistakeIndex);
     }
 
     @Override
