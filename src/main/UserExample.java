@@ -108,6 +108,8 @@ public class UserExample {
      * @return the index of the first mistake, or -1 for no mistakes
      */
     public int gradeUserCode(ArrayList<String> userCodeStatements){
+        FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+
         //check if userCode is smaller than correct answer
         int maxIndex = this.codeStatements.size();
         int sizeProblem = 0;
@@ -115,24 +117,34 @@ public class UserExample {
         System.out.println("User code size: "+userCodeStatements.size());
         System.out.println("Correct code size: "+this.codeStatements.size());
 
+        if(userCodeStatements.size() == 0) {
+            fRepo.setFeedback("Where's the code?");
+            return 0;
+        }
+
         if(userCodeStatements.size() < this.codeStatements.size()) {
             maxIndex = userCodeStatements.size();
             sizeProblem = 1;
+            fRepo.setFeedback("The provided code has fewer lines than expected.");
+
         }
         if(userCodeStatements.size() > this.codeStatements.size()) {
             maxIndex = this.codeStatements.size();
             sizeProblem = 1;
+            fRepo.setFeedback("The provided code has more lines than expected.");
         }
 
         for(int i = 0; i < maxIndex; i++) {
             System.out.println("User code statement: "+userCodeStatements.get(i));
             System.out.println("Correct answer code: "+this.codeStatements.get(i));
 
-            if(i == maxIndex-1 && sizeProblem == 1) return i+1;
             if(!this.codeStatements.get(i).equals(userCodeStatements.get(i))) {
+                fRepo.setFeedback("There is a mistake on line "+i);
                 return i;
             }
+            if(i == maxIndex-1 && sizeProblem == 1) return i+1;
         }
+        fRepo.setFeedback("The code is correct! Great job!");
         return -1;
     }
 

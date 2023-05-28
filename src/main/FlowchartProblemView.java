@@ -85,6 +85,10 @@ public class FlowchartProblemView extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         updateProblemTitle();
+        if(o == FeedbackRepository.getInstance()) {
+            String string = (String) arg;
+            tutorFeedback.append(string);
+        }
 
         //make error'd line of code red
         this.clearRedCode();
