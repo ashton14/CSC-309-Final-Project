@@ -14,7 +14,7 @@ import java.util.Observer;
  * @author Patrick Whitlock
  */
 public class FlowchartProblemView extends JPanel implements Observer {
-    private ArrayList<JTextArea> codeSections;
+    private ArrayList<JTextField> codeSections;
     private ArrayList<JButton> buttons;
 
     private JTextArea tutorFeedback;
@@ -23,21 +23,48 @@ public class FlowchartProblemView extends JPanel implements Observer {
      * Creates a SidePanel object
      */
     FlowchartProblemView() {
-        this.problemTitle = new JLabel("problumo uno");
-        this.problemTitle.setHorizontalAlignment(SwingConstants.LEFT);
-        this.problemTitle.setBorder(new EmptyBorder(10, 10, 10,10));
+        BorderLayout borderLayout = new BorderLayout();
+        setLayout(borderLayout);
 
         codeSections = new ArrayList<>();
-        SidePanelControlHandler sideController = new SidePanelControlHandler(codeSections);
+        FlowchartProblemViewControlHandler sideController = new FlowchartProblemViewControlHandler(codeSections);
 
-        this.add(problemTitle);
+        JPanel codePanel = new JPanel();
+        codePanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 15;
+
+        JLabel empty = new JLabel("");
+        empty.setPreferredSize(new Dimension(15,20));
+        codePanel.add(empty,gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 200;
+
+        this.problemTitle = new JLabel("problumo uno");
+        this.problemTitle.setPreferredSize(new Dimension(250,20));
+        codePanel.add(this.problemTitle,gbc);
+
         for(int i = 0; i < 12; i++) {
-            JTextArea codeSection = new JTextArea("");
+            gbc.gridx = 0;
+            gbc.gridy = 1+i;
+            gbc.weightx = 15;
+            codePanel.add(new JLabel(String.valueOf(i+1)),gbc);
+            JTextField codeSection = new JTextField("");
             codeSection.setPreferredSize(new Dimension(280,20));
             this.codeSections.add(codeSection);
-            this.add(codeSection);
+
+            gbc.gridx = 1;
+            gbc.gridy = 1+i;
+            gbc.weightx = 200;
+            codePanel.add(codeSection,gbc);
             codeSection.addMouseListener(sideController);
         }
+        this.add(codePanel,BorderLayout.NORTH);
 
         //thanks Aaron
         buttons = new ArrayList<>();
@@ -62,7 +89,6 @@ public class FlowchartProblemView extends JPanel implements Observer {
                 "Jimbo: I am your tutor today.\n" +
                 "Jimbo: I can check if your work is correct and give hints when requested.\n");
         tutorFeedback.setEnabled(false);
-        chatScrollPane.setPreferredSize(new Dimension(300,500));
 
         this.add(buttonPanel,BorderLayout.SOUTH);
         this.add(chatScrollPane, BorderLayout.CENTER);
@@ -85,5 +111,22 @@ public class FlowchartProblemView extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         updateProblemTitle();
+        if(o == FeedbackRepository.getInstance()) {
+            String string = (String) arg;
+            tutorFeedback.append(string);
+        }
+
+        //make error'd line of code red
+        this.clearRedCode();
+        FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+        System.out.println("view update: err index = "+fRepo.getErrorIndex());
+        if(fRepo.getErrorIndex() >= 0) {
+            this.codeSections.get(fRepo.getErrorIndex()).setBackground(Color.RED);
+        }
+    }
+    private void clearRedCode() {
+        for(int i = 0; i < this.codeSections.size(); i++) {
+            this.codeSections.get(i).setBackground(Color.WHITE);
+        }
     }
 }

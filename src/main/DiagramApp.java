@@ -142,6 +142,8 @@ public class DiagramApp extends JFrame implements Observer {
             remove(westPanel);
             FlowchartProblemView flowchartProblemView = new FlowchartProblemView();
             problemRepository.addObserver(flowchartProblemView);
+            FeedbackRepository feedbackRepository = (FeedbackRepository) FeedbackRepository.getInstance();
+            feedbackRepository.addObserver(flowchartProblemView);
             add(flowchartProblemView, BorderLayout.WEST);
             westPanel = flowchartProblemView;
         } else if(command.equals("Courses")) {
