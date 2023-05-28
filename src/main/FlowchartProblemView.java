@@ -27,7 +27,7 @@ public class FlowchartProblemView extends JPanel implements Observer {
         setLayout(borderLayout);
 
         codeSections = new ArrayList<>();
-        SidePanelControlHandler sideController = new SidePanelControlHandler(codeSections);
+        FlowchartProblemViewControlHandler sideController = new FlowchartProblemViewControlHandler(codeSections);
 
         JPanel codePanel = new JPanel();
         codePanel.setLayout(new GridBagLayout());
