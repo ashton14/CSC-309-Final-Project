@@ -9,9 +9,15 @@ import java.util.ArrayList;
 public class FlowchartProblemViewControlHandler implements ActionListener, MouseListener {
 
     private final ArrayList<JTextField> jTextAreas;
+    private JButton prev;
+    private JButton next;
+    private int curProblemNumber = 0;
+    private int numProblemsCompleted = 0;
 
-    FlowchartProblemViewControlHandler(ArrayList<JTextField> jTextAreas){
+    FlowchartProblemViewControlHandler(ArrayList<JTextField> jTextAreas, JButton prev, JButton next){
         this.jTextAreas = jTextAreas;
+        this.prev = prev;
+        this.next = next;
     }
 
     @Override
@@ -28,10 +34,18 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
         }
         if(e.getActionCommand().equals("Next")) {
             System.out.println("setting next problem");
+            curProblemNumber ++;
             pRepo.setNextProblem();
+            if(curProblemNumber == numProblemsCompleted)
+                this.next.setEnabled(false);
+            this.prev.setEnabled(true);
         }
         if(e.getActionCommand().equals("Previous")) {
+            next.setEnabled(true);
             pRepo.setPreviousProblem();
+            curProblemNumber --;
+            if(curProblemNumber == 0)
+                this.prev.setEnabled(false);
         }
     }
     public void gradeCode(boolean help) {
@@ -47,6 +61,13 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
         int mistakeIndex = currentProblem.gradeUserCode(usersCode,help);
         FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
         fRepo.setErrorIndex(mistakeIndex);
+        if (mistakeIndex == -1) {
+            JOptionPane.showMessageDialog(null, "Correct! Nice Work!", "Success",
+                    JOptionPane.INFORMATION_MESSAGE, CodeProblemViewControlHandler.createIcon());
+            this.next.setEnabled(true);
+            if(curProblemNumber == numProblemsCompleted)
+                numProblemsCompleted ++;
+        }
     }
 
     @Override

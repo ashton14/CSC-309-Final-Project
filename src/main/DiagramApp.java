@@ -18,7 +18,7 @@ public class DiagramApp extends JFrame implements Observer {
      * Constructor to add menu bar with 4 menus, a drawing area, and a status bar
      */
     public DiagramApp(){
-        super("Diagram App");
+        super("Intelligent Tutor App");
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 

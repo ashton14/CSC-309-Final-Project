@@ -13,10 +13,14 @@ import java.util.ArrayList;
  */
 public class CodeProblemViewControlHandler implements ActionListener {
 
-    JButton jButton;
+    private JButton prev;
+    private JButton next;
+    private int curProblemNumber = 0;
+    private int numProblemsCompleted = 0;
 
-    public CodeProblemViewControlHandler(JButton jButton){
-        this.jButton = jButton;
+    public CodeProblemViewControlHandler(JButton prev, JButton next){
+        this.prev = prev;
+        this.next = next;
     }
     /**
      * Handles the Next, Previous, Help and Submit button presses.
@@ -27,12 +31,20 @@ public class CodeProblemViewControlHandler implements ActionListener {
         ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         String commandString = e.getActionCommand();
         if(commandString.equals("Next")){
-            jButton.setEnabled(false);
+            curProblemNumber ++;
             // call to repo function to change code problem
             pRepo.setNextProblemIndex();
+            if(curProblemNumber == numProblemsCompleted)
+                this.next.setEnabled(false);
+            this.prev.setEnabled(true);
+
         } else if(commandString.equals("Previous")){
+            next.setEnabled(true);
             // call to repo function to change code problem
             pRepo.setPrevProblemIndex();
+            curProblemNumber --;
+            if(curProblemNumber == 0)
+                this.prev.setEnabled(false);
         } else if(commandString.equals("Help")){
             UserExample solution = pRepo.getCurrentProblem();
             ArrayList<CodeBlock> studentAnswerBlocks =
@@ -49,7 +61,9 @@ public class CodeProblemViewControlHandler implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Correct! Nice Work!", "Success",
                                             JOptionPane.INFORMATION_MESSAGE, createIcon());
 
-                jButton.setEnabled(true);
+                this.next.setEnabled(true);
+                if(curProblemNumber == numProblemsCompleted)
+                    numProblemsCompleted ++;
             }
 
             // call to repo function to get feedback
@@ -63,7 +77,7 @@ public class CodeProblemViewControlHandler implements ActionListener {
             System.out.println("mistake at CodeBlock index: "+mistakeIndex);*/
         }
     }
-    private Icon createIcon() {
+    public static Icon createIcon() {
         // Create a custom icon image with a green check mark
         BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();

@@ -48,13 +48,13 @@ public class CodeProblemView extends JPanel implements Observer {
         buttonPanel.setLayout(buttonLayout);
         JButton[] options = {new JButton("Submit"), new JButton("Help"),
                         new JButton("Previous"), new JButton("Next")};
-        CodeProblemViewControlHandler codeProblemViewControlHandler = new CodeProblemViewControlHandler(options[3]);
-        for (JButton b : options) {
-            b.addActionListener(codeProblemViewControlHandler);
-            if(b.getText().equals("Next"))
-                b.setEnabled(false);
-            buttonPanel.add(b);
-            buttons.add(b);
+        CodeProblemViewControlHandler codeProblemViewControlHandler = new CodeProblemViewControlHandler(options[2], options[3]);
+        for (JButton jButton : options) {
+            jButton.addActionListener(codeProblemViewControlHandler);
+            if(jButton.getText().equals("Next") || jButton.getText().equals("Previous"))
+                jButton.setEnabled(false);
+            buttonPanel.add(jButton);
+            buttons.add(jButton);
         }
         return buttonPanel;
     }

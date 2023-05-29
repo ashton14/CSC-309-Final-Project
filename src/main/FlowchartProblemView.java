@@ -27,7 +27,6 @@ public class FlowchartProblemView extends JPanel implements Observer {
         setLayout(borderLayout);
 
         codeSections = new ArrayList<>();
-        FlowchartProblemViewControlHandler sideController = new FlowchartProblemViewControlHandler(codeSections);
 
         JPanel codePanel = new JPanel();
         codePanel.setLayout(new GridBagLayout());
@@ -48,6 +47,12 @@ public class FlowchartProblemView extends JPanel implements Observer {
         this.problemTitle = new JLabel("problumo uno");
         this.problemTitle.setPreferredSize(new Dimension(250,20));
         codePanel.add(this.problemTitle,gbc);
+
+        JButton[] options = {new JButton("Submit"), new JButton("Help"),
+                new JButton("Previous"), new JButton("Next")};
+
+        FlowchartProblemViewControlHandler sideController =
+                                    new FlowchartProblemViewControlHandler(codeSections, options[2], options[3]);
 
         for(int i = 0; i < 12; i++) {
             gbc.gridx = 0;
@@ -71,12 +76,14 @@ public class FlowchartProblemView extends JPanel implements Observer {
         JPanel buttonPanel = new JPanel();
         GridLayout buttonLayout = new GridLayout(1,4);
         buttonPanel.setLayout(buttonLayout);
-        String[] buttonStrings = {"Submit", "Help", "Previous", "Next"};
-        for (String buttonString : buttonStrings) {
-            JButton jButton = new JButton(buttonString);
+
+
+        for (JButton jButton : options) {
             jButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             jButton.addActionListener(sideController);
             buttonPanel.add(jButton);
+            if(jButton.getText().equals("Next") || jButton.getText().equals("Previous"))
+                jButton.setEnabled(false);
             buttons.add(jButton);
         }
 

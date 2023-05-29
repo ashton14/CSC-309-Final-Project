@@ -13,6 +13,7 @@ public class ProblemRepository extends Observable implements Repository{
     private static ProblemRepository repository;
     private ArrayList<Assignment> assignments;
     private int assignmentIndex;
+
     private int problemIndex;
 
     /**
@@ -118,5 +119,9 @@ public class ProblemRepository extends Observable implements Repository{
         int assignmentIndex = Integer.parseInt(assignmentName.substring(11))-1;
         if(assignmentIndex < this.assignments.size()) return this.assignments.get(assignmentIndex).getAssignmentProblemSet().size();
         return 0;
+    }
+
+    public int getProblemIndex() {
+        return problemIndex;
     }
 }
