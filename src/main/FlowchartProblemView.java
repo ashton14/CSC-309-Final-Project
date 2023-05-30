@@ -92,9 +92,9 @@ public class FlowchartProblemView extends JPanel implements Observer {
         tutorFeedback.setWrapStyleWord(true);
         tutorFeedback.setLineWrap(true);
         ((DefaultCaret)tutorFeedback.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        tutorFeedback.setText("Jimbo: Hello its nice to meet you!\n" +
-                "Jimbo: I am your tutor today.\n" +
-                "Jimbo: I can check if your work is correct and give hints when requested.\n");
+        tutorFeedback.setText("Casey: Hello its nice to meet you!\n" +
+                "Casey: I am your tutor today.\n" +
+                "Casey: I can check if your work is correct and give hints when requested.\n");
         tutorFeedback.setEnabled(false);
 
         this.add(buttonPanel,BorderLayout.SOUTH);

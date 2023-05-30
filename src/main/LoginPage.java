@@ -91,7 +91,7 @@ public class LoginPage extends JFrame{
     public static void main(String [] args){
         LoginPage page = new LoginPage();
         page.setVisible(true);
-        //page.login();
+        page.login();
     }
 
 

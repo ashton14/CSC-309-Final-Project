@@ -39,7 +39,7 @@ public class FeedbackRepository extends Observable implements Repository {
             return;
         this.feedback = feedback;
         setChanged();
-        notifyObservers("Jimbo: " + feedback + "\n");
+        notifyObservers("Casey: " + feedback + "\n");
     }
 
     public void setErrorIndex(int index) {
