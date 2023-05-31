@@ -69,6 +69,7 @@ public class CoursesPage {
         sandboxButton.setContentAreaFilled(true);
         sandboxButton.setOpaque(true);
         sandboxButton.setFont(new Font("Arial", Font.BOLD, 13));
+        sandboxButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         sandboxButton.addActionListener(e -> showSandbox());
         sandboxButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -123,6 +124,7 @@ public class CoursesPage {
         courseButton.setMaximumSize(new Dimension(200, 200));
         courseButton.setMinimumSize(new Dimension(200, 200));
         courseButton.setFont(new Font("Arial", Font.BOLD, 18));
+        courseButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         courseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -186,6 +188,7 @@ public class CoursesPage {
             assignmentButton.setMaximumSize(new Dimension(400, 75));
             assignmentButton.setMinimumSize(new Dimension(400, 75));
             assignmentButton.setFont(new Font("Arial", Font.BOLD, 18));
+            assignmentButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             assignmentButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
