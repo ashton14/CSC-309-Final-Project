@@ -52,10 +52,14 @@ public class DataRepository extends Observable implements Repository {
             return;
         }
         drawables.add(drawable);
+
         setChanged();
         notifyObservers();
     }
-
+    public void repaintWorkingArea() {
+        setChanged();
+        notifyObservers();
+    }
 
     /**
      * Creates a list of type Line using the list of type Drawable.
@@ -64,7 +68,7 @@ public class DataRepository extends Observable implements Repository {
     public ArrayList<Line> getLines() {
         ArrayList<Line> lines = new ArrayList<>();
         for (Drawable drawable : drawables) {
-            if (drawable.getClass() == Line.class) {
+            if (drawable.getClass() == Link.class) {
                 lines.add((Line) drawable);
             }
         }
@@ -95,12 +99,9 @@ public class DataRepository extends Observable implements Repository {
         }
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         Drawable lastDrawable = drawables.get(drawables.size()-1);
-        if(lastDrawable.getClass() == Line.class){
+        if(lastDrawable.getClass() == Link.class) {
             Line line = (Line) lastDrawable;
             line.getStart().removeConnection(line.getEnd());
-        } else if (lastDrawable instanceof CodeBlock) {
-            CodeBlock codeBlock = (CodeBlock) lastDrawable;
-            codeBlock.removeAllConnections();
         }
         drawables.remove(lastDrawable);
         setChanged();
@@ -130,10 +131,14 @@ public class DataRepository extends Observable implements Repository {
      *                 DataRepository.
      */
     public void removeDrawable(Drawable drawable){
+        if (drawable instanceof CodeBlock) {
+            CodeBlock codeBlock = (CodeBlock) drawable;
+            codeBlock.removeAllConnections();
+            purgeCodeBlock(codeBlock);
+        }
         drawables.remove(drawable);
+        repaintWorkingArea();
     }
-
-
     /**
      * Adds all drawables from a Collection of type Drawable
      * into the internal ArrayList of type Drawable.
@@ -161,5 +166,14 @@ public class DataRepository extends Observable implements Repository {
     public void modifiedDrawables(){
         setChanged();
         notifyObservers();
+    }
+    public void purgeCodeBlock(CodeBlock cblock) {
+        System.out.println(cblock);
+        for(Line l : getLines()) {
+            System.out.println(l.getStart());
+            if(cblock.equals(l.getStart()) || cblock.equals(l.getEnd())) {
+                removeDrawable(l);
+            }
+        }
     }
 }

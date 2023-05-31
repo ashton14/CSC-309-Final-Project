@@ -17,7 +17,7 @@ public class LoginPage extends JFrame{
 
     private JPanel contentPane;
     private JTextField username;
-    private Connection conn = null;
+    private Link conn = null;
     private JFormattedTextField password;
 
     /**
@@ -91,6 +91,7 @@ public class LoginPage extends JFrame{
     public static void main(String [] args){
         LoginPage page = new LoginPage();
         page.setVisible(true);
+        page.login();
     }
 
 

@@ -1,5 +1,6 @@
 package src.main;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -35,51 +36,124 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         CodeBlock prevSelectedCodeBlock = stateRepository.getCurrentlySelectedCodeBlock();
         stateRepository.setCurrentlySelectedDrawable(getTopCodeBlock(e.getX(), e.getY()));
         if(prevSelectedCodeBlock != null) {
-            System.out.println("Attempt to make a line");
-            dataRepository.addDrawable(makeLine(prevSelectedCodeBlock));
-        }
-    }
 
-    public CodeBlock getTopCodeBlock(int x, int y){
-        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
-        ArrayList<CodeBlock> codeBlocks = dataRepository.getCodeBlocks();
-        CodeBlock topCodeBlock = null;
-        for (CodeBlock codeBlock: codeBlocks) {
-            if(codeBlock.isInBounds(x,y)){
-                topCodeBlock = codeBlock;
+            Line l = makeLine(prevSelectedCodeBlock);
+            dataRepository.addDrawable(l);
+        }
+        Line l = getTopLine(e);
+        if(l == null) {
+            return;
+        }
+        if(e.getButton() == MouseEvent.BUTTON3) {
+            labelLine(l, e);
+        }
+        else if(e.getClickCount() == 2) {
+            l.split(e);
+        }
+
+        dataRepository.repaintWorkingArea();
+
+    }
+    /**
+     * Labels the given line at the given Mouse position
+     * @param l - given Line
+     * @param e - given MouseEvent
+     */
+    public void labelLine(Line l, MouseEvent e) {
+        if(l.getClass() != Line.class ||
+                (l.getStart().getClass() != IfBlock.class && l.getStart().getClass() != LoopBlock.class)) {
+            System.out.println("This line can not be labeled");
+            return;
+        }
+        String[] opts = new String[] {"True", "False"};
+        int choice = JOptionPane.showOptionDialog(null, "Choose an option", "Line Labeling",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, opts, opts[0]);
+        l.label(opts[choice]);
+    }
+    /**
+     * Gets the line being clicked (if any)
+     * @param e - given MouseEvent
+     */
+    public Line getTopLine(MouseEvent e) {
+        Line close = null;
+        for(Line l : ((DataRepository)  DataRepository.getInstance()).getLines()) {
+            close = ((Link) l).selectLine(e);
+            if(close != null) {
+                break;
             }
         }
-        return topCodeBlock;
+        return close;
     }
+    /**
+     * Gets the CodeBlock being clicked (if any)
+     * @param x - given Mouse x position
+     * @param y - given Mouse y position
+     */
+    public CodeBlock getTopCodeBlock(int x, int y) {
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        ArrayList<CodeBlock> codeBlocks = dataRepository.getCodeBlocks();
+        ArrayList<Line> links = dataRepository.getLines();
 
-    private Line makeLine(CodeBlock firstCodeBlock){
+        for (CodeBlock codeBlock: codeBlocks) {
+            if(codeBlock.isInBounds(x,y)){
+                return codeBlock;
+            }
+        }
+        for(Line l : links) {
+            for(Node n : ((Link) l).getNodes()) {
+                if(n.isInBounds(x, y)) {
+                    return n;
+                }
+            }
+        }
+        return null;
+    }
+    /**
+     * Tries to create a line between the selectedCodeBlock and the clicked CodeBlock
+     * @param firstCodeBlock - clicked CodeBlock
+     */
+    private Line makeLine(CodeBlock firstCodeBlock) {
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
         CodeBlock lastCodeBlock = stateRepository.getCurrentlySelectedCodeBlock();
+        Link c = null;
         Line line = null;
-
+        LineDecorator arrow = null;
         if(firstCodeBlock != lastCodeBlock &&
+                lastCodeBlock != null &&
                 firstCodeBlock.canAddOut(lastCodeBlock) &&
                 lastCodeBlock.canAddIn(firstCodeBlock)) {
 
-            firstCodeBlock.addToOutbound(lastCodeBlock);
-            lastCodeBlock.addToInbound(firstCodeBlock);
+            c = new Link(firstCodeBlock, lastCodeBlock);
             line = new Line(firstCodeBlock, lastCodeBlock);
-            System.out.println("Made a new line");
+            arrow = new ArrowDecorator(line);
+
+            arrow.setLink(c);
+            c.addLine(arrow);
+
             stateRepository.setStatus("Established A Connection");
         } else {
-
+            stateRepository.setCurrentlySelectedDrawable(null);
         }
-        return line;
+        return c;
     }
-
-    private CodeBlock makeCodeBlock(int x, int y){
+    /**
+     * Creates current CodeBlock at given x and y position
+     * @param x - given Mouse x position
+     * @param y - given Mouse y position
+     */
+    private CodeBlock makeCodeBlock(int x, int y) {
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         BlockFactory blockFactory = new BlockFactory();
         return blockFactory.makeBlock(stateRepository.getMenuBarCodeBlock(), x, y);
 
     }
+    /**
+     * Creates CodeBlock unless a CodeBlock is selected, or a Line is clicked, or if the
+     * user is not allowed to edit the flowchart
+     * @param e - given Mouse position for this action
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
@@ -92,18 +166,29 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         }
 
         CodeBlock selectedCodeBlock = getTopCodeBlock(e.getX(),e.getY());
-        if(selectedCodeBlock == null) {
+
+        if(selectedCodeBlock == null && getTopLine(e) == null) {
             selectedCodeBlock = makeCodeBlock(e.getX(), e.getY());
             dataRepository.addDrawable(selectedCodeBlock);
             stateRepository.setCurrentlySelectedDrawable(selectedCodeBlock);
             stateRepository.setStatus("Placing " + selectedCodeBlock.toString() + " Blocks.");
             return;
         }
-        xOffset =  selectedCodeBlock.getXCenter() - e.getX();
-        yOffset = selectedCodeBlock.getYCenter() - e.getY();
-        draggedCodeBlock = selectedCodeBlock;
+        setOffset(selectedCodeBlock, e);
     }
-
+    /**
+     * Sets the offset for the selected CodeBlock and where the mouse
+     * initially started relative to it
+     * @param c - Given CodeBlock
+     * @param e - given Mouse position
+     */
+    public void setOffset(CodeBlock c, MouseEvent e) {
+        if(c != null) {
+            xOffset =  c.getXCenter() - e.getX();
+            yOffset = c.getYCenter() - e.getY();
+            draggedCodeBlock = c;
+        }
+    }
     /**
      * Release CodeBlock if we are dragging one
      * @param e - MouseEvent
