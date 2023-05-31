@@ -37,9 +37,8 @@ public class WorkingArea extends JPanel implements Observer {
             }
             currentCodeBlock.draw(g);
         }
-
         for (Line line : lines) {
-            line.draw(g);
+            ((Link) line).draw(g);
         }
     }
 
