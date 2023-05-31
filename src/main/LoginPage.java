@@ -61,7 +61,12 @@ public class LoginPage extends JFrame{
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                authenticateUser();
+                if (SqlControlHandler.authenticateUser(username.getText(), password.getText())){
+                    displayLoginSucceeded();
+                    login();
+                } else {
+                    displayLoginFailed();
+                }
             }
         });
         loginButton.setBounds(276, 86, 89, 23);
@@ -74,9 +79,18 @@ public class LoginPage extends JFrame{
                 int optionSelected = JOptionPane.showOptionDialog(null, "Are you a student or a professor?", "User Type",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
                 if (optionSelected == 0) {
-                    registerUser("Student");
+                    if (SqlControlHandler.registerUser("Student", username.getText(), password.getText())) {
+                        displayRegistrationSucceeded();
+                    } else {
+                        displayRegistrationFailed();
+                    }
+
                 } else if (optionSelected == 1) {
-                    registerUser("Professor");
+                    if (SqlControlHandler.registerUser("Professor", username.getText(), password.getText())) {
+                        displayRegistrationSucceeded();
+                    } else {
+                        displayRegistrationFailed();
+                    }
                 }
             }
         });
@@ -91,76 +105,25 @@ public class LoginPage extends JFrame{
     public static void main(String [] args){
         LoginPage page = new LoginPage();
         page.setVisible(true);
-        page.login();
     }
 
 
-    /**
-     * Method to handle the user authentication, queries the db to check if user info is there
-     */
-    private void authenticateUser() {
-
-        // Connect to the MySQL database
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tutorapp_schema_1",
-                    "root", "Csc3092023");
-
-            // Execute the SELECT statement to check if the user exists
-            String sql = "SELECT * FROM users WHERE username=? AND password=?";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, username.getText());
-            statement.setString(2, password.getText());
-            ResultSet result = statement.executeQuery();
-
-            // Check the result set
-            if (result.next()) {
-                JOptionPane.showMessageDialog(this, "Login successful");
-                login();
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid username or password");
-            }
-
-            // Close the database connection
-            conn.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    private void displayLoginFailed() {
+        JOptionPane.showMessageDialog(this, "Invalid username or password");
     }
-    /**
-     * Method to handle user registration, queries the db to check if user exists before adding a new user
-     * @param userType the type of user, either professor or student
-     */
-    private void registerUser(String userType) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tutorapp_schema_1",
-                    "root", "Csc3092023");
-            String sql = "SELECT * FROM users WHERE username=? AND password=?";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, username.getText());
-            statement.setString(2, password.getText());
-            ResultSet result = statement.executeQuery();
 
-            if (result.next()){
-                JOptionPane.showMessageDialog(this, "Error Registering: User Already Exists");
-                conn.close();
-            } else {
-                String sql2 = "INSERT INTO users (username, password, usertype) VALUES (?, ?, ?)";
-                PreparedStatement statement2 = conn.prepareStatement(sql2);
-                statement2.setString(1, username.getText());
-                statement2.setString(2, password.getText());
-                statement2.setString(3, userType);
-                Integer rowsUpdated = statement2.executeUpdate();
-                if (rowsUpdated > 0) {
-                    JOptionPane.showMessageDialog(this, "Registration successful. Please log in with your username and password.");
-                }
-            }
-            conn.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    private void displayLoginSucceeded() {
+        JOptionPane.showMessageDialog(this, "Login Successful");
     }
+
+    private void displayRegistrationFailed() {
+        JOptionPane.showMessageDialog(this, "Error Registering: User Already Exists");
+    }
+
+    private void displayRegistrationSucceeded() {
+        JOptionPane.showMessageDialog(this, "Registration successful. Please log in with your username and password.");
+    }
+
     /**
      * Method to handle the completion of the login process
      * Hides the login form and renders the main app

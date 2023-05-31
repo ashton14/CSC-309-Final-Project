@@ -1,10 +1,15 @@
 package src.main;
 
+import javax.swing.*;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 /**
  * @author Cameron Hardy
- * This class is responsible for saving and loading diagrams to/from file
+ * This class is responsible for saving and loading diagrams to/from file and uploading them to the db
  */
 public class FileManager {
     /**
@@ -53,4 +58,5 @@ public class FileManager {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }
+
 }
