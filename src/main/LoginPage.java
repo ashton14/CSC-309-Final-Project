@@ -17,7 +17,7 @@ public class LoginPage extends JFrame{
 
     private JPanel contentPane;
     private JTextField username;
-    private Link conn = null;
+    private Connection conn = null;
     private JFormattedTextField password;
 
     /**
