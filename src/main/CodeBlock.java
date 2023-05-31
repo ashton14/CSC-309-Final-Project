@@ -79,10 +79,6 @@ public abstract class CodeBlock implements Drawable {
             this.text = text;
         }
     }
-    public boolean canLabel() {
-        return false;
-    }
-
     /**
      * Setter method to set the text of this CodeBlock.
      */
