@@ -19,6 +19,7 @@ public class CoursesPage {
     public JPanel assignmentPanel;
     private JButton backButton;
     public Map<String, List<String>> courseAssignments;
+    private static String currentAssignment;
     private Color shadowColor = new Color(0, 0, 0, 50);
 
     public Color generateRandomColor() {
@@ -194,6 +195,7 @@ public class CoursesPage {
                 public void actionPerformed(ActionEvent e) {
                     // handle assignment button click
                     System.out.println("Assignment button clicked! "+e.getActionCommand());
+                    setCurrentAssignment(((JButton)e.getSource()).getText());
                     StateRepository sRepo = (StateRepository) StateRepository.getInstance();
                     ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
                     showSandbox();
@@ -304,5 +306,13 @@ public class CoursesPage {
             d.width = Math.max(d.width, d.height);
             return d;
         }
+    }
+
+    public void setCurrentAssignment(String assignment){
+        this.currentAssignment = "Assignment "+assignment;
+    }
+
+    public static String getCurrentAssignment(){
+        return currentAssignment;
     }
 }

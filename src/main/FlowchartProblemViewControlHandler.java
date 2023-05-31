@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class FlowchartProblemViewControlHandler implements ActionListener, MouseListener {
@@ -11,8 +12,11 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
     private final ArrayList<JTextField> jTextAreas;
     private JButton prev;
     private JButton next;
-    private int curProblemNumber = 0;
+    private int curProblemNumber = 1;
     private int numProblemsCompleted = 0;
+    private int numProblemsInCurrentAssignment = ((ProblemRepository) ProblemRepository.getInstance())
+            .getNumAssignmentProblems(CoursesPage.getCurrentAssignment().substring(0,11)+
+                    (Character.toLowerCase(CoursesPage.getCurrentAssignment().charAt(11)) - 'a' + 1));
 
     FlowchartProblemViewControlHandler(ArrayList<JTextField> jTextAreas, JButton prev, JButton next){
         this.jTextAreas = jTextAreas;
@@ -36,7 +40,7 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
             System.out.println("setting next problem");
             curProblemNumber ++;
             pRepo.setNextProblem();
-            if(curProblemNumber == numProblemsCompleted)
+            if(curProblemNumber > numProblemsCompleted || curProblemNumber == numProblemsInCurrentAssignment)
                 this.next.setEnabled(false);
             this.prev.setEnabled(true);
         }
@@ -44,11 +48,12 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
             next.setEnabled(true);
             pRepo.setPreviousProblem();
             curProblemNumber --;
-            if(curProblemNumber == 0)
+            if(curProblemNumber == 1)
                 this.prev.setEnabled(false);
         }
     }
     public void gradeCode(boolean help) {
+
         ProblemRepository pRepo = (ProblemRepository)ProblemRepository.getInstance();
         UserExample currentProblem = pRepo.getCurrentProblem();
 
@@ -61,12 +66,20 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
         int mistakeIndex = currentProblem.gradeUserCode(usersCode,help);
         FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
         fRepo.setErrorIndex(mistakeIndex);
+
         if (mistakeIndex == -1) {
-            JOptionPane.showMessageDialog(null, "Correct! Nice Work!", "Success",
+            DecimalFormat df = new DecimalFormat("#0");
+                JOptionPane.showMessageDialog(null,
+                    "Correct! Nice Work!\n"+df.format((double)(curProblemNumber)/
+                            (double)numProblemsInCurrentAssignment*100) +"% complete.",
+                        "Success",
                     JOptionPane.INFORMATION_MESSAGE, CodeProblemViewControlHandler.createIcon());
-            this.next.setEnabled(true);
-            if(curProblemNumber == numProblemsCompleted)
+            if(curProblemNumber == numProblemsCompleted + 1)
                 numProblemsCompleted ++;
+            if(numProblemsCompleted < numProblemsInCurrentAssignment )
+                this.next.setEnabled(true);
+            else this.next.setEnabled(false);
+
         }
     }
 
