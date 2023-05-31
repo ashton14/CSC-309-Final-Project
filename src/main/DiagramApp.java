@@ -57,6 +57,7 @@ public class DiagramApp extends JFrame implements Observer {
         JMenuItem newFile = new JMenuItem("New");
         JMenuItem save = new JMenuItem("Save");
         JMenuItem load = new JMenuItem("Load");
+        JMenuItem upload = new JMenuItem("Upload");
         JMenuItem courses = new JMenuItem("Courses");
         JMenuItem about = new JMenuItem("About");
         JMenuItem undo = new JMenuItem("Undo");
@@ -75,6 +76,7 @@ public class DiagramApp extends JFrame implements Observer {
         file.add(newFile);
         file.add(save);
         file.add(load);
+        file.add(upload);
         file.add(courses);
         help.add(about);
         actions.add(undo);
@@ -90,6 +92,7 @@ public class DiagramApp extends JFrame implements Observer {
         newFile.addActionListener(menuController);
         save.addActionListener(menuController);
         load.addActionListener(menuController);
+        upload.addActionListener(menuController);
         courses.addActionListener(menuController);
         about.addActionListener(menuController);
         shape.addActionListener(menuController);

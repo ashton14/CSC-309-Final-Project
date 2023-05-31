@@ -1,5 +1,7 @@
 package src.main;
 
+import org.checkerframework.checker.units.qual.C;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -46,10 +48,9 @@ public class CoursesPage {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setVerticalAlignment(JLabel.CENTER);
 
-        JPanel dashboardPanel = new JPanel();
+        JPanel dashboardPanel = new JPanel(new GridLayout(2, 1));
         dashboardPanel.setBackground(generateRandomColor());
         dashboardPanel.setPreferredSize(new Dimension(100, frame.getHeight()));
-        dashboardPanel.setLayout(new BorderLayout());
 
 
         JPanel contentPanel = new JPanel();
@@ -88,8 +89,32 @@ public class CoursesPage {
         });
         sandboxButton.setUI(new BasicButtonUI());
         dashboardPanel.add(sandboxButton);
+        JButton cloudCoursesButton = new JButton("Cloud");
+        cloudCoursesButton.setForeground(Color.WHITE);
+        cloudCoursesButton.setBackground(generateRandomColor());
+        cloudCoursesButton.setBorderPainted(false);
+        cloudCoursesButton.setFocusPainted(false);
+        cloudCoursesButton.setContentAreaFilled(false);
+        cloudCoursesButton.setOpaque(true);
+        cloudCoursesButton.setFont(new Font("Arial", Font.BOLD, 13));
+        cloudCoursesButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cloudCoursesButton.addActionListener(e -> showFlowchartsFromDb());
+        cloudCoursesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                cloudCoursesButton.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(shadowColor, 4),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                ));
+            }
 
-
+            @Override
+            public void mouseExited(MouseEvent e) {
+                cloudCoursesButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            }
+        });
+        cloudCoursesButton.setUI(new BasicButtonUI());
+        dashboardPanel.add(cloudCoursesButton);
         assignmentPanel = new JPanel();
         assignmentPanel.setLayout(new BoxLayout(assignmentPanel, BoxLayout.Y_AXIS));
 
@@ -111,6 +136,12 @@ public class CoursesPage {
         courseAssignments.put("Course 1", List.of("Assignment 1", "Assignment 2", "Assignment 3"));
         courseAssignments.put("Course 2", List.of("Assignment 4", "Assignment 5", "Assignment 6"));
         courseAssignments.put("Course 3", List.of("Assignment 7", "Assignment 8", "Assignment 9"));
+    }
+
+    private void showFlowchartsFromDb() {
+        frame.setVisible(false);
+        CloudDataPage cdp = new CloudDataPage(SqlControlHandler.getFlowchartFileNames());
+        cdp.setVisible(true);
     }
 
     public void addCourse(String courseName) {
