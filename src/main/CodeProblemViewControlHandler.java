@@ -16,8 +16,7 @@ public class CodeProblemViewControlHandler implements ActionListener {
 
     private JButton prev;
     private JButton next;
-    private int curProblemNumber = 1;
-    private int numProblemsCompleted = 0;
+    private int currentProblemIndex = 0;
     private int numProblemsInCurrentAssignment = ((ProblemRepository) ProblemRepository.getInstance())
             .getNumAssignmentProblems(CoursesPage.getCurrentAssignment().substring(0,11)+
                     (Character.toLowerCase(CoursesPage.getCurrentAssignment().charAt(11)) - 'a' + 1));
@@ -25,6 +24,8 @@ public class CodeProblemViewControlHandler implements ActionListener {
     public CodeProblemViewControlHandler(JButton prev, JButton next){
         this.prev = prev;
         this.next = next;
+        next.setEnabled(false);
+        prev.setEnabled(false);
     }
     /**
      * Handles the Next, Previous, Help and Submit button presses.
@@ -35,20 +36,22 @@ public class CodeProblemViewControlHandler implements ActionListener {
         ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         String commandString = e.getActionCommand();
         if(commandString.equals("Next")){
-            curProblemNumber ++;
+            currentProblemIndex++;
             // call to repo function to change code problem
             pRepo.setNextProblemIndex();
-            if(curProblemNumber > numProblemsCompleted || curProblemNumber == numProblemsInCurrentAssignment)
-                this.next.setEnabled(false);
-            this.prev.setEnabled(true);
+            next.setEnabled(false);
+            prev.setEnabled(true);
 
         } else if(commandString.equals("Previous")){
+            currentProblemIndex--;
             next.setEnabled(true);
+            pRepo.setPreviousProblem();
+            if(currentProblemIndex == 0){
+                prev.setEnabled(false);
+            } else {
+                prev.setEnabled(true);
+            }
             // call to repo function to change code problem
-            pRepo.setPrevProblemIndex();
-            curProblemNumber --;
-            if(curProblemNumber == 1)
-                this.prev.setEnabled(false);
         } else if(commandString.equals("Help")){
             UserExample solution = pRepo.getCurrentProblem();
             ArrayList<CodeBlock> studentAnswerBlocks =
@@ -65,15 +68,15 @@ public class CodeProblemViewControlHandler implements ActionListener {
             if(evaluate.grade()) {
                 DecimalFormat df = new DecimalFormat("#0");
                 JOptionPane.showMessageDialog(null,
-                        "Correct! Nice Work!\n"+df.format((double)(curProblemNumber)/
+                        "Correct! Nice Work!\n"+df.format((double)(currentProblemIndex + 1)/
                                 (double)numProblemsInCurrentAssignment*100) +"% complete.",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE, CodeProblemViewControlHandler.createIcon());
-                if(curProblemNumber == numProblemsCompleted + 1)
-                    numProblemsCompleted ++;
-                if(numProblemsCompleted < numProblemsInCurrentAssignment )
-                    this.next.setEnabled(true);
-                else this.next.setEnabled(false);
+                if(numProblemsInCurrentAssignment > currentProblemIndex + 1) {
+                    next.setEnabled(true);
+                }
+            } else {
+                next.setEnabled(false);
             }
 
             // call to repo function to get feedback
