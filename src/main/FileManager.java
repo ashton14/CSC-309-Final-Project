@@ -1,6 +1,8 @@
 package src.main;
 
+
 import java.io.*;
+
 import java.util.ArrayList;
 /**
  * @author Cameron Hardy
@@ -53,4 +55,5 @@ public class FileManager {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }
+
 }

@@ -60,6 +60,21 @@ public class MenuBarControlHandler implements ActionListener {
                     stateRepository.setStatus("Please select a valid save file");
                 }
                 break;
+            case "Upload":
+                stateRepository.setStatus("Attempting to upload file.");
+                String uploadFile = (String) JOptionPane.showInputDialog(
+                        null,
+                        "Select a save file to upload a diagram",
+                        "Upload file",
+                        1);
+                if (uploadFile != null && uploadFile.length() > 0) {
+                    if (SqlControlHandler.uploadFlowchart(uploadFile)){
+                        stateRepository.setStatus("File uploaded successfully");
+                    }
+                } else {
+                    stateRepository.setStatus("Please select a valid save file");
+                }
+                break;
             case "Courses":
                 stateRepository.changeMode("Courses");
                 new CoursesPage();
