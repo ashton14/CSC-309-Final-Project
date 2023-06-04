@@ -101,6 +101,7 @@ public class ProblemRepository extends Observable implements Repository{
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         setPrevProblemIndex();
         dRepo.clear();
+        dRepo.addAll(this.getCurrentProblem().getFlowChart());
     }
     public void setAssignmentIndex(int assNum) {
         if(assNum < assignments.size()) {

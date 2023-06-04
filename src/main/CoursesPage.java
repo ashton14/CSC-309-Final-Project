@@ -1,7 +1,5 @@
 package src.main;
 
-import org.checkerframework.checker.units.qual.C;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

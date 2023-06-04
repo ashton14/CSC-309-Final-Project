@@ -17,6 +17,7 @@ public class GradeFlowchart {
     private  ArrayList<CodeBlock> solutionChart;
     private ArrayList<CodeBlock> studentChart;
     private CodeBlock previousCodeBlock;
+
     private boolean isVerbose;
     private boolean isCorrect;
 
@@ -238,24 +239,6 @@ public class GradeFlowchart {
                 && codeBlock1.getClass() != codeBlock2.getClass()
                 && codeBlock1.getText().equals(codeBlock2.getText()));
     }
-    public void analyze(){
-       /*for(int i = 0; i < solutionChart.size(); ++i){
-           System.out.print("Solution :" + solutionChart.get(i).getText() + ", [");
-           for(int j = 0; j < solutionChart.get(i).discovered.size(); ++j){
-               System.out.print(solutionChart.get(i).discovered.get(j).toString() + ", ");
-           }
-           System.out.println();
-       }
-        System.out.println();
-        for(int i = 0; i < studentChart.size(); ++i){
-            System.out.print("Student :" + studentChart.get(i).getText() + ", [");
-            for(int j = 0; j < studentChart.get(i).discovered.size(); ++j){
-                System.out.print(studentChart.get(i).discovered.get(j) + ", ");
-            }
-            System.out.println();
-        }*/
-
-    }
 
     /**
      * Finds and returns the first CodeBlock in the nextStudentBlocks ArrayList that
@@ -381,7 +364,7 @@ public class GradeFlowchart {
      * that has not yet been discovered that is accessible
      * from the given CodeBlock, otherwise false.
      */
-    private static boolean discoverable(CodeBlock codeBlock){
+    private boolean discoverable(CodeBlock codeBlock){
         if(codeBlock.getDiscovered().size() == 0)
             return false;
         for(int i = 0; i < codeBlock.getDiscovered().size(); ++i){
@@ -392,6 +375,32 @@ public class GradeFlowchart {
         return false;
     }
 
+    CodeBlock getPreviousConditional(CodeBlock codeBlock){
+        ArrayList<CodeBlock> inboundCodeBlocks = codeBlock.getInboundCodeBlocks();
+        for(int i = 0; i < inboundCodeBlocks.size(); ++i){
+            if( (inboundCodeBlocks.get(i).getClass() == IfBlock.class ||
+            inboundCodeBlocks.get(i).getClass() == LoopBlock.class) &&
+            inboundCodeBlocks.get(i) != codeBlock){
+                return inboundCodeBlocks.get(i);
+            }
+        }
+        return null;
+    }
+
+    /*private CodeBlock getLastConditionalBlock(CodeBlock codeBlock){
+        if(conditionalBlocks.isEmpty()){
+            return null;
+        }
+
+        CodeBlock conditional = getLastConditionalBlock(codeBlock);
+        CodeBlock potentialRelatedConditional = conditionalBlocks.pop();
+        while(conditional != potentialRelatedConditional && !conditionalBlocks.isEmpty()){
+            potentialRelatedConditional = conditionalBlocks.pop();
+        }
+        if(conditional == potentialRelatedConditional)
+            return
+
+    }*/
 
     /**
      * Discovers if the two graphs starting at the given CodeBlocks of the solution
@@ -402,24 +411,34 @@ public class GradeFlowchart {
      */
     public void discover(CodeBlock solutionBlock, CodeBlock studentBlock) {
         previousCodeBlock = solutionBlock;
+
+
         ArrayList<CodeBlock> nextSolutionBlocks = solutionBlock.getOutboundCodeBlocks();
         ArrayList<CodeBlock> nextStudentBlocks = studentBlock.getOutboundCodeBlocks();
         for (CodeBlock nextSolutionBlock : nextSolutionBlocks) {
             if(!discoverable(nextSolutionBlock)){
                 return;
             }
+
+            if(previousCodeBlock.getClass() == StopBlock.class){
+                CodeBlock tempConditional = getPreviousConditional(nextSolutionBlock);
+                if(tempConditional != null) {
+                    previousCodeBlock = tempConditional;
+                }
+            }
+
             CodeBlock nextStudentBlock = findEquivalent(nextStudentBlocks, nextSolutionBlock);
             if (nextStudentBlock == null) {
                 if(solutionToStudentBlock.get(nextSolutionBlock) != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
+                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
                             + nextSolutionBlock.getText() + "\" is missing a connection. It should have an incoming " +
                             " connection from the "
-                            + previousCodeBlock.toString() + " labeled: \"" + previousCodeBlock.getText() + "\".");
+                            + previousCodeBlock.toString() + "Block labeled: \"" + previousCodeBlock.getText() + "\".");
                     return;
                 }
                 CodeBlock nextStudentWrongType = findWrongType(nextStudentBlocks, nextSolutionBlock);
                 if(nextStudentWrongType != null){
-                    sendNegativeFeedback("The " + nextStudentWrongType.toString() + " labeled: \""
+                    sendNegativeFeedback("The " + nextStudentWrongType.toString() + " Block labeled: \""
                             + nextStudentWrongType.getText() + "\" might be the wrong type. Did you mean to make it a" +
                             " \"" + nextSolutionBlock.toString() + "\"?");
                     return;
@@ -428,7 +447,7 @@ public class GradeFlowchart {
 
                 CodeBlock nextStudentBlockTypo = findMisspelled(nextStudentBlocks, nextSolutionBlock, 5);
                 if(nextStudentBlockTypo != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
+                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
                             + nextStudentBlockTypo.getText() + "\" might be mislabeled. Did you mean to label it" +
                             " \"" + nextSolutionBlock.getText() + "\"?");
                     return;
@@ -436,15 +455,15 @@ public class GradeFlowchart {
 
                 CodeBlock nextStudentBlockTypoTypeIgnored = findMisspelledIgnoreType(nextStudentBlocks, nextSolutionBlock,5);
                 if(nextStudentBlockTypoTypeIgnored != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
+                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
                             + nextStudentBlockTypoTypeIgnored.getText() + "\" might be mislabeled and of the wrong type. " +
                             "Did you mean to label it:" +
-                            " \"" + nextSolutionBlock.getText() + "\" and make it a \"" + nextSolutionBlock.toString() + "\"?");
+                            " \"" + nextSolutionBlock.getText() + "\" and make it a " + nextSolutionBlock.toString() + "Block ?");
                     return;
                 }
                 sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
                         + nextSolutionBlock.getText() + "\" is missing or not properly connected. " +
-                        "This block should be executed after the " + previousCodeBlock.toString() + " labeled: \"" +
+                        "This Code Block should be executed after the " + previousCodeBlock.toString() + " Block labeled: \"" +
                         previousCodeBlock.getText() + "\".");
                 return;
             }
@@ -497,7 +516,7 @@ public class GradeFlowchart {
         if(disjointBlock != null){
             sendNegativeFeedback("The " + disjointBlock.toString() + " labeled: \"" +
                     disjointBlock.getText() + "\" has no connections entering it. Without" +
-                    " an incoming connection this codeBlock cannot be executed.");
+                    " an incoming connection this Code Block cannot be executed.");
             return isCorrect;
         }
 

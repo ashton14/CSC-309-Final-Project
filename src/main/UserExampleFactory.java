@@ -41,11 +41,11 @@ public class UserExampleFactory {
         CodeBlock cb5 = factory.makeBlock("Print", 200, 500);
         CodeBlock cb6 = factory.makeBlock("Stop", 200, 600);
 
-        cb1.setText("int a = 2");
-        cb2.setText("int b = 3");
-        cb3.setText("int c");
-        cb4.setText("c = a + b");
-        cb5.setText("print c");
+        cb1.setText("int a = 2;");
+        cb2.setText("int b = 3;");
+        cb3.setText("int c;");
+        cb4.setText("c = a + b;");
+        cb5.setText("System.out.println(c);");
 
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
@@ -115,11 +115,11 @@ public class UserExampleFactory {
         CodeBlock cb6 = factory.makeBlock("Stop", 150, 550);
         CodeBlock cb7 = factory.makeBlock("Stop", 300, 550);
 
-        cb1.setText("int y = 1");
-        cb2.setText("int x = 2");
+        cb1.setText("int y = 1;");
+        cb2.setText("int x = 2;");
         cb3.setText("if(x == y)");
-        cb4.setText("\"X is the\n same as y\"");
-        cb5.setText("\"X is not the\n same as y\"");
+        cb4.setText("System.out.println(\"X is the same as y\");");
+        cb5.setText("System.out.println(\"X is not the same as y\");");
 
 
         cb0.addToOutbound(cb1);
@@ -203,14 +203,14 @@ public class UserExampleFactory {
         CodeBlock cb8 = factory.makeBlock("Instruction", 250, 590);
         CodeBlock cb9 = factory.makeBlock("Print", 250, 670);
 
-        cb1.setText("int n = 100");
-        cb2.setText("int t1 = 0");
-        cb3.setText("int t2 = 1");
-        cb4.setText("t1<=n");
-        cb6.setText("int sum = t1+t2");
-        cb7.setText("t1 = t2");
-        cb8.setText("t2 = sum");
-        cb9.setText("\"sum: \"+sum");
+        cb1.setText("int n = 100;");
+        cb2.setText("int t1 = 0;");
+        cb3.setText("int t2 = 1;");
+        cb4.setText("while(t1 <= n)");
+        cb6.setText("int sum = t1+t2;");
+        cb7.setText("t1 = t2;");
+        cb8.setText("t2 = sum;");
+        cb9.setText("System.out.println(\"sum: \"+sum);");
 
         cb0.addToOutbound(cb1);
         cb1.addToInbound(cb0);
