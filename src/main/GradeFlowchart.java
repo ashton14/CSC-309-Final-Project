@@ -375,6 +375,14 @@ public class GradeFlowchart {
         return false;
     }
 
+    /**
+     * Helper method for discover to retrieve a conditional CodeBlock (LoopBlock or IfBlocK)
+     * that has an inbound connection to the given CodeBlock and is not the same instance
+     * of the given CodeBlock.
+     * @param codeBlock   The CodeBlock to search for a conditional CodeBlock parent of.
+     * @return   A conditional CodeBlock that has an inbound connection into the
+     * given CodeBlock or null if one does not exist.
+     */
     CodeBlock getPreviousConditional(CodeBlock codeBlock){
         ArrayList<CodeBlock> inboundCodeBlocks = codeBlock.getInboundCodeBlocks();
         for(int i = 0; i < inboundCodeBlocks.size(); ++i){
@@ -387,20 +395,6 @@ public class GradeFlowchart {
         return null;
     }
 
-    /*private CodeBlock getLastConditionalBlock(CodeBlock codeBlock){
-        if(conditionalBlocks.isEmpty()){
-            return null;
-        }
-
-        CodeBlock conditional = getLastConditionalBlock(codeBlock);
-        CodeBlock potentialRelatedConditional = conditionalBlocks.pop();
-        while(conditional != potentialRelatedConditional && !conditionalBlocks.isEmpty()){
-            potentialRelatedConditional = conditionalBlocks.pop();
-        }
-        if(conditional == potentialRelatedConditional)
-            return
-
-    }*/
 
     /**
      * Discovers if the two graphs starting at the given CodeBlocks of the solution
