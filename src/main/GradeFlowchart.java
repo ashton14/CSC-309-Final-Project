@@ -18,6 +18,7 @@ public class GradeFlowchart {
     private ArrayList<CodeBlock> studentChart;
     private CodeBlock previousCodeBlock;
 
+    private boolean gaveHint;
     private boolean isVerbose;
     private boolean isCorrect;
 
@@ -47,6 +48,7 @@ public class GradeFlowchart {
         solutionToStudentBlock = new HashMap<>();
         this.isVerbose = isVerbose;
         isCorrect = true;
+        gaveHint = false;
     }
 
     /**
@@ -58,6 +60,10 @@ public class GradeFlowchart {
     private void sendNegativeFeedback(String feedback){
         FeedbackRepository hintRepository = (FeedbackRepository) FeedbackRepository.getInstance();
         isCorrect = false;
+        if(gaveHint){
+            return;
+        }
+        gaveHint = true;
         if(isVerbose) {
             hintRepository.setFeedback(feedback);
         } else {
@@ -472,10 +478,10 @@ public class GradeFlowchart {
                unequivalentCodeBlockSuggestion(nextSolutionBlock, nextStudentBlocks);
                return;
             }
-            if(nextSolutionBlocksMarkings.get(i) != nextStudentBlocksMarkings.get(i)){
-                sendNegativeFeedback("A connection from a" + previousCodeBlock + " to a " + solutionBlock.toString() + " Block" +
-                        "labeled: " + solutionBlock.getText() + " should be marked as " + nextSolutionBlocksMarkings.get(i)
-                        + "instead of " + nextStudentBlocksMarkings.get(i));
+            if(!nextSolutionBlocksMarkings.get(i).equals(nextStudentBlocksMarkings.get(i))){
+                sendNegativeFeedback("A connection from a" + previousCodeBlock + " Block to a " + nextStudentBlock.toString() + " Block" +
+                        " labeled: " + nextStudentBlock.getText() + " should be marked as " + nextSolutionBlocksMarkings.get(i)
+                        + " instead of " + nextStudentBlocksMarkings.get(i));
                 return;
             }
             discover(nextSolutionBlock, nextStudentBlock);

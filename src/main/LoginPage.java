@@ -106,7 +106,6 @@ public class LoginPage extends JFrame{
         LoginPage page = new LoginPage();
         page.setVisible(true);
         page.login();
-        System.out.println(javax.swing.UIManager.getDefaults().getFont("Label.font"));
     }
 
 

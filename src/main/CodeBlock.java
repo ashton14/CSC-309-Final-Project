@@ -19,6 +19,8 @@ public abstract class CodeBlock implements Drawable {
     private int maxOutboundCount;
     private ArrayList<Boolean> discovered;
 
+    public static final int INBOUND_INFINITE = -1;
+
     /**
      * Constructs a new CodeBlock with the given shape, max inbound count, and max outbound count.
      * @param shape The Shape of the CodeBlock.
@@ -166,6 +168,9 @@ public abstract class CodeBlock implements Drawable {
      * @return True if an inbound code block can be added, false otherwise.
      */
     public boolean canAddIn() {
+        if(maxInboundCount == INBOUND_INFINITE){
+            return true;
+        }
         return inboundCodeBlocks.size() < maxInboundCount;
     }
 
@@ -376,6 +381,9 @@ public abstract class CodeBlock implements Drawable {
      * @return True if an inbound code block can be added, false otherwise.
      */
     public boolean canAddIn(CodeBlock block) {
+        if(maxInboundCount == INBOUND_INFINITE && !inboundCodeBlocks.contains(block)){
+            return true;
+        }
         return (inboundCodeBlocks.size() < maxInboundCount &&
                 !inboundCodeBlocks.contains(block));
     }

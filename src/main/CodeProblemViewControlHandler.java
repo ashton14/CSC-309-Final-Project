@@ -54,9 +54,18 @@ public class CodeProblemViewControlHandler implements ActionListener {
             // call to repo function to change code problem
         } else if(commandString.equals("Help")){
             UserExample solution = pRepo.getCurrentProblem();
+
             ArrayList<CodeBlock> studentAnswerBlocks =
                     ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
-            GradeFlowchart evaluate = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, true);
+            ArrayList<Drawable> studentGraph =   ((DataRepository)(DataRepository.getInstance())).getDrawables();
+            FileManager.readFile("test");
+            ArrayList<CodeBlock> solutionBlocks =
+                    ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
+
+
+            ((DataRepository)(DataRepository.getInstance())).clear();
+            ((DataRepository)(DataRepository.getInstance())).addAll(studentGraph);
+            GradeFlowchart evaluate = new GradeFlowchart(solutionBlocks, studentAnswerBlocks, true);
             evaluate.grade();
 
         } else if(commandString.equals("Submit")){
