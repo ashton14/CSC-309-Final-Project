@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Assignment {
     private ArrayList<UserExample> problems;
+    private ArrayList<Boolean> correct;
     private String assignmentName;
 
     public Assignment(ArrayList<UserExample> problems, String assignmentName) {
