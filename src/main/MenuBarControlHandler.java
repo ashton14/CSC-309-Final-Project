@@ -98,7 +98,7 @@ public class MenuBarControlHandler implements ActionListener {
                             null,
                             "Rename text from: \"" + stateRepository.getCurrentlySelectedCodeBlock().getText() + "\" to:",
                             "Rename the " + stateRepository.getCurrentlySelectedCodeBlock().toString() + " Block",
-                            1, null, null, "");
+                            1, null, null, stateRepository.getCurrentlySelectedCodeBlock().getText());
                     stateRepository.getCurrentlySelectedCodeBlock().setText(text);
                     dataRepository.modifiedDrawables();
                     break;

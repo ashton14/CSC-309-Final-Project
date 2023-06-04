@@ -164,6 +164,14 @@ public abstract class Shape extends Observable implements Drawable, Serializable
      */
     public abstract Shape copyShape();
 
+    /**
+     * Update method for Shapes, intended to be used for when
+     * this Shape is observing another Shape. Observing Shapes
+     * are assumed to be the border of the Shape being observed.
+     * @param o     The observable object.
+     * @param arg   an argument passed to the {@code notifyObservers}
+     *                 method.
+     */
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof Shape){
