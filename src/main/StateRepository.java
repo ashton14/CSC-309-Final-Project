@@ -112,7 +112,10 @@ public class StateRepository extends Observable implements Repository {
      */
     public Shape getCurrentlySelectedCodeBlockOutline(){
         if(currentlySelectedDrawable instanceof CodeBlock) {
-            Shape shapeOutline = ((CodeBlock) currentlySelectedDrawable).copyShape();
+            CodeBlock codeBlock = ((CodeBlock) currentlySelectedDrawable);
+            Shape shapeOutline = codeBlock.copyShape();
+            Shape innerShape = codeBlock.getShape();
+            innerShape.addObserver(shapeOutline);
             shapeOutline.setColor(Color.YELLOW);
             shapeOutline.setWidth(shapeOutline.getWidth() + 5);
             shapeOutline.setHeight(shapeOutline.getHeight() + 5);

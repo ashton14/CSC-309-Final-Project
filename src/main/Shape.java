@@ -1,6 +1,8 @@
 package src.main;
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Abstract class to be extended to represent a shape with a
@@ -9,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Aaron Bettencourt
  */
-public abstract class Shape implements Drawable, Serializable {
+public abstract class Shape extends Observable implements Drawable, Serializable, Observer {
     private int xPosCenter;
     private int yPosCenter;
     private int width;
@@ -142,6 +144,8 @@ public abstract class Shape implements Drawable, Serializable {
      */
     public void setWidth(int width) {
         this.width = width;
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -150,6 +154,8 @@ public abstract class Shape implements Drawable, Serializable {
      */
     public void setHeight(int height) {
         this.height = height;
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -157,4 +163,13 @@ public abstract class Shape implements Drawable, Serializable {
      * @return  A deep copy of this Shape as an object of type Shape.
      */
     public abstract Shape copyShape();
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o instanceof Shape){
+            Shape shape = (Shape) o;
+            setHeight(shape.getHeight() + 5);
+            setWidth(shape.getWidth() + 5);
+        }
+    }
 }

@@ -13,6 +13,8 @@ public abstract class CodeBlock implements Drawable {
     private String text;
     private ArrayList<CodeBlock> inboundCodeBlocks;
     private ArrayList<CodeBlock> outboundCodeBlocks;
+
+    private ArrayList<Boolean> outboundCodeBlocksMarkings;
     private int maxInboundCount;
     private int maxOutboundCount;
     private ArrayList<Boolean> discovered;
@@ -30,6 +32,7 @@ public abstract class CodeBlock implements Drawable {
         this.maxInboundCount = maxInboundCount;
         this.maxOutboundCount = maxOutboundCount;
         this.text = text;
+        outboundCodeBlocksMarkings = new ArrayList<>();
     }
 
     /**
@@ -69,6 +72,7 @@ public abstract class CodeBlock implements Drawable {
         }
         inboundCodeBlocks.clear();
         outboundCodeBlocks.clear();
+        outboundCodeBlocksMarkings.clear();
     }
 
     /**
@@ -79,19 +83,22 @@ public abstract class CodeBlock implements Drawable {
      *                    from.
      */
     public void removeConnection(CodeBlock codeBlock){
+        ArrayList<Boolean> newOutboundMarkings = new ArrayList<>();
         for (CodeBlock inboundCodeBlock : inboundCodeBlocks) {
             if(inboundCodeBlock == codeBlock) {
                 inboundCodeBlock.outboundCodeBlocks.remove(this);
             }
         }
-        for (CodeBlock outboundCodeBlock : outboundCodeBlocks) {
-            outboundCodeBlock.inboundCodeBlocks.remove(this);
-            if(outboundCodeBlock == codeBlock) {
-                outboundCodeBlock.outboundCodeBlocks.remove(this);
+        for(int i = 0; i < outboundCodeBlocks.size(); ++i){
+            if(outboundCodeBlocks.get(i) == codeBlock) {
+                outboundCodeBlocks.get(i).inboundCodeBlocks.remove(this);
+            } else {
+                newOutboundMarkings.add(outboundCodeBlocksMarkings.get(i));
             }
         }
         inboundCodeBlocks.remove(codeBlock);
         outboundCodeBlocks.remove(codeBlock);
+        outboundCodeBlocksMarkings = newOutboundMarkings;
     }
 
     /**
@@ -100,9 +107,19 @@ public abstract class CodeBlock implements Drawable {
      *               CodeBlock to.
      */
     public void setText(String text){
-        if(text != null){
-            this.text = text;
+        if(text == null){
+            return;
         }
+        Font font = new Font("Segoe", Font.PLAIN, 12);
+        Canvas canvas = new Canvas();
+        FontMetrics fontMetrics = canvas.getFontMetrics(font);
+
+        int textWidth = fontMetrics.stringWidth(text);
+        if(shape.getWidth() < textWidth + 5){
+            shape.setWidth(textWidth + 5);
+        }
+
+        this.text = text;
     }
 
     /**
@@ -180,10 +197,49 @@ public abstract class CodeBlock implements Drawable {
      */
     public boolean addToOutbound(CodeBlock block) {
         if (canAddOut(block)) {
+            outboundCodeBlocksMarkings.add(true);
             return outboundCodeBlocks.add(block);
         } else {
             return false;
         }
+    }
+
+    /**
+     * Marks an outbound connection to a given CodeBlock as
+     * true or false.
+     * @param block   The CodeBlock of the outbound connection to mark.
+     * @param marking   The marking (true or false) value to give to
+     *                  the connection with the given CodeBlock.
+     */
+    public void setOutboundCodeBlocksMarking(CodeBlock block, Boolean marking){
+        if(block == null){
+            return;
+        }
+        int index = outboundCodeBlocks.indexOf(block);
+        if(index != -1){
+            outboundCodeBlocksMarkings.set(index, marking);
+        }
+    }
+
+    /**
+     * Gets the marking of an outbound connection to a given CodeBlock.
+     * @param block   The outbound CodeBlock connection to get the marking for.
+     * @return   A boolean representing the marking of the connection to the
+     * given outbound CodeBlock.
+     */
+    public Boolean getOutBoundCodeBlockMarking(CodeBlock block){
+        if(block == null){
+            return null;
+        }
+        int index = outboundCodeBlocks.indexOf(block);
+        if(index == -1) {
+            return null;
+        }
+        return outboundCodeBlocksMarkings.get(index);
+    }
+
+    public ArrayList<Boolean> getOutBoundCodeBlockMarkings(){
+        return outboundCodeBlocksMarkings;
     }
 
     /**
@@ -255,8 +311,8 @@ public abstract class CodeBlock implements Drawable {
      * @param g The Graphics object to draw with.
      */
     public void draw(Graphics g){
-        shape.draw(g);
         int textWidth = g.getFontMetrics().stringWidth(text);
+        shape.draw(g);
         g.setColor(Color.BLACK);
         g.drawString(text,  (getXCenter() - textWidth / 2), getYCenter());
     }
@@ -292,6 +348,14 @@ public abstract class CodeBlock implements Drawable {
      * @return A deep copy of this Shape as a Shape.
      */
     public Shape copyShape(){
+        return shape.copyShape();
+    }
+
+    /**
+     * Returns the Shape object used by this CodeBlock.
+     * @return The Shape object used by this Code
+     */
+    public Shape getShape(){
         return shape.copyShape();
     }
 
