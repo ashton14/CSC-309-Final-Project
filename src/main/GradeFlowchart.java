@@ -386,20 +386,53 @@ public class GradeFlowchart {
         return false;
     }
 
+
     /**
-     * Helper method for discover to retrieve a conditional CodeBlock (LoopBlock or IfBlocK)
-     * that has an inbound connection to the given CodeBlock and is not the same instance
-     * of the given CodeBlock.
+     * Helper Method for getPreviousConditional
+     * Recursively determines if a given CodeBlock assumed to be a conditional CodeBlock
+     * (if or loop) has a given stopBlock as an outbound connection (through the given conditional
+     * CodeBlock or one of its other outbound connections). Ignores the outbound connections
+     * through the uninterested CodeBlock for efficiency.
+     * @param conditionalCodeBlock   The CodeBlock assumed to be an if or loop to search for
+     *                               outbound Connections.
+     * @param stopBlock   The StopBlock reference to search for.
+     * @param uninterestedBlock   The outbound Connection of the conditionalCodeBlock to
+     *                            not search through for efficiency.
+     * @return  A boolean representing if the given StopBlock could be found.
+     */
+    private boolean isRelated(CodeBlock conditionalCodeBlock, StopBlock stopBlock, CodeBlock uninterestedBlock){
+        ArrayList<CodeBlock> outBoundCodeBlocks = conditionalCodeBlock.getOutboundCodeBlocks();
+            for(int i = 0; i < outBoundCodeBlocks.size(); ++i){
+                if(outBoundCodeBlocks.get(i) != uninterestedBlock) {
+                    if (outBoundCodeBlocks.get(i) == stopBlock) {
+                        return true;
+                    }
+                } else {
+                    return isRelated(outBoundCodeBlocks.get(i), stopBlock, uninterestedBlock);
+                }
+            }
+        return false;
+        }
+
+
+
+    /**
+     * Helper method for the discover method to retrieve a conditional CodeBlock (LoopBlock or IfBlocK)
+     * that has an inbound connection into the given CodeBlock. This conditional CodeBlock
+     * also must have the given StopBlock accessible to it through the outbound CodeBlocks of
+     * itself or the CodeBlocks that it has outbound connections to.
      * @param codeBlock   The CodeBlock to search for a conditional CodeBlock parent of.
+     * @param stopBlock   The StopBlock that has to be outbound from the found
+     *                    conditional CodeBlock (or one of the conditional CodeBlock's outbound CodeBlocks).
      * @return   A conditional CodeBlock that has an inbound connection into the
      * given CodeBlock or null if one does not exist.
      */
-    private CodeBlock getPreviousConditional(CodeBlock codeBlock){
+    private CodeBlock getPreviousConditional(CodeBlock codeBlock, StopBlock stopBlock){
         ArrayList<CodeBlock> inboundCodeBlocks = codeBlock.getInboundCodeBlocks();
         for(int i = 0; i < inboundCodeBlocks.size(); ++i){
             if( (inboundCodeBlocks.get(i).getClass() == IfBlock.class ||
             inboundCodeBlocks.get(i).getClass() == LoopBlock.class) &&
-            inboundCodeBlocks.get(i) != codeBlock){
+            isRelated(inboundCodeBlocks.get(i), stopBlock, codeBlock)){
                 return inboundCodeBlocks.get(i);
             }
         }
@@ -467,7 +500,7 @@ public class GradeFlowchart {
             }
 
             if(previousCodeBlock.getClass() == StopBlock.class){
-                CodeBlock tempConditional = getPreviousConditional(nextSolutionBlock);
+                CodeBlock tempConditional = getPreviousConditional(nextSolutionBlock, (StopBlock) previousCodeBlock);
                 if(tempConditional != null) {
                     previousCodeBlock = tempConditional;
                 }
