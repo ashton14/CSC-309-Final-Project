@@ -57,15 +57,7 @@ public class CodeProblemViewControlHandler implements ActionListener {
 
             ArrayList<CodeBlock> studentAnswerBlocks =
                     ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
-            ArrayList<Drawable> studentGraph =   ((DataRepository)(DataRepository.getInstance())).getDrawables();
-            FileManager.readFile("test");
-            ArrayList<CodeBlock> solutionBlocks =
-                    ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
-
-
-            ((DataRepository)(DataRepository.getInstance())).clear();
-            ((DataRepository)(DataRepository.getInstance())).addAll(studentGraph);
-            GradeFlowchart evaluate = new GradeFlowchart(solutionBlocks, studentAnswerBlocks, true);
+            GradeFlowchart evaluate = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, true);
             evaluate.grade();
 
         } else if(commandString.equals("Submit")){
