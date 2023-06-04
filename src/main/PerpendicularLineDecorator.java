@@ -22,9 +22,10 @@ public class PerpendicularLineDecorator extends ShapeDecorator {
     @Override
     public void draw(Graphics g) {
         super.draw(g);
+        Shape shape = getInnerShapeCopy();
         g.setColor(Color.BLACK);
-        int width = getWidth();
-        int height = getHeight();
+        int width = shape.getWidth();
+        int height = shape.getHeight();
         g.drawLine(getXCenter() - width / 2, getYCenter() - height / 3,
                 getXCenter() + width / 2, getYCenter() - height / 3);
         g.drawLine(getXCenter() - width / 3, getYCenter() + height / 2,

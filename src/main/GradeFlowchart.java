@@ -18,6 +18,7 @@ public class GradeFlowchart {
     private ArrayList<CodeBlock> studentChart;
     private CodeBlock previousCodeBlock;
 
+    private boolean gaveHint;
     private boolean isVerbose;
     private boolean isCorrect;
 
@@ -47,6 +48,7 @@ public class GradeFlowchart {
         solutionToStudentBlock = new HashMap<>();
         this.isVerbose = isVerbose;
         isCorrect = true;
+        gaveHint = false;
     }
 
     /**
@@ -58,6 +60,10 @@ public class GradeFlowchart {
     private void sendNegativeFeedback(String feedback){
         FeedbackRepository hintRepository = (FeedbackRepository) FeedbackRepository.getInstance();
         isCorrect = false;
+        if(gaveHint){
+            return;
+        }
+        gaveHint = true;
         if(isVerbose) {
             hintRepository.setFeedback(feedback);
         } else {
@@ -380,26 +386,97 @@ public class GradeFlowchart {
         return false;
     }
 
+
     /**
-     * Helper method for discover to retrieve a conditional CodeBlock (LoopBlock or IfBlocK)
-     * that has an inbound connection to the given CodeBlock and is not the same instance
-     * of the given CodeBlock.
+     * Helper Method for getPreviousConditional
+     * Recursively determines if a given CodeBlock assumed to be a conditional CodeBlock
+     * (if or loop) has a given stopBlock as an outbound connection (through the given conditional
+     * CodeBlock or one of its other outbound connections). Ignores the outbound connections
+     * through the uninterested CodeBlock for efficiency.
+     * @param conditionalCodeBlock   The CodeBlock assumed to be an if or loop to search for
+     *                               outbound Connections.
+     * @param stopBlock   The StopBlock reference to search for.
+     * @param uninterestedBlock   The outbound Connection of the conditionalCodeBlock to
+     *                            not search through for efficiency.
+     * @return  A boolean representing if the given StopBlock could be found.
+     */
+    private boolean isRelated(CodeBlock conditionalCodeBlock, StopBlock stopBlock, CodeBlock uninterestedBlock){
+        ArrayList<CodeBlock> outBoundCodeBlocks = conditionalCodeBlock.getOutboundCodeBlocks();
+            for(int i = 0; i < outBoundCodeBlocks.size(); ++i){
+                if(outBoundCodeBlocks.get(i) != uninterestedBlock) {
+                    if (outBoundCodeBlocks.get(i) == stopBlock) {
+                        return true;
+                    }
+                } else {
+                    return isRelated(outBoundCodeBlocks.get(i), stopBlock, uninterestedBlock);
+                }
+            }
+        return false;
+        }
+
+
+
+    /**
+     * Helper method for the discover method to retrieve a conditional CodeBlock (LoopBlock or IfBlocK)
+     * that has an inbound connection into the given CodeBlock. This conditional CodeBlock
+     * also must have the given StopBlock accessible to it through the outbound CodeBlocks of
+     * itself or the CodeBlocks that it has outbound connections to.
      * @param codeBlock   The CodeBlock to search for a conditional CodeBlock parent of.
+     * @param stopBlock   The StopBlock that has to be outbound from the found
+     *                    conditional CodeBlock (or one of the conditional CodeBlock's outbound CodeBlocks).
      * @return   A conditional CodeBlock that has an inbound connection into the
      * given CodeBlock or null if one does not exist.
      */
-    private CodeBlock getPreviousConditional(CodeBlock codeBlock){
+    private CodeBlock getPreviousConditional(CodeBlock codeBlock, StopBlock stopBlock){
         ArrayList<CodeBlock> inboundCodeBlocks = codeBlock.getInboundCodeBlocks();
         for(int i = 0; i < inboundCodeBlocks.size(); ++i){
             if( (inboundCodeBlocks.get(i).getClass() == IfBlock.class ||
             inboundCodeBlocks.get(i).getClass() == LoopBlock.class) &&
-            inboundCodeBlocks.get(i) != codeBlock){
+            isRelated(inboundCodeBlocks.get(i), stopBlock, codeBlock)){
                 return inboundCodeBlocks.get(i);
             }
         }
         return null;
     }
 
+    private void unequivalentCodeBlockSuggestion(CodeBlock nextSolutionBlock, ArrayList<CodeBlock> nextStudentBlocks){
+        if(solutionToStudentBlock.get(nextSolutionBlock) != null){
+            sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
+                    + nextSolutionBlock.getText() + "\" is missing a connection. It should have an incoming " +
+                    " connection from the "
+                    + previousCodeBlock.toString() + "Block labeled: \"" + previousCodeBlock.getText() + "\".");
+            return;
+        }
+        CodeBlock nextStudentWrongType = findWrongType(nextStudentBlocks, nextSolutionBlock);
+        if(nextStudentWrongType != null){
+            sendNegativeFeedback("The " + nextStudentWrongType.toString() + " Block labeled: \""
+                    + nextStudentWrongType.getText() + "\" might be the wrong type. Did you mean to make it a" +
+                    " \"" + nextSolutionBlock.toString() + "\"?");
+            return;
+        }
+
+
+        CodeBlock nextStudentBlockTypo = findMisspelled(nextStudentBlocks, nextSolutionBlock, 5);
+        if(nextStudentBlockTypo != null){
+            sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
+                    + nextStudentBlockTypo.getText() + "\" might be mislabeled. Did you mean to label it" +
+                    " \"" + nextSolutionBlock.getText() + "\"?");
+            return;
+        }
+
+        CodeBlock nextStudentBlockTypoTypeIgnored = findMisspelledIgnoreType(nextStudentBlocks, nextSolutionBlock,5);
+        if(nextStudentBlockTypoTypeIgnored != null){
+            sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
+                    + nextStudentBlockTypoTypeIgnored.getText() + "\" might be mislabeled and of the wrong type. " +
+                    "Did you mean to label it:" +
+                    " \"" + nextSolutionBlock.getText() + "\" and make it a " + nextSolutionBlock.toString() + "Block ?");
+            return;
+        }
+        sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
+                + nextSolutionBlock.getText() + "\" is missing or not properly connected. " +
+                "This Code Block should be executed after the " + previousCodeBlock.toString() + " Block labeled: \"" +
+                previousCodeBlock.getText() + "\".");
+    }
 
     /**
      * Discovers if the two graphs starting at the given CodeBlocks of the solution
@@ -410,17 +487,20 @@ public class GradeFlowchart {
      */
     public void discover(CodeBlock solutionBlock, CodeBlock studentBlock) {
         previousCodeBlock = solutionBlock;
-
-
         ArrayList<CodeBlock> nextSolutionBlocks = solutionBlock.getOutboundCodeBlocks();
+        ArrayList<Boolean> nextSolutionBlocksMarkings = solutionBlock.getOutBoundCodeBlockMarkings();
         ArrayList<CodeBlock> nextStudentBlocks = studentBlock.getOutboundCodeBlocks();
-        for (CodeBlock nextSolutionBlock : nextSolutionBlocks) {
+        ArrayList<Boolean> nextStudentBlocksMarkings = studentBlock.getOutBoundCodeBlockMarkings();
+
+        for(int i = 0; i < nextSolutionBlocks.size(); ++i){
+            CodeBlock nextSolutionBlock = nextSolutionBlocks.get(i);
+
             if(!discoverable(nextSolutionBlock)){
                 return;
             }
 
             if(previousCodeBlock.getClass() == StopBlock.class){
-                CodeBlock tempConditional = getPreviousConditional(nextSolutionBlock);
+                CodeBlock tempConditional = getPreviousConditional(nextSolutionBlock, (StopBlock) previousCodeBlock);
                 if(tempConditional != null) {
                     previousCodeBlock = tempConditional;
                 }
@@ -428,42 +508,13 @@ public class GradeFlowchart {
 
             CodeBlock nextStudentBlock = findEquivalent(nextStudentBlocks, nextSolutionBlock);
             if (nextStudentBlock == null) {
-                if(solutionToStudentBlock.get(nextSolutionBlock) != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
-                            + nextSolutionBlock.getText() + "\" is missing a connection. It should have an incoming " +
-                            " connection from the "
-                            + previousCodeBlock.toString() + "Block labeled: \"" + previousCodeBlock.getText() + "\".");
-                    return;
-                }
-                CodeBlock nextStudentWrongType = findWrongType(nextStudentBlocks, nextSolutionBlock);
-                if(nextStudentWrongType != null){
-                    sendNegativeFeedback("The " + nextStudentWrongType.toString() + " Block labeled: \""
-                            + nextStudentWrongType.getText() + "\" might be the wrong type. Did you mean to make it a" +
-                            " \"" + nextSolutionBlock.toString() + "\"?");
-                    return;
-                }
-
-
-                CodeBlock nextStudentBlockTypo = findMisspelled(nextStudentBlocks, nextSolutionBlock, 5);
-                if(nextStudentBlockTypo != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
-                            + nextStudentBlockTypo.getText() + "\" might be mislabeled. Did you mean to label it" +
-                            " \"" + nextSolutionBlock.getText() + "\"?");
-                    return;
-                }
-
-                CodeBlock nextStudentBlockTypoTypeIgnored = findMisspelledIgnoreType(nextStudentBlocks, nextSolutionBlock,5);
-                if(nextStudentBlockTypoTypeIgnored != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
-                            + nextStudentBlockTypoTypeIgnored.getText() + "\" might be mislabeled and of the wrong type. " +
-                            "Did you mean to label it:" +
-                            " \"" + nextSolutionBlock.getText() + "\" and make it a " + nextSolutionBlock.toString() + "Block ?");
-                    return;
-                }
-                sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
-                        + nextSolutionBlock.getText() + "\" is missing or not properly connected. " +
-                        "This Code Block should be executed after the " + previousCodeBlock.toString() + " Block labeled: \"" +
-                        previousCodeBlock.getText() + "\".");
+               unequivalentCodeBlockSuggestion(nextSolutionBlock, nextStudentBlocks);
+               return;
+            }
+            if(!nextSolutionBlocksMarkings.get(i).equals(nextStudentBlocksMarkings.get(i))){
+                sendNegativeFeedback("A connection from a" + previousCodeBlock + " Block to a " + nextStudentBlock.toString() + " Block" +
+                        " labeled: " + nextStudentBlock.getText() + " should be marked as " + nextSolutionBlocksMarkings.get(i)
+                        + " instead of " + nextStudentBlocksMarkings.get(i));
                 return;
             }
             discover(nextSolutionBlock, nextStudentBlock);

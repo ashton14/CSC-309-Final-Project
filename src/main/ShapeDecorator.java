@@ -25,6 +25,29 @@ public abstract class ShapeDecorator extends Shape {
     }
 
     /**
+     * Sets the height of the innerShape of this decorator.
+     * @param height   The height of the innerShape as an int.
+     */
+    @Override
+    public void setHeight(int height) {
+        innerShape.setHeight(height);
+    }
+
+    /**
+     * Sets the width of the innerShape of this decorator.
+     * @param width   The width of the innerShape as an int.
+     */
+    @Override
+    public void setWidth(int width) {
+        innerShape.setWidth(width);
+    }
+
+
+    public Shape getInnerShapeCopy(){
+        return innerShape.copyShape();
+    }
+
+    /**
      * Draws the Shape(s) inside of this ShapeDecorator
      * onto the screen.
      *

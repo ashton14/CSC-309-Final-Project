@@ -12,6 +12,6 @@ public class InstructionBlock extends CodeBlock {
      * @param label A label to label this CodeBlock with.
      */
     public InstructionBlock(Shape wrapper, String label) {
-        super(wrapper,1,1, label);
+        super(wrapper,INBOUND_INFINITE,1, label);
     }
 }

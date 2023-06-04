@@ -54,6 +54,7 @@ public class CodeProblemViewControlHandler implements ActionListener {
             // call to repo function to change code problem
         } else if(commandString.equals("Help")){
             UserExample solution = pRepo.getCurrentProblem();
+
             ArrayList<CodeBlock> studentAnswerBlocks =
                     ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
             GradeFlowchart evaluate = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, true);
