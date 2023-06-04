@@ -400,6 +400,44 @@ public class GradeFlowchart {
         return null;
     }
 
+    private void unequivalentCodeBlockSuggestion(CodeBlock nextSolutionBlock, ArrayList<CodeBlock> nextStudentBlocks){
+        if(solutionToStudentBlock.get(nextSolutionBlock) != null){
+            sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
+                    + nextSolutionBlock.getText() + "\" is missing a connection. It should have an incoming " +
+                    " connection from the "
+                    + previousCodeBlock.toString() + "Block labeled: \"" + previousCodeBlock.getText() + "\".");
+            return;
+        }
+        CodeBlock nextStudentWrongType = findWrongType(nextStudentBlocks, nextSolutionBlock);
+        if(nextStudentWrongType != null){
+            sendNegativeFeedback("The " + nextStudentWrongType.toString() + " Block labeled: \""
+                    + nextStudentWrongType.getText() + "\" might be the wrong type. Did you mean to make it a" +
+                    " \"" + nextSolutionBlock.toString() + "\"?");
+            return;
+        }
+
+
+        CodeBlock nextStudentBlockTypo = findMisspelled(nextStudentBlocks, nextSolutionBlock, 5);
+        if(nextStudentBlockTypo != null){
+            sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
+                    + nextStudentBlockTypo.getText() + "\" might be mislabeled. Did you mean to label it" +
+                    " \"" + nextSolutionBlock.getText() + "\"?");
+            return;
+        }
+
+        CodeBlock nextStudentBlockTypoTypeIgnored = findMisspelledIgnoreType(nextStudentBlocks, nextSolutionBlock,5);
+        if(nextStudentBlockTypoTypeIgnored != null){
+            sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
+                    + nextStudentBlockTypoTypeIgnored.getText() + "\" might be mislabeled and of the wrong type. " +
+                    "Did you mean to label it:" +
+                    " \"" + nextSolutionBlock.getText() + "\" and make it a " + nextSolutionBlock.toString() + "Block ?");
+            return;
+        }
+        sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
+                + nextSolutionBlock.getText() + "\" is missing or not properly connected. " +
+                "This Code Block should be executed after the " + previousCodeBlock.toString() + " Block labeled: \"" +
+                previousCodeBlock.getText() + "\".");
+    }
 
     /**
      * Discovers if the two graphs starting at the given CodeBlocks of the solution
@@ -410,11 +448,14 @@ public class GradeFlowchart {
      */
     public void discover(CodeBlock solutionBlock, CodeBlock studentBlock) {
         previousCodeBlock = solutionBlock;
-
-
         ArrayList<CodeBlock> nextSolutionBlocks = solutionBlock.getOutboundCodeBlocks();
+        ArrayList<Boolean> nextSolutionBlocksMarkings = solutionBlock.getOutBoundCodeBlockMarkings();
         ArrayList<CodeBlock> nextStudentBlocks = studentBlock.getOutboundCodeBlocks();
-        for (CodeBlock nextSolutionBlock : nextSolutionBlocks) {
+        ArrayList<Boolean> nextStudentBlocksMarkings = studentBlock.getOutBoundCodeBlockMarkings();
+
+        for(int i = 0; i < nextSolutionBlocks.size(); ++i){
+            CodeBlock nextSolutionBlock = nextSolutionBlocks.get(i);
+
             if(!discoverable(nextSolutionBlock)){
                 return;
             }
@@ -428,42 +469,13 @@ public class GradeFlowchart {
 
             CodeBlock nextStudentBlock = findEquivalent(nextStudentBlocks, nextSolutionBlock);
             if (nextStudentBlock == null) {
-                if(solutionToStudentBlock.get(nextSolutionBlock) != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
-                            + nextSolutionBlock.getText() + "\" is missing a connection. It should have an incoming " +
-                            " connection from the "
-                            + previousCodeBlock.toString() + "Block labeled: \"" + previousCodeBlock.getText() + "\".");
-                    return;
-                }
-                CodeBlock nextStudentWrongType = findWrongType(nextStudentBlocks, nextSolutionBlock);
-                if(nextStudentWrongType != null){
-                    sendNegativeFeedback("The " + nextStudentWrongType.toString() + " Block labeled: \""
-                            + nextStudentWrongType.getText() + "\" might be the wrong type. Did you mean to make it a" +
-                            " \"" + nextSolutionBlock.toString() + "\"?");
-                    return;
-                }
-
-
-                CodeBlock nextStudentBlockTypo = findMisspelled(nextStudentBlocks, nextSolutionBlock, 5);
-                if(nextStudentBlockTypo != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
-                            + nextStudentBlockTypo.getText() + "\" might be mislabeled. Did you mean to label it" +
-                            " \"" + nextSolutionBlock.getText() + "\"?");
-                    return;
-                }
-
-                CodeBlock nextStudentBlockTypoTypeIgnored = findMisspelledIgnoreType(nextStudentBlocks, nextSolutionBlock,5);
-                if(nextStudentBlockTypoTypeIgnored != null){
-                    sendNegativeFeedback("A " + nextSolutionBlock.toString() + " Block labeled: \""
-                            + nextStudentBlockTypoTypeIgnored.getText() + "\" might be mislabeled and of the wrong type. " +
-                            "Did you mean to label it:" +
-                            " \"" + nextSolutionBlock.getText() + "\" and make it a " + nextSolutionBlock.toString() + "Block ?");
-                    return;
-                }
-                sendNegativeFeedback("A " + nextSolutionBlock.toString() + " labeled: \""
-                        + nextSolutionBlock.getText() + "\" is missing or not properly connected. " +
-                        "This Code Block should be executed after the " + previousCodeBlock.toString() + " Block labeled: \"" +
-                        previousCodeBlock.getText() + "\".");
+               unequivalentCodeBlockSuggestion(nextSolutionBlock, nextStudentBlocks);
+               return;
+            }
+            if(nextSolutionBlocksMarkings.get(i) != nextStudentBlocksMarkings.get(i)){
+                sendNegativeFeedback("A connection from a" + previousCodeBlock + " to a " + solutionBlock.toString() + " Block" +
+                        "labeled: " + solutionBlock.getText() + " should be marked as " + nextSolutionBlocksMarkings.get(i)
+                        + "instead of " + nextStudentBlocksMarkings.get(i));
                 return;
             }
             discover(nextSolutionBlock, nextStudentBlock);

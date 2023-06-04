@@ -16,7 +16,27 @@ public class Diamond extends Shape {
     public Diamond(int xPosCenter, int yPosCenter, int width, int height, Color color) {
         super(xPosCenter, yPosCenter,width,height, color);
     }
+    /**
+     * Sets the width for this Diamond and makes its height
+     * match.
+     * @param width   The width of this Shape as an int.
+     */
+    @Override
+    public void setWidth(int width) {
+        super.setWidth(width);
+        super.setHeight(width);
+    }
 
+    /**
+     * Sets the height for this Diamond and makes its
+     * width match.
+     * @param height   The height of this Shape as an int.
+     */
+    @Override
+    public void setHeight(int height) {
+        super.setWidth(height);
+        super.setHeight(height);
+    }
     /**
      * Returns a deep copy of this Diamond as a Shape.
      * @return a deep copy of this Diamond as a Shape.
