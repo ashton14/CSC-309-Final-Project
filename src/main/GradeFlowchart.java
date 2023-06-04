@@ -187,16 +187,22 @@ public class GradeFlowchart {
 
     /**
      * Returns a boolean representing if two CodeBlocks
-     * are equivalent (not null, the same class and have the equal text).
+     * are equivalent (not null, the same class and have the equal text ignoring whitespace).
      * @param codeBlock1   The first CodeBlock to check.
      * @param codeBlock2   The second CodeBlock to check.
      * @return    True if the two CodeBlocks are equivalent, otherwise
      * false.
      */
     public  boolean isCodeBlockEquivalent(CodeBlock codeBlock1, CodeBlock codeBlock2){
-        return (codeBlock1 != null && codeBlock2 != null
-                && codeBlock1.getClass() == codeBlock2.getClass()
-                && codeBlock1.getText().equals(codeBlock2.getText()));
+        if(codeBlock1 == null || codeBlock2 == null){
+            return false;
+        }
+        String codeBlock1Text = codeBlock1.getText().replaceAll(" ", "");
+        String codeBlock2Text = codeBlock2.getText().replaceAll(" ", "");
+        if(codeBlock1.getClass() == codeBlock2.getClass() && codeBlock1Text.equals(codeBlock2Text)){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -265,7 +271,6 @@ public class GradeFlowchart {
         }
         return null;
     }
-
 
     /**
      * Finds and returns the first CodeBlock in the nextStudentBlocks ArrayList that
@@ -383,7 +388,7 @@ public class GradeFlowchart {
      * @return   A conditional CodeBlock that has an inbound connection into the
      * given CodeBlock or null if one does not exist.
      */
-    CodeBlock getPreviousConditional(CodeBlock codeBlock){
+    private CodeBlock getPreviousConditional(CodeBlock codeBlock){
         ArrayList<CodeBlock> inboundCodeBlocks = codeBlock.getInboundCodeBlocks();
         for(int i = 0; i < inboundCodeBlocks.size(); ++i){
             if( (inboundCodeBlocks.get(i).getClass() == IfBlock.class ||
