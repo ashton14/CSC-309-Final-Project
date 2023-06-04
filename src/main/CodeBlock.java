@@ -23,6 +23,8 @@ public abstract class CodeBlock implements Drawable {
     private int maxOutboundCount;
     private ArrayList<Boolean> discovered;
 
+    public static final int INBOUND_INFINITE = -1;
+
     /**
      * Constructs a new CodeBlock with the given shape, max inbound count, and max outbound count.
      * @param shape The Shape of the CodeBlock.

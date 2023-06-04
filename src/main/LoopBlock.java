@@ -12,7 +12,7 @@ package src.main;
      * @param label A label to label this CodeBlock with.
      */
     public LoopBlock(Shape drawable, String label) {
-        super(drawable, 2, 2, label);
+        super(drawable, INBOUND_INFINITE, 2, label);
     }
 
 }

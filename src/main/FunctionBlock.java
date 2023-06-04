@@ -11,7 +11,7 @@ public class FunctionBlock extends CodeBlock {
      * @param wrapper The Shape of the FunctionBlock.
      */
     public FunctionBlock(Shape wrapper, String label) {
-        super(wrapper,1,1, label);
+        super(wrapper,INBOUND_INFINITE,1, label);
     }
 
 }

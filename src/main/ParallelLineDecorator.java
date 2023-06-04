@@ -16,6 +16,7 @@ public class ParallelLineDecorator extends ShapeDecorator {
         super(innerShape);
     }
 
+
     /**
      * Draws the inner Shape and the parallel lines using the given Graphics object.
      * @param g The Graphics object to draw with.
@@ -24,8 +25,10 @@ public class ParallelLineDecorator extends ShapeDecorator {
     public void draw(Graphics g) {
         super.draw(g);
         g.setColor(Color.BLACK);
-        int width = getWidth();
-        int height = getHeight();
+        Shape shape = getInnerShapeCopy();
+
+        int width = shape.getWidth();
+        int height = shape.getHeight();
         g.drawLine(getXCenter() - width / 3, getYCenter() - height / 2,
                 getXCenter() - width / 3, getYCenter() + height / 2);
 

@@ -17,6 +17,6 @@ public class IfBlock extends CodeBlock {
      * @param label A label to label this CodeBlock with.
      */
     public IfBlock(Shape wrapper, String label){
-        super(wrapper, 1, 2, label);
+        super(wrapper, INBOUND_INFINITE, 2, label);
     }
 }

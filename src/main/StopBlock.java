@@ -18,7 +18,7 @@ public class StopBlock extends CodeBlock {
      * @param label A label to label this CodeBlock with.
      */
     public StopBlock(Shape wrapper, String label){
-        super(wrapper, 1, 0, label);
+        super(wrapper, INBOUND_INFINITE, 0, label);
     }
 
 }
