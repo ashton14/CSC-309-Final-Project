@@ -28,7 +28,7 @@ public class MenuBarControlHandler implements ActionListener {
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         switch (e.getActionCommand()) {
             case "New":
-                dataRepository.clear();
+                dataRepository.clearFlowchart();
                 stateRepository.setStatus("New File Created.");
                 System.out.println("New");
                 break;
@@ -88,8 +88,10 @@ public class MenuBarControlHandler implements ActionListener {
                 case "Undo":
                     dataRepository.undo();
                     break;
-                case "Clear":
-                    dataRepository.clear();
+                case "Clear Flowchart":
+                    dataRepository.clearFlowchart();
+                case "Clear Code":
+                    FlowchartProblemViewControlHandler.clearCode();
                 case "Delete":
                     stateRepository.deleteSelectedItem();
                     break;
@@ -108,7 +110,7 @@ public class MenuBarControlHandler implements ActionListener {
                 case "Translate Code":
                     stateRepository.changeMode("Translate Code");
                     //clear flowchart
-                    dataRepository.clear();
+                    dataRepository.clearFlowchart();
                     break;
                 case "Translate Flowchart":
                     stateRepository.changeMode("Translate Flowchart");

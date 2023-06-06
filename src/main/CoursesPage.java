@@ -18,9 +18,12 @@ public class CoursesPage {
     public JPanel coursePanel;
     public JPanel assignmentPanel;
     private JButton backButton;
+    private static JLabel courseProgress;
     public Map<String, List<String>> courseAssignments;
     private static String currentAssignment;
     private Color shadowColor = new Color(0, 0, 0, 50);
+
+    public static int numAssignmentsCompleted = 0;
 
     public Color generateRandomColor() {
         float hue = (float) Math.random();
@@ -194,6 +197,8 @@ public class CoursesPage {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Arial", Font.PLAIN, 16));
         backButton.setFocusPainted(false);
+
+        courseProgress = new JLabel("Progress: "+ numAssignmentsCompleted+"/3");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -202,6 +207,7 @@ public class CoursesPage {
         });
         backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         assignmentPanel.add(backButton);
+        assignmentPanel.add(courseProgress);
         assignmentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         List<String> assignments = courseAssignments.get(courseName);
@@ -344,4 +350,10 @@ public class CoursesPage {
     public static String getCurrentAssignment(){
         return currentAssignment;
     }
+
+    public static void updateCourseProgress(){
+        courseProgress.setText("Progress: "+ numAssignmentsCompleted+"/3");
+    }
+
 }
+

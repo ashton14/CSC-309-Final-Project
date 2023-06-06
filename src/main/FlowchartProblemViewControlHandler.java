@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class FlowchartProblemViewControlHandler implements ActionListener, MouseListener {
 
-    private final ArrayList<JTextField> jTextAreas;
+    private static ArrayList<JTextField> jTextAreas = null;
     private JButton prev;
     private JButton next;
     private int curProblemNumber = 1;
@@ -51,6 +51,10 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
             if(curProblemNumber == 1)
                 this.prev.setEnabled(false);
         }
+
+        if(e.getActionCommand().equals("Clear Code")){
+            System.out.println("xxxx");
+        }
     }
     public void gradeCode(boolean help) {
 
@@ -74,12 +78,24 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
                             (double)numProblemsInCurrentAssignment*100) +"% complete.",
                         "Success",
                     JOptionPane.INFORMATION_MESSAGE, CodeProblemViewControlHandler.createIcon());
-            if(curProblemNumber == numProblemsCompleted + 1)
-                numProblemsCompleted ++;
-            if(numProblemsCompleted < numProblemsInCurrentAssignment )
+            if(curProblemNumber == numProblemsCompleted + 1) {
+                numProblemsCompleted++;
+            }
+            if(numProblemsCompleted < numProblemsInCurrentAssignment ) {
                 this.next.setEnabled(true);
-            else this.next.setEnabled(false);
+            }
+            else {
+                this.next.setEnabled(false);
+                CoursesPage.numAssignmentsCompleted++;
+                CoursesPage.updateCourseProgress();
+            }
 
+        }
+    }
+
+    public static void clearCode(){
+        for(int i = 0; i < jTextAreas.size(); i++) {
+            jTextAreas.get(i).setText("");
         }
     }
 

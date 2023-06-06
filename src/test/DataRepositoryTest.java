@@ -51,7 +51,7 @@ public class DataRepositoryTest {
     @Test
     public void testDataAddOne(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clear();
+        repository.clearFlowchart();
         BlockFactory blockFactory = new BlockFactory();
         CodeBlock varBlock = blockFactory.makeBlock("Variable",0,0);
         repository.addDrawable(varBlock);
@@ -86,7 +86,7 @@ public class DataRepositoryTest {
     @Test
     public void testDataAddNull(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clear();
+        repository.clearFlowchart();
         repository.addDrawable(null);
         assertEquals(0, repository.getDrawables().size());
     }
@@ -100,7 +100,7 @@ public class DataRepositoryTest {
     @Test
     public void testDataGetLines(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clear();
+        repository.clearFlowchart();
         BlockFactory blockFactory = new BlockFactory();
         CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
         CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
@@ -124,7 +124,7 @@ public class DataRepositoryTest {
     @Test
     public void testDataGetBlocks(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clear();
+        repository.clearFlowchart();
         BlockFactory blockFactory = new BlockFactory();
         CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
         CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
@@ -147,7 +147,7 @@ public class DataRepositoryTest {
     @Test
     public void testDataUndo(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clear();
+        repository.clearFlowchart();
         BlockFactory blockFactory = new BlockFactory();
         CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
         CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
@@ -187,7 +187,7 @@ public class DataRepositoryTest {
         BlockFactory blockFactory = new BlockFactory();
         CodeBlock varBlock1 = blockFactory.makeBlock("Variable", 0,0);
         CodeBlock varBlock2 = blockFactory.makeBlock("Variable", 0,0);
-        repository.clear();
+        repository.clearFlowchart();
         stateRepository.setCurrentlySelectedDrawable(varBlock1);
         repository.addDrawable(varBlock1);
         repository.addDrawable(varBlock2);
@@ -207,7 +207,7 @@ public class DataRepositoryTest {
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
-        repository.clear();
+        repository.clearFlowchart();
         repository.addDrawable(new Circle(0,0,0,Color.BLACK));
         repository.undo();
         assertEquals("Action undone", stateRepository.getStatus());
@@ -222,9 +222,9 @@ public class DataRepositoryTest {
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
-        repository.clear();
+        repository.clearFlowchart();
         repository.addDrawable(new Circle(0,0,0,Color.BLACK));
-        repository.clear();
+        repository.clearFlowchart();
         assertEquals("Board cleared", stateRepository.getStatus());
     }
 
@@ -236,7 +236,7 @@ public class DataRepositoryTest {
     public void testDataAddAll(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
 
-        repository.clear();
+        repository.clearFlowchart();
         BlockFactory blockFactory = new BlockFactory();
         CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
         CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
@@ -262,7 +262,7 @@ public class DataRepositoryTest {
     public void testAddAllNull(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
 
-        repository.clear();
+        repository.clearFlowchart();
         repository.addAll(null);
         assertEquals(0, repository.getDrawables().size());
 
@@ -280,7 +280,7 @@ public class DataRepositoryTest {
     @Test
     public void testModified(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clear();
+        repository.clearFlowchart();
         repository.modifiedDrawables();
     }
 

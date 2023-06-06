@@ -17,7 +17,7 @@ public class FileManager {
      */
     public static void readFile(String filename) {
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
-        dataRepository.clear();
+        dataRepository.clearFlowchart();
 
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         // List to store read in blocks
