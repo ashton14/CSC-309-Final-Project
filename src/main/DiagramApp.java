@@ -51,7 +51,7 @@ public class DiagramApp extends JFrame implements Observer {
         JMenu file = new JMenu("File");
         JMenu help = new JMenu("Help");
         JMenu actions = new JMenu("Actions");
-        JMenu mode = new JMenu("Mode");
+        //JMenu mode = new JMenu("Mode");
 
         JMenuItem newFile = new JMenuItem("New");
         JMenuItem save = new JMenuItem("Save");
@@ -60,7 +60,8 @@ public class DiagramApp extends JFrame implements Observer {
         JMenuItem courses = new JMenuItem("Courses");
         JMenuItem about = new JMenuItem("About");
         JMenuItem undo = new JMenuItem("Undo");
-        JMenuItem clear = new JMenuItem("Clear");
+        JMenuItem clearFlowchart = new JMenuItem("Clear Flowchart");
+        JMenuItem clearCode = new JMenuItem("Clear Code");
         JMenuItem delete = new JMenuItem("Delete");
         JMenuItem changeText = new JMenuItem("Change Text");
         JMenuItem sandbox = new JMenuItem("Sandbox");
@@ -79,12 +80,13 @@ public class DiagramApp extends JFrame implements Observer {
         file.add(courses);
         help.add(about);
         actions.add(undo);
-        actions.add(clear);
+        actions.add(clearFlowchart);
+        actions.add(clearCode);
         actions.add(delete);
         actions.add(changeText);
-        mode.add(sandbox);
-        mode.add(translateCode);
-        mode.add(translateFlowchart);
+        //mode.add(sandbox);
+        //mode.add(translateCode);
+        //mode.add(translateFlowchart);
         MenuBarControlHandler menuController = new MenuBarControlHandler();
         
 
@@ -96,7 +98,8 @@ public class DiagramApp extends JFrame implements Observer {
         about.addActionListener(menuController);
         shape.addActionListener(menuController);
         undo.addActionListener(menuController);
-        clear.addActionListener(menuController);
+        clearFlowchart.addActionListener(menuController);
+        clearCode.addActionListener(menuController);
         delete.addActionListener(menuController);
         sandbox.addActionListener(menuController);
         translateFlowchart.addActionListener(menuController);
@@ -104,7 +107,7 @@ public class DiagramApp extends JFrame implements Observer {
         changeText.addActionListener(menuController);
 
         menuBar.add(file);
-        menuBar.add(mode);
+        //menuBar.add(mode);
         menuBar.add(help);
         menuBar.add(actions);
         menuBar.add(shape);

@@ -192,7 +192,7 @@ public class StateRepositoryTest {
     @Test
     public void deleteSelectedItem() {
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
-        dataRepository.clear();
+        dataRepository.clearFlowchart();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         stateRepository.reset();
 

@@ -64,7 +64,7 @@ public class ProblemRepository extends Observable implements Repository{
 
     public void setNextProblemIndex() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
-        dRepo.clear();
+        dRepo.clearFlowchart();
         if(this.problemIndex == this.assignments.get(assignmentIndex).getAssignmentProblemSet().size()-1) {
             this.problemIndex = 0;
         } else {
@@ -76,7 +76,7 @@ public class ProblemRepository extends Observable implements Repository{
     }
     public void setPrevProblemIndex() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
-        dRepo.clear();
+        dRepo.clearFlowchart();
         if(this.problemIndex == 0) {
             this.problemIndex = this.assignments.get(assignmentIndex).getAssignmentProblemSet().size()-1;
         } else {
@@ -89,18 +89,18 @@ public class ProblemRepository extends Observable implements Repository{
 
     public void setCurrentProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
-        dRepo.clear();
+        dRepo.clearFlowchart();
         dRepo.addAll(this.getCurrentProblem().getFlowChart());
     }
     public void setNextProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         this.setNextProblemIndex();
-        dRepo.clear();
+        dRepo.clearFlowchart();
     }
     public void setPreviousProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         setPrevProblemIndex();
-        dRepo.clear();
+        dRepo.clearFlowchart();
         dRepo.addAll(this.getCurrentProblem().getFlowChart());
     }
     public void setAssignmentIndex(int assNum) {

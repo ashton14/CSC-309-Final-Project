@@ -78,6 +78,8 @@ public class CodeProblemViewControlHandler implements ActionListener {
                 }
             } else {
                 next.setEnabled(false);
+                CoursesPage.numAssignmentsCompleted++;
+                CoursesPage.updateCourseProgress();
             }
 
             // call to repo function to get feedback

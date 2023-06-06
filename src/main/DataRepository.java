@@ -115,7 +115,7 @@ public class DataRepository extends Observable implements Repository {
     /**
      * Clear the List of type Drawable and notifies observers
      */
-    public void clear(){
+    public void clearFlowchart(){
         if(!drawables.isEmpty())
             drawables.clear();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
