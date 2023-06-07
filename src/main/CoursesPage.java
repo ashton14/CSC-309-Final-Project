@@ -199,6 +199,7 @@ public class CoursesPage {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Arial", Font.PLAIN, 16));
         backButton.setFocusPainted(false);
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         courseProgress = new JLabel("Progress: "+ numAssignmentsCompleted+"/3");
         backButton.addActionListener(new ActionListener() {
@@ -273,6 +274,28 @@ public class CoursesPage {
             assignmentPanel.add(assignmentButton);
             assignmentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
+
+        JTextArea messageProfessor = new JTextArea("Message your professor...");
+        assignmentPanel.add(messageProfessor);
+        messageProfessor.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                messageProfessor.setText("");
+            }
+            @Override
+            public void focusLost(FocusEvent e) {}
+        });
+
+        JButton sendMessage = new JButton("Send");
+        sendMessage.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        sendMessage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Message sent to professor: "+messageProfessor.getText());
+                messageProfessor.setText("");
+            }
+        });
+        assignmentPanel.add(sendMessage);
 
         frame.revalidate();
         frame.repaint();

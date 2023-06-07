@@ -94,8 +94,10 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
     }
 
     public static void clearCode(){
-        for(int i = 0; i < jTextAreas.size(); i++) {
-            jTextAreas.get(i).setText("");
+        if(jTextAreas != null){
+            for(int i = 0; i < jTextAreas.size(); i++) {
+                jTextAreas.get(i).setText("");
+            }
         }
     }
 
