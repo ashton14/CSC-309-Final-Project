@@ -90,8 +90,10 @@ public class MenuBarControlHandler implements ActionListener {
                     break;
                 case "Clear Flowchart":
                     dataRepository.clearFlowchart();
+                    break;
                 case "Clear Code":
                     FlowchartProblemViewControlHandler.clearCode();
+                    break;
                 case "Delete":
                     stateRepository.deleteSelectedItem();
                     break;

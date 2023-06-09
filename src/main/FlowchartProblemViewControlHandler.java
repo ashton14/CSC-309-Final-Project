@@ -52,9 +52,6 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
                 this.prev.setEnabled(false);
         }
 
-        if(e.getActionCommand().equals("Clear Code")){
-            System.out.println("xxxx");
-        }
     }
     public void gradeCode(boolean help) {
 
