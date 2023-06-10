@@ -85,11 +85,16 @@ public class CodeProblemView extends JPanel implements Observer {
                 "Casey: I can check if your work is correct and give hints when requested.\n");
         tutorFeedback.setEnabled(false);
 
-
         JPanel buttonPanel = makeButtonPanel();
+        ProblemTimer problemTimer = new ProblemTimer();
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new GridLayout(2,1));
+        southPanel.add(buttonPanel);
+        southPanel.add(problemTimer);
+
         add(problemPanel, BorderLayout.NORTH);
         add(chatScrollPane, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(southPanel, BorderLayout.SOUTH);
     }
 
     /**
