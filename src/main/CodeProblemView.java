@@ -91,6 +91,8 @@ public class CodeProblemView extends JPanel implements Observer {
 
         FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
         fRepo.addObserver(problemTimer);
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+        pRepo.addObserver(problemTimer);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridLayout(2,1));

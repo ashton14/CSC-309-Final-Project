@@ -36,13 +36,18 @@ public class CodeProblemViewControlHandler implements ActionListener {
         ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         String commandString = e.getActionCommand();
         if(commandString.equals("Next")){
+            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+            fRepo.setErrorIndex(-2);
             currentProblemIndex++;
             // call to repo function to change code problem
             pRepo.setNextProblemIndex();
             next.setEnabled(false);
             prev.setEnabled(true);
 
+
         } else if(commandString.equals("Previous")){
+            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+            fRepo.setErrorIndex(-2);
             currentProblemIndex--;
             next.setEnabled(true);
             pRepo.setPreviousProblem();
@@ -67,6 +72,8 @@ public class CodeProblemViewControlHandler implements ActionListener {
                     ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
             GradeFlowchart evaluate = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, false);
             if(evaluate.grade()) {
+                FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+                fRepo.setErrorIndex(-1);
                 DecimalFormat df = new DecimalFormat("#0");
                 JOptionPane.showMessageDialog(null,
                         "Correct! Nice Work!\n"+df.format((double)(currentProblemIndex + 1)/

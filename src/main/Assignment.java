@@ -37,7 +37,7 @@ public class Assignment {
     public Integer getBestTime(int index) {return this.bestTimes.get(index); }
     public void setBestTime(int index, int bestTimeSeconds) {
         System.out.println("attempting to set new best time! new: "+bestTimeSeconds+" old: "+this.bestTimes.get(index));
-        if(this.bestTimes.get(index) > bestTimeSeconds) {
+        if(this.bestTimes.get(index) > bestTimeSeconds && bestTimeSeconds > 0) {
             this.bestTimes.set(index, bestTimeSeconds);
             System.out.println("new best time set! new: "+bestTimeSeconds+" old: "+this.bestTimes.get(index));
         }
