@@ -111,7 +111,7 @@ public class UserExampleFactory {
         CodeBlock cb2 = factory.makeBlock("Variable", 150, 270);
         CodeBlock cb3 = factory.makeBlock("If", 150, 350);
         CodeBlock cb4 = factory.makeBlock("Print", 150, 450);
-        CodeBlock cb5 = factory.makeBlock("Print", 300, 450);
+        CodeBlock cb5 = factory.makeBlock("Print", 400, 450);
         CodeBlock cb6 = factory.makeBlock("Stop", 150, 550);
         CodeBlock cb7 = factory.makeBlock("Stop", 300, 550);
 
