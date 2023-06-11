@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Ashton Alonge
  * @author Alex Banham
+ * @author Connor Hickey
  * Controller for the menu bar
  */
 public class MenuBarControlHandler implements ActionListener {
