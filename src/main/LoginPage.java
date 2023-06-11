@@ -2,75 +2,69 @@ package src.main;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import com.formdev.flatlaf.FlatLightLaf;
-import javax.swing.UIManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Alex Banham
- * frame with simple login user interface
+ * JPanel with simple login user interface
  * connects with mySQL DB to authenticate users
  */
-public class LoginPage extends JFrame{
+public class LoginPage extends JPanel implements AppPage {
 
-    private JPanel contentPane;
     private JTextField username;
-    private Connection conn = null;
     private JFormattedTextField password;
+    private TeachingApp app;
+
+    private boolean isTesting;
 
     /**
      * Constructor to initialize basic layout of login form
      */
-    public LoginPage() {
-        try {
-            UIManager.setLookAndFeel( new FlatLightLaf() );
-        } catch( Exception ex ) {
-            System.err.println( "Failed to initialize theme. Using fallback." );
-        }
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public LoginPage(boolean isTesting, TeachingApp app) {
+        this.isTesting = isTesting;
+        this.app = app;
         setBounds(100, 100, 391, 218);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
-
-        JLabel loginLabel = new JLabel("User Login");
-        loginLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        loginLabel.setBounds(37, 22, 102, 28);
-        contentPane.add(loginLabel);
+        setBorder(new EmptyBorder(5, 5, 5, 5));
+        setLayout(null);
 
         username = new JTextField();
         username.setBounds(110, 87, 141, 23);
-        contentPane.add(username);
+        add(username);
         username.setColumns(10);
 
         password = new JFormattedTextField();
         password.setBounds(110, 125, 141, 23);
-        contentPane.add(password);
+        add(password);
 
         JLabel userLabel = new JLabel("Username");
         userLabel.setBounds(37, 90, 78, 14);
-        contentPane.add(userLabel);
+        add(userLabel);
 
         JLabel passLabel = new JLabel("Password");
         passLabel.setBounds(37, 129, 78, 14);
-        contentPane.add(passLabel);
+        add(passLabel);
 
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (SqlControlHandler.authenticateUser(username.getText(), password.getText())){
-                    displayLoginSucceeded();
-                    login();
+                if (!isTesting) {
+                    if (SqlControlHandler.authenticateUser(username.getText(), password.getText())){
+                        displayLoginSucceeded();
+                        login();
+                    } else {
+                        displayLoginFailed();
+                    }
                 } else {
-                    displayLoginFailed();
+                    login();
                 }
             }
         });
         loginButton.setBounds(276, 86, 89, 23);
-        contentPane.add(loginButton);
+        add(loginButton);
 
         JButton registerButton = new JButton("Register");
         registerButton.addActionListener(new ActionListener() {
@@ -95,17 +89,12 @@ public class LoginPage extends JFrame{
             }
         });
         registerButton.setBounds(276, 125, 89, 23);
-        contentPane.add(registerButton);
+        add(registerButton);
     }
 
-    /**
-     * main method
-     * @param args
-     */
-    public static void main(String [] args){
-        LoginPage page = new LoginPage();
-        page.setVisible(true);
-        page.login();
+    @Override
+    public String getHeaderInfo() {
+        return "User Login";
     }
 
 
@@ -130,9 +119,45 @@ public class LoginPage extends JFrame{
      * Hides the login form and renders the main app
      */
     private void login() {
-        setVisible(false);
-        CoursesPage coursesPage = new CoursesPage();
+        //CoursesPage coursesPage = new CoursesPage();
+
+        CourseView courseView = new CourseView(this.app);
+
+        if (isTesting) {
+            String[] courseNames = {
+                "Introduction to Algorithms",
+                "Software Engineering Principles",
+                "Computer Networks",
+                "Artificial Intelligence: Theory and Practice"
+            };
+            String[] teachers = {
+                "Connor",
+                "Alex",
+                "Patrick",
+                "Aaron"
+            };
+
+            String[] descriptions = {
+                "In 'Introduction to Algorithms', students explore the foundations of computer science. This course introduces core algorithmic techniques and proofs, and encourages students to design, analyze, and implement algorithms in a hands-on manner.",
+                "'Software Engineering Principles' teaches the basics of software development. Students will learn about different software development methodologies, project management, and quality assurance. The course also includes a group project where students will design and implement their own software application.",
+                "The 'Computer Networks' course provides an overview of how data is transmitted over networks. Key topics include network architecture, data transmission methods, network protocols, and network security. Practical labs will allow students to set up and troubleshoot simple networks.",
+                "'Artificial Intelligence: Theory and Practice' exposes students to the principles and techniques used in the field of artificial intelligence. The curriculum includes machine learning, natural language processing, robotics, and expert systems. The final project involves developing a simple AI program."
+            };
+
+            List<String> assignments = Arrays.asList("Assignment 1", "Assignment 2", "Assignment 3");
+
+            List<Course> courses = new ArrayList<>();
+
+            for (int i = 0; i < 4; i++) {
+                courses.add(new Course(courseNames[i], teachers[i], descriptions[i], assignments));
+            }
+            courseView.setCourses(courses);
+        }
+        app.pushPage(courseView);
     }
 
+    @Override
+    public void showContents() {
+        setVisible(true);
+    }
 }
-

@@ -11,10 +11,14 @@ import java.awt.event.ActionListener;
  */
 public class MenuBarControlHandler implements ActionListener {
 
+    private TeachingApp teachingApp;
+    private DiagramApp diagramApp;
     /**
      * Constructor
      */
-    public MenuBarControlHandler() {
+    public MenuBarControlHandler(TeachingApp teachingApp, DiagramApp diagramApp) {
+        this.teachingApp = teachingApp;
+        this.diagramApp = diagramApp;
     }
 
     /**
@@ -76,9 +80,11 @@ public class MenuBarControlHandler implements ActionListener {
                 }
                 break;
             case "Courses":
-                stateRepository.changeMode("Courses");
-                new CoursesPage();
+                teachingApp.setVisible(true); // Show the TeachingApp frame
+                diagramApp.dispose();
                 break;
+
+
             case  "About":
                 stateRepository.setSelectedMenuItem("About");
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),
