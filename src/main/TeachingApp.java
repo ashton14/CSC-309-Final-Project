@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Stack;
 
 /**
+ * The TeachingApp class represents the main application for the teaching app.
+ * It manages the pages stack, frame, buttons, header panel, side panel, and UI components.
+ * The TeachingApp class acts as a controller between different app pages.
+ *
  * @author Connor Hickey
  */
 public class TeachingApp {
@@ -19,6 +23,10 @@ public class TeachingApp {
     private JPanel sidePanel;
     private boolean isTesting;
 
+    /**
+     * Constructs a TeachingApp object.
+     * @param isTesting indicates whether the app is in testing mode.
+     */
     public TeachingApp(boolean isTesting) {
         this.pages = new Stack<>();
         this.frame = new JFrame("Teaching App");
@@ -33,11 +41,13 @@ public class TeachingApp {
         logoutButton = new JButton("Logout");
         logoutButton.addActionListener(e -> logout());
 
-
         // Create a dummy headerPanel initially, this will be updated based on the page being shown
         addDashboardHeader("");
     }
 
+    /**
+     * Updates the UI components based on the current page.
+     */
     public void updateUIComponents() {
 
         String className = pages.peek().getClass().getSimpleName();
@@ -79,6 +89,9 @@ public class TeachingApp {
         }
     }
 
+    /**
+     * Shows the current page on the frame and updates the UI components.
+     */
     private void showCurrentPage() {
         Component[] components = this.frame.getContentPane().getComponents();
         for (Component component : components) {
@@ -100,6 +113,10 @@ public class TeachingApp {
         this.frame.setVisible(true);
     }
 
+    /**
+     * Adds the dashboard header panel to the frame with the specified header text.
+     * @param headerText the header text to display.
+     */
     private void addDashboardHeader(String headerText) {
         // Remove the old headerPanel from the frame if it exists
         if (headerPanel != null) {
@@ -119,19 +136,15 @@ public class TeachingApp {
         messageButton = new JButton("Message");
         messageButton.addActionListener(e -> {
             List<Course> courses = null;
-            for(AppPage page : pages){
-                if(page instanceof CourseView){
+            for (AppPage page : pages) {
+                if (page instanceof CourseView) {
                     courses = ((CourseView) page).getCourses();
                     break;
                 }
             }
 
-            if(courses != null){
-            pushPage(
-                new MessagesPage(
-                    courses
-                )
-            );
+            if (courses != null) {
+                pushPage(new MessagesPage(courses));
             }
         });
 
@@ -147,6 +160,10 @@ public class TeachingApp {
         frame.getContentPane().add(headerPanel, BorderLayout.NORTH);
     }
 
+    /**
+     * Sets the side panel with the provided panel.
+     * @param newPanel the new side panel to set.
+     */
     public void setSidePanel(JPanel newPanel) {
         frame.getContentPane().remove(sidePanel);
         sidePanel = newPanel;
@@ -156,7 +173,10 @@ public class TeachingApp {
         frame.repaint();
     }
 
-
+    /**
+     * Generates the dashboard side panel with the sandbox and cloud buttons.
+     * @return the generated dashboard side panel.
+     */
     private JPanel generateDashboardSidePanel() {
         JPanel panel = new JPanel();
 
@@ -168,7 +188,6 @@ public class TeachingApp {
             diagramApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(false);
         });
-
 
         JButton cloudCoursesButton = new JButton("Cloud");
         cloudCoursesButton.addActionListener(e -> {
@@ -182,17 +201,37 @@ public class TeachingApp {
         return panel;
     }
 
+    /**
+     * Pushes a new page to the pages stack, shows the current page, and updates the UI components.
+     * @param page the page to push.
+     */
     public void pushPage(AppPage page) {
         this.pages.push(page);
         showCurrentPage();
     }
 
+    /**
+     * Logs out the user by clearing the pages stack, showing the login page, and updating the UI components.
+     */
     private void logout() {
+        if (pages.peek() instanceof DiagramApp) {
+            DiagramApp diagramApp = (DiagramApp) pages.pop();
+            diagramApp.dispose();
+        }
+
         this.pages.clear();
         LoginPage loginPage = new LoginPage(isTesting, this);
         pushPage(loginPage);
+        frame.setVisible(true);
+
+        // Update the side panel to the dashboard side panel
+        setSidePanel(generateDashboardSidePanel());
     }
 
+    /**
+     * Goes back to the previous page by popping the current page from the stack,
+     * showing the current page, and updating the UI components.
+     */
     public void goBack() {
         if (!this.pages.isEmpty()) {
             this.pages.pop();
@@ -200,10 +239,18 @@ public class TeachingApp {
         }
     }
 
+    /**
+     * Sets the visibility of the TeachingApp frame.
+     * @param visible true to make the frame visible, false otherwise.
+     */
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
     }
 
+    /**
+     * The main method to start the TeachingApp application.
+     * @param args command-line arguments (unused).
+     */
     public static void main(String[] args) {
         boolean isTesting = true;  // change to true for testing mode
         TeachingApp app = new TeachingApp(isTesting);
