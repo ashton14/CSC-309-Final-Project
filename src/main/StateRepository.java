@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 /**
+ * @author Aaron Bettencourt (most recent)
  * @author Ashton Alonge
  * @author Connor Hickey
  * Repository class to handle data for the state the program is in (Singleton).
@@ -121,8 +122,10 @@ public class StateRepository extends Observable implements Repository {
             Shape innerShape = codeBlock.getShape();
             innerShape.addObserver(shapeOutline);
             shapeOutline.setColor(Color.YELLOW);
-            shapeOutline.setWidth(shapeOutline.getWidth() + 5);
-            shapeOutline.setHeight(shapeOutline.getHeight() + 5);
+            int width = shapeOutline.getWidth();
+            int height = shapeOutline.getHeight();
+            shapeOutline.setWidth(width + 5);
+            shapeOutline.setHeight(height + 5);
             return shapeOutline;
         }
         return null;

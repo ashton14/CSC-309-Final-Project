@@ -13,7 +13,6 @@ public class DataRepository extends Observable implements Repository {
     private static DataRepository repository;
     private ArrayList<Drawable> drawables;
 
-
     /**
      * Constructor to initialize data
      */
