@@ -12,12 +12,14 @@ import java.util.Observer;
  */
 public class DiagramApp extends JFrame implements Observer {
 
+    private TeachingApp teachingApp;
     private JPanel westPanel;
     /**
      * Constructor to add menu bar with 4 menus, a drawing area, and a status bar
      */
-    public DiagramApp(){
+    public DiagramApp(TeachingApp teachingApp){
         super("Intelligent Tutor App");
+        this.teachingApp = teachingApp;
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
@@ -86,7 +88,7 @@ public class DiagramApp extends JFrame implements Observer {
         //mode.add(sandbox);
         //mode.add(translateCode);
         //mode.add(translateFlowchart);
-        MenuBarControlHandler menuController = new MenuBarControlHandler();
+        MenuBarControlHandler menuController = new MenuBarControlHandler(teachingApp, this);
         
 
         newFile.addActionListener(menuController);
@@ -152,8 +154,11 @@ public class DiagramApp extends JFrame implements Observer {
             add(flowchartProblemView, BorderLayout.WEST);
             westPanel = flowchartProblemView;
         } else if(command.equals("Courses")) {
-            this.setVisible(false);
+            //app.setVisible(true); // set TeachingApp window visible
+            //this.setVisible(false); // set DiagramApp window invisible
         }
+        revalidate(); // relayout the components
+        repaint(); // repaint the components
     }
 
 }
