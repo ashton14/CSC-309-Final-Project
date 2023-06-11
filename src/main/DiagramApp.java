@@ -6,13 +6,14 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * @author Ashton Alonge, Aaron Bettencourt
+ * @author Ashton Alonge, Aaron Bettencourt, Connor Hickey
  * main class
  * frame with menu bar, drawing area, and status bar
  */
 public class DiagramApp extends JFrame implements Observer {
 
     private TeachingApp teachingApp;
+
     private JPanel westPanel;
     /**
      * Constructor to add menu bar with 4 menus, a drawing area, and a status bar
@@ -89,7 +90,7 @@ public class DiagramApp extends JFrame implements Observer {
         //mode.add(translateCode);
         //mode.add(translateFlowchart);
         MenuBarControlHandler menuController = new MenuBarControlHandler(teachingApp, this);
-        
+
 
         newFile.addActionListener(menuController);
         save.addActionListener(menuController);
@@ -154,11 +155,8 @@ public class DiagramApp extends JFrame implements Observer {
             add(flowchartProblemView, BorderLayout.WEST);
             westPanel = flowchartProblemView;
         } else if(command.equals("Courses")) {
-            //app.setVisible(true); // set TeachingApp window visible
-            //this.setVisible(false); // set DiagramApp window invisible
+            this.setVisible(false);
         }
-        revalidate(); // relayout the components
-        repaint(); // repaint the components
     }
 
 }
