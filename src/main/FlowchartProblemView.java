@@ -97,6 +97,8 @@ public class FlowchartProblemView extends JPanel implements Observer {
         tutorFeedback.setEnabled(false);
 
         ProblemTimer problemTimer = new ProblemTimer();
+        FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+        fRepo.addObserver(problemTimer);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridLayout(2,1));

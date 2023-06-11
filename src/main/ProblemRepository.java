@@ -62,6 +62,16 @@ public class ProblemRepository extends Observable implements Repository{
         return this.assignments.get(this.assignmentIndex).getProblem(problemIndex);
     }
 
+    public int getBestTimeForCurrentProblem() {
+        return this.assignments.get(this.assignmentIndex).getBestTime(problemIndex).intValue();
+    }
+
+    public void addBestTimeToCurrentProblem(int bestTime) {
+        this.assignments.get(this.assignmentIndex).setBestTime(problemIndex,bestTime);
+    }
+
+
+
     public void setNextProblemIndex() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         dRepo.clearFlowchart();
