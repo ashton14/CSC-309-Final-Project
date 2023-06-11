@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+
 /**
  * Class to be instantiated to handle the button presses for the
  * CodeProblemView instances.
@@ -27,6 +28,46 @@ public class CodeProblemViewControlHandler implements ActionListener {
         next.setEnabled(false);
         prev.setEnabled(false);
     }
+
+    /**
+     * Helper function to display a prompt that the problem is correct.
+     */
+    private void displayCorrectPrompt() {
+            DecimalFormat df = new DecimalFormat("#0");
+            JOptionPane.showMessageDialog(null,
+                    "Correct! Nice Work!\n" + df.format((double) (currentProblemIndex + 1) /
+                            (double) numProblemsInCurrentAssignment * 100) + "% complete.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE, CodeProblemViewControlHandler.createIcon());
+            if (numProblemsInCurrentAssignment > currentProblemIndex + 1) {
+                next.setEnabled(true);
+            }
+    }
+
+    /**
+     * Grades the current problem and sends verbose or minimal feedback to the user.
+     * @param isVerbose   A boolean representing if verbose or minimal feedback
+     *                    should be given to the user.
+     * @return  A boolean representing if the problem was correct.
+     */
+    private boolean gradeProblem(boolean isVerbose){
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+        UserExample solution = pRepo.getCurrentProblem();
+        ArrayList<CodeBlock> studentAnswerBlocks =
+                ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
+
+        GradeFlowchart gradeFlowchart = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, isVerbose);
+        GradeCyclomaticComplexity gradeCyclomaticComplexity = new GradeCyclomaticComplexity(solution.getCodeBlocks(), isVerbose);
+        boolean correctFlowchart = gradeFlowchart.grade();
+
+        ((FeedbackRepository)FeedbackRepository.getInstance()).metricsPromptRequest(FeedbackRepository.REQUEST_COMPLEXITY);
+        String complexityStr = ((FeedbackRepository)FeedbackRepository.getInstance()).getCyclomaticComplexity();
+        boolean correctComplexity = gradeCyclomaticComplexity.grade(complexityStr);
+        ((FeedbackRepository)FeedbackRepository.getInstance()).setColorTextField(FeedbackRepository.REQUEST_COMPLEXITY, correctComplexity);
+
+        return correctComplexity && correctFlowchart;
+    }
+
     /**
      * Handles the Next, Previous, Help and Submit button presses.
      * @param e the event to be processed
@@ -37,10 +78,12 @@ public class CodeProblemViewControlHandler implements ActionListener {
         String commandString = e.getActionCommand();
         if(commandString.equals("Next")){
             currentProblemIndex++;
-            // call to repo function to change code problem
+
             pRepo.setNextProblemIndex();
             next.setEnabled(false);
             prev.setEnabled(true);
+            ((FeedbackRepository)FeedbackRepository.getInstance()).
+                    metricsPromptRequest(FeedbackRepository.REQUEST_CLEAR);
 
         } else if(commandString.equals("Previous")){
             currentProblemIndex--;
@@ -51,48 +94,27 @@ public class CodeProblemViewControlHandler implements ActionListener {
             } else {
                 prev.setEnabled(true);
             }
-            // call to repo function to change code problem
+            ((FeedbackRepository)FeedbackRepository.getInstance()).
+                    metricsPromptRequest(FeedbackRepository.REQUEST_CLEAR);
+
         } else if(commandString.equals("Help")){
-            UserExample solution = pRepo.getCurrentProblem();
+            gradeProblem(true);
 
-            ArrayList<CodeBlock> studentAnswerBlocks =
-                    ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
-            GradeFlowchart evaluate = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, true);
-            evaluate.grade();
-
-        } else if(commandString.equals("Submit")){
-            System.out.println(numProblemsInCurrentAssignment);
-            UserExample solution = pRepo.getCurrentProblem();
-            ArrayList<CodeBlock> studentAnswerBlocks =
-                    ((DataRepository)(DataRepository.getInstance())).getCodeBlocks();
-            GradeFlowchart evaluate = new GradeFlowchart(solution.getCodeBlocks(), studentAnswerBlocks, false);
-            if(evaluate.grade()) {
-                DecimalFormat df = new DecimalFormat("#0");
-                JOptionPane.showMessageDialog(null,
-                        "Correct! Nice Work!\n"+df.format((double)(currentProblemIndex + 1)/
-                                (double)numProblemsInCurrentAssignment*100) +"% complete.",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE, CodeProblemViewControlHandler.createIcon());
-                if(numProblemsInCurrentAssignment > currentProblemIndex + 1) {
+        } else if(commandString.equals("Submit")) {
+            boolean isCorrect = gradeProblem(false);
+            if (isCorrect) {
+                displayCorrectPrompt();
+                if (numProblemsInCurrentAssignment > currentProblemIndex + 1) {
                     next.setEnabled(true);
+                } else {
+                    next.setEnabled(false);
+                    CoursesPage.numAssignmentsCompleted++;
+                    CoursesPage.updateCourseProgress();
                 }
-            } else {
-                next.setEnabled(false);
-                CoursesPage.numAssignmentsCompleted++;
-                CoursesPage.updateCourseProgress();
             }
-
-            // call to repo function to get feedback
-
-            //temporary code for testing purposes
-            /*UserExample ex1 = pRepo.getCurrentProblem();
-            System.out.println("SUBMIT BUTTON PUSHED");
-            System.out.println(ex1.getFlowChart().size());
-            DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
-            int mistakeIndex = ex1.gradeUserDiagram(dataRepository.getCodeBlocks());
-            System.out.println("mistake at CodeBlock index: "+mistakeIndex);*/
         }
     }
+
     public static Icon createIcon() {
         // Create a custom icon image with a green check mark
         BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
