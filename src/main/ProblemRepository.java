@@ -12,7 +12,6 @@ public class ProblemRepository extends Observable implements Repository{
     private static ProblemRepository repository;
     private ArrayList<Assignment> assignments;
     private int assignmentIndex;
-
     private int problemIndex;
 
     /**
@@ -106,6 +105,7 @@ public class ProblemRepository extends Observable implements Repository{
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         this.setNextProblemIndex();
         dRepo.clearFlowchart();
+        dRepo.addAll(this.getCurrentProblem().getFlowChart());
     }
     public void setPreviousProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();

@@ -24,6 +24,7 @@ public class ProblemTimer extends JPanel implements ActionListener, Observer {
             incrementTimer();
         }
     };
+    int problemIndex;
 
     public ProblemTimer() {
         timerHidden = false;
@@ -32,14 +33,15 @@ public class ProblemTimer extends JPanel implements ActionListener, Observer {
         showHideButton = new JButton("Hide");
         showHideButton.addActionListener(this);
         this.setLayout(new GridLayout(2,3));
-        this.add(new JLabel("Best Time:"));
-        this.add(new JLabel("Curr. Time:"));
+        this.add(new JLabel("Session best:")); //originally best time, but times are not saved after session ends
+        this.add(new JLabel("Current Time:"));
         this.add(new JLabel(" "));
         this.add(bestTimeLabel);
         this.add(timeLable);
         this.add(showHideButton);
         timer.scheduleAtFixedRate(task, 0, 1000);
         this.getBestTime();
+        this.problemIndex = -2;
     }
 
     private void updateLabel() {
@@ -84,8 +86,25 @@ public class ProblemTimer extends JPanel implements ActionListener, Observer {
 
     public void sendBestTime() {
         ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
-        int time = this.minutes + this.minutes*60 + this.hours*3600;
+        int time = this.seconds + this.minutes*60 + this.hours*3600;
+        System.out.println("Sending bestTime: "+time);
         pRepo.addBestTimeToCurrentProblem(time);
+    }
+
+    public void resetTimer() {
+        this.seconds = 0;
+        this.minutes = 0;
+        this.hours = 0;
+        updateLabel();
+        getBestTime();
+        task.cancel();
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                incrementTimer();
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
 
     @Override
@@ -105,10 +124,15 @@ public class ProblemTimer extends JPanel implements ActionListener, Observer {
     @Override
     public void update(Observable o, Object arg) {
         FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         if(fRepo.getErrorIndex() == -1) {
             this.stopTimer();
             this.sendBestTime();
             this.getBestTime();
+        }
+        if(pRepo.getProblemIndex() != this.problemIndex) {
+            resetTimer();
+            this.problemIndex = pRepo.getProblemIndex();
         }
     }
 }
