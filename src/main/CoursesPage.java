@@ -1,10 +1,9 @@
 package src.main;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.RoundRectangle2D;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,7 +177,7 @@ public class CoursesPage {
                 courseButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             }
         });
-        courseButton.setUI(new RoundedButtonUI());
+        courseButton.setUI(new RoundedButtonUI(200, 200));
         coursePanel.add(courseButton);
     }
 
@@ -268,7 +267,7 @@ public class CoursesPage {
                     assignmentButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
                 }
             });
-            assignmentButton.setUI(new RoundedButtonUI());
+            assignmentButton.setUI(new RoundedButtonUI(200, 200));
             assignmentPanel.add(assignmentButton);
             assignmentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
@@ -311,61 +310,11 @@ public class CoursesPage {
 
     private void showSandbox() {
         frame.setVisible(false);
-        DiagramApp app = new DiagramApp();
+        DiagramApp app = new DiagramApp(new TeachingApp(false));
         app.setVisible(true);
         app.setSize(700,700);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
-    public class RoundedButtonUI extends BasicButtonUI {
-        private Color shadowColor = new Color(0, 0, 0, 50); // semi-transparent black for drop shadow
-
-        @Override
-        public void installUI(JComponent c) {
-            super.installUI(c);
-            AbstractButton button = (AbstractButton) c;
-            button.setOpaque(false);
-            button.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        }
-
-        @Override
-        public void paint(Graphics g, JComponent c) {
-            AbstractButton b = (AbstractButton) c;
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            int x = 0;
-            int y = 0;
-            int w = b.getWidth();
-            int h = b.getHeight();
-            int arc = h / 2;
-            if (b.getModel().isPressed()) {
-                g2.setColor(shadowColor);
-                g2.fill(new RoundRectangle2D.Double(x + 2, y + 2, w - 4, h - 4, arc, arc));
-                g2.setColor(b.getBackground());
-                g2.fill(new RoundRectangle2D.Double(x, y, w - 4, h - 4, arc, arc));
-            } else {
-                g2.setColor(shadowColor);
-                g2.fill(new RoundRectangle2D.Double(x + 2, y + 2, w - 4, h - 4, arc, arc));
-                g2.setColor(b.getBackground());
-                g2.fill(new RoundRectangle2D.Double(x, y, w - 4, h - 4, arc, arc));
-            }
-            super.paint(g2, c);
-        }
-
-        @Override
-        protected void paintButtonPressed(Graphics g, AbstractButton b) {
-            // don't paint the default button pressed state
-        }
-
-        @Override
-        public Dimension getPreferredSize(JComponent c) {
-            AbstractButton b = (AbstractButton) c;
-            Dimension d = super.getPreferredSize(c);
-            d.width = Math.max(d.width, d.height);
-            return d;
-        }
-    }
-
     public void setCurrentAssignment(String assignment){
         this.currentAssignment = "Assignment "+assignment;
     }

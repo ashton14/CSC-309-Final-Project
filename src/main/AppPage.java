@@ -5,4 +5,5 @@ package src.main;
  */
 interface AppPage {
     void showContents();
+    String getHeaderInfo();
 }
