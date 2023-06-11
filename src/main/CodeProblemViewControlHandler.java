@@ -63,7 +63,7 @@ public class CodeProblemViewControlHandler implements ActionListener {
         ((FeedbackRepository)FeedbackRepository.getInstance()).metricsPromptRequest(FeedbackRepository.REQUEST_COMPLEXITY);
         String complexityStr = ((FeedbackRepository)FeedbackRepository.getInstance()).getCyclomaticComplexity();
         boolean correctComplexity = gradeCyclomaticComplexity.grade(complexityStr);
-        ((FeedbackRepository)FeedbackRepository.getInstance()).setColorTextField(MetricsPrompt.COMPLEXITY_INDEX, correctComplexity);
+        ((FeedbackRepository)FeedbackRepository.getInstance()).setColorTextField(FeedbackRepository.REQUEST_COMPLEXITY, correctComplexity);
 
         return correctComplexity && correctFlowchart;
     }

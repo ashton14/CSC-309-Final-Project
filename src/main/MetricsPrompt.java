@@ -16,7 +16,6 @@ import java.util.Observer;
 public class MetricsPrompt extends JPanel implements Observer {
 
     private ArrayList<JTextField> metricsPrompts;
-    public static final int COMPLEXITY_INDEX = 0;
 
     /**
      * Constructor for a MetricsPrompt object. Currently
@@ -107,7 +106,7 @@ public class MetricsPrompt extends JPanel implements Observer {
             return;
         }
         if(requestId == FeedbackRepository.REQUEST_COMPLEXITY){
-            String complexityStr = metricsPrompts.get(COMPLEXITY_INDEX).getText();
+            String complexityStr = metricsPrompts.get(FeedbackRepository.REQUEST_COMPLEXITY).getText();
             ((FeedbackRepository) (FeedbackRepository.getInstance())).
                     setCyclomaticComplexity(complexityStr);
 
