@@ -22,7 +22,6 @@ public class DiagramApp extends JFrame implements Observer {
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
-
         westPanel = new JPanel();
         westPanel.setVisible(false);
 
@@ -138,10 +137,12 @@ public class DiagramApp extends JFrame implements Observer {
             westPanel.setVisible(false);
         } else if(command.equals("Translate Code")){
             remove(westPanel);
-            CodeProblemView codeProblemView = new CodeProblemView();
-            problemRepository.addObserver(codeProblemView);
             FeedbackRepository feedbackRepository = (FeedbackRepository) FeedbackRepository.getInstance();
+            MetricsPrompt metricsPrompt = new MetricsPrompt();
+            feedbackRepository.addObserver(metricsPrompt);
+            CodeProblemView codeProblemView = new CodeProblemView(metricsPrompt);
             feedbackRepository.addObserver(codeProblemView);
+            problemRepository.addObserver(codeProblemView);
             add(codeProblemView, BorderLayout.WEST);
             westPanel = codeProblemView;
         } else if (command.equals("Translate Flowchart")) {
