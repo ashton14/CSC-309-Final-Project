@@ -131,4 +131,6 @@ public class ProblemRepository extends Observable implements Repository{
     public int getProblemIndex() {
         return problemIndex;
     }
+
+    public Assignment getCurrentAssignment() { return assignments.get(assignmentIndex); }
 }

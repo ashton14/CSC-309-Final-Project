@@ -111,9 +111,12 @@ public class CodeProblemViewControlHandler implements ActionListener {
                 fRepo.setErrorIndex(-1);
                 displayCorrectPrompt();
                 if (numProblemsInCurrentAssignment > currentProblemIndex + 1) {
+                    pRepo.getCurrentProblem().setCompleted();
+                    pRepo.getCurrentAssignment().updateProblemCompletion();
                     next.setEnabled(true);
                 } else {
                     next.setEnabled(false);
+                    pRepo.getCurrentAssignment().setCompleted();
                     CoursesPage.numAssignmentsCompleted++;
                     CoursesPage.updateCourseProgress();
                 }

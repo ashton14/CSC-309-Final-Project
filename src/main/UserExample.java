@@ -18,8 +18,8 @@ public class UserExample {
     private String html_code;
     private ArrayList<CodeBlock> codeBlocks;
     private ArrayList<Line> lines;
-
     private String exampleName;
+    private boolean completed;
 
     /**
      * Creates a new UserExample.
@@ -177,5 +177,13 @@ public class UserExample {
 
     public void setExampleName(String exampleName) {
         this.exampleName = exampleName;
+    }
+
+    public void setCompleted(){
+        this.completed = true;
+    }
+
+    public boolean isCompleted() {
+        return this.completed;
     }
 }

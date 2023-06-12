@@ -12,6 +12,7 @@ public class Assignment {
     private ArrayList<Boolean> correct;
     private ArrayList<Integer> bestTimes; //in seconds
     private String assignmentName;
+    private Boolean completed;
 
     public Assignment(ArrayList<UserExample> problems, String assignmentName) {
         this.problems = problems;
@@ -40,6 +41,20 @@ public class Assignment {
         if(this.bestTimes.get(index) > bestTimeSeconds && bestTimeSeconds > 0) {
             this.bestTimes.set(index, bestTimeSeconds);
             System.out.println("new best time set! new: "+bestTimeSeconds+" old: "+this.bestTimes.get(index));
+        }
+    }
+
+    public void setCompleted(){
+        this.completed = true;
+    }
+
+    public void updateProblemCompletion() {
+        int i = 0;
+        for (UserExample prob: problems){
+            if (prob.isCompleted()){
+                correct.set(i, true);
+            }
+            i++;
         }
     }
 }
