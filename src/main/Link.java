@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Link extends Line {
     private static int LINE_SELECT_DISTANCE = 8;
+    private static int DEFAULT_STROKE = 2;
     /**
      * @Field lines - Lines contained in this link
      * @Field nodes - Nodes contained in this link
@@ -32,6 +33,17 @@ public class Link extends Line {
         end = e;
         lines = new ArrayList<Line>();
         nodes = new ArrayList<Node>();
+    }
+    public void setSelected() {
+        for(int i = 0; i < lines.size(); i++) {
+            lines.get(i).setStrokeWidth(DEFAULT_STROKE * 2);
+        }
+    }
+    public void deSelect() {
+        System.out.println("deselected");
+        for(int i = 0; i < lines.size(); i++) {
+            lines.get(i).setStrokeWidth(DEFAULT_STROKE);
+        }
     }
     /**
      * Draw this Link, namely all lines and nodes
@@ -97,4 +109,8 @@ public class Link extends Line {
      * @return CodeBlock - ending CodeBlock
      */
     public CodeBlock getEnd() { return end; }
+    public void disconnect() {
+        start.removeConnection(end);
+        end.removeConnection(start);
+    }
 }

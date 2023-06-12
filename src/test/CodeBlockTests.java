@@ -40,6 +40,4 @@ public class CodeBlockTests {
         assertFalse(funcBlock.isInBounds(75, 125));
         assertFalse(funcBlock.isInBounds(74, 124));
     }
-
-
 }

@@ -1,6 +1,7 @@
 package src.main;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -50,13 +51,13 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         else if(e.getClickCount() == 2) {
             l.split(e);
         }
-
+        stateRepository.setCurrentlySelectedDrawable(l.getConnection());
         dataRepository.repaintWorkingArea();
 
     }
     /**
      * Labels the given line at the given Mouse position
-     * @param l - given Line
+     * @param l - given line
      * @param e - given MouseEvent
      */
     public void labelLine(Line l, MouseEvent e) {
@@ -65,18 +66,19 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
             System.out.println("This line can not be labeled");
             return;
         }
-        String[] opts = new String[] {"True", "False"};
+        String[] labels = new String[] {"True", "False"};
         int choice = JOptionPane.showOptionDialog(null, "Choose an option", "Line Labeling",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, opts, opts[0]);
-        l.label(opts[choice]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, labels, labels[0]);
+        l.label(labels[choice]);
     }
     /**
-     * Gets the line being clicked (if any)
-     * @param e - given MouseEvent
+     *
+     * @param e - MouseEvent used to determine the line being pressed
+     * @return Line
      */
     public Line getTopLine(MouseEvent e) {
         Line close = null;
-        for(Line l : ((DataRepository)  DataRepository.getInstance()).getLines()) {
+        for(Line l : ((DataRepository) DataRepository.getInstance()).getLines()) {
             close = ((Link) l).selectLine(e);
             if(close != null) {
                 break;
@@ -84,12 +86,7 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         }
         return close;
     }
-    /**
-     * Gets the CodeBlock being clicked (if any)
-     * @param x - given Mouse x position
-     * @param y - given Mouse y position
-     */
-    public CodeBlock getTopCodeBlock(int x, int y) {
+    public CodeBlock getTopCodeBlock(int x, int y){
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         ArrayList<CodeBlock> codeBlocks = dataRepository.getCodeBlocks();
         ArrayList<Line> links = dataRepository.getLines();

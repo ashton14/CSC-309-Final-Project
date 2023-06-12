@@ -15,6 +15,10 @@ public class LineDecorator extends Line {
      * Get the starting CodeBlock of the parentLine
      */
     @Override
+    public Link getConnection() {
+        return super.getConnection();
+    }
+    @Override
     public CodeBlock getStart(){
         return super.getStart();
     }

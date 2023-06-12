@@ -39,6 +39,12 @@ public class Line implements Drawable {
     /**
      * Setter function for parent link of this Line.
      */
+    public void setColor(Color c) {
+        color = c;
+    }
+    /**
+     * Setter function for parent link of this Line.
+     */
     public void setLink(Link c) {
         parent = c;
     }
@@ -72,6 +78,9 @@ public class Line implements Drawable {
     public void setStrokeWidth(int strokeWidth){
         this.strokeWidth = strokeWidth;
     }
+    public Link getConnection() {
+        return parent;
+    }
     /**
      * Gets the center of this line... used to draw the labels
      */
@@ -100,6 +109,9 @@ public class Line implements Drawable {
      */
     public void split(MouseEvent e) {
         Node midpt = new Node(new Circle(e.getX(), e.getY(), 5, new Color(0, 0, 0)));
+        midpt.addToInbound(start);
+        midpt.addToOutbound(end);
+
         Line newL = new Line(start, midpt);
 
         newL.setLink(parent);

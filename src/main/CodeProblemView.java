@@ -30,8 +30,7 @@ public class CodeProblemView extends JPanel implements Observer {
         JLabel codeProblem = new JLabel();
         codeProblem.setSize(100, getHeight());
         codeProblem.setBorder(new EmptyBorder(10, 10, 10,10));
-        codeProblem.setVerticalAlignment(SwingConstants.TOP);
-        codeProblem.setHorizontalAlignment(SwingConstants.LEFT);
+        codeProblem.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(codeProblem, BorderLayout.CENTER);
         return codeProblem;
     }
