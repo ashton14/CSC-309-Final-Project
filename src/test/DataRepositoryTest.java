@@ -20,16 +20,6 @@ import static src.test.DrawablesMock.*;
 public class DataRepositoryTest {
 
     /**
-     * Creates a simple mock of a CodeBlock
-     * that does not support any operations.
-     * @return  A simple CodeBlock mock.
-     */
-    public CodeBlock mockTestBlock(){
-        CodeBlock mockBlock = Mockito.mock(CodeBlock.class);
-        return mockBlock;
-    }
-
-    /**
      * Ensures that multiple instances of the DataRepository
      * can be gotten from DataRepository.getInstance().
      */
@@ -64,8 +54,7 @@ public class DataRepositoryTest {
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         repository.clearFlowchart();
 
-        Shape mockRectangle = Mockito.mock(Shape.class);
-        CodeBlock  varBlock = new VariableBlock(mockRectangle,"");
+        CodeBlock  varBlock = Mockito.mock(VariableBlock.class);
         repository.addDrawable(varBlock);
         assertEquals(repository.getDrawables().size(), 1);
         assertEquals(repository.getDrawables().get(0), varBlock);
@@ -140,8 +129,8 @@ public class DataRepositoryTest {
         repository.clearFlowchart();
 
         Shape mockShape = Mockito.mock(Shape.class);
-        CodeBlock var1 = new VariableBlock(mockShape,"");
-        CodeBlock var2 = new VariableBlock(mockShape,"");
+        CodeBlock var1 = Mockito.mock(VariableBlock.class);
+        CodeBlock var2 = Mockito.mock(VariableBlock.class);
 
         Line mockLine1 = Mockito.mock(Line.class);
         when(mockLine1.getStart()).thenReturn(var1);
@@ -235,7 +224,7 @@ public class DataRepositoryTest {
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         ArrayList<Drawable> drawables = new ArrayList<>();
         for(int i = 0; i < 10; ++i){
-            drawables.add(mockTestBlock());
+            drawables.add(Mockito.mock(CodeBlock.class));
             repository.addDrawable(drawables.get(i));
         }
         repository.removeDrawable(drawables.get(0));
@@ -269,7 +258,7 @@ public class DataRepositoryTest {
     @Test
     public void removeNotIn(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        CodeBlock codeBlock = mockTestBlock();
+        CodeBlock codeBlock = Mockito.mock(CodeBlock.class);
         repository.removeDrawable(codeBlock);
     }
 
