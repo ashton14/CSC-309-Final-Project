@@ -58,6 +58,7 @@ public class TeachingApp {
                 logoutButton.setVisible(false);
                 backButton.setVisible(false);
                 messageButton.setVisible(false);
+                frame.getContentPane().remove(sidePanel);
                 break;
 
             case "DiagramApp":
@@ -182,16 +183,14 @@ public class TeachingApp {
 
         JButton sandboxButton = new JButton("Sandbox");
         sandboxButton.addActionListener(e -> {
-            DiagramApp diagramApp = new DiagramApp(this);
-            diagramApp.setVisible(true);
-            diagramApp.setSize(900, 900);
-            diagramApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setVisible(false);
+            showSandbox();
         });
 
         JButton cloudCoursesButton = new JButton("Cloud");
         cloudCoursesButton.addActionListener(e -> {
-            // logic to show cloud courses
+            frame.setVisible(false);
+            CloudDataPage cdp = new CloudDataPage(SqlControlHandler.getFlowchartFileNames(), this);
+            cdp.setVisible(true);
         });
 
         panel.setLayout(new GridLayout(2, 1));
@@ -224,8 +223,6 @@ public class TeachingApp {
         pushPage(loginPage);
         frame.setVisible(true);
 
-        // Update the side panel to the dashboard side panel
-        setSidePanel(generateDashboardSidePanel());
     }
 
     /**
@@ -245,6 +242,14 @@ public class TeachingApp {
      */
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
+    }
+
+    public void showSandbox() {
+        DiagramApp diagramApp = new DiagramApp(this);
+        diagramApp.setVisible(true);
+        diagramApp.setSize(900, 900);
+        diagramApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(false);
     }
 
     /**

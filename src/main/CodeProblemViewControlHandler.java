@@ -18,10 +18,18 @@ public class CodeProblemViewControlHandler implements ActionListener {
     private JButton prev;
     private JButton next;
     private int currentProblemIndex = 0;
+
+    //TeachingApp
+    private int numProblemsInCurrentAssignment = ((ProblemRepository) ProblemRepository.getInstance())
+            .getNumAssignmentProblems(AssignmentsView.getCurrentAssignment().substring(0,11)+
+                    (Character.toLowerCase(AssignmentsView.getCurrentAssignment().charAt(11)) - 'a' + 1));
+
+    //CoursesPage
+    /*
     private int numProblemsInCurrentAssignment = ((ProblemRepository) ProblemRepository.getInstance())
             .getNumAssignmentProblems(CoursesPage.getCurrentAssignment().substring(0,11)+
                     (Character.toLowerCase(CoursesPage.getCurrentAssignment().charAt(11)) - 'a' + 1));
-
+*/
     public CodeProblemViewControlHandler(JButton prev, JButton next){
         this.prev = prev;
         this.next = next;

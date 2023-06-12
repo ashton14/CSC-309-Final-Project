@@ -140,7 +140,7 @@ public class CoursesPage {
 
     private void showFlowchartsFromDb() {
         frame.setVisible(false);
-        CloudDataPage cdp = new CloudDataPage(SqlControlHandler.getFlowchartFileNames());
+        CloudDataPage cdp = new CloudDataPage(SqlControlHandler.getFlowchartFileNames(), new TeachingApp(false));
         cdp.setVisible(true);
     }
 
@@ -298,7 +298,6 @@ public class CoursesPage {
         frame.repaint();
     }
 
-
     public void showCourseList() {
         coursePanel.setVisible(true);
         assignmentPanel.removeAll();
@@ -325,6 +324,12 @@ public class CoursesPage {
 
     public static void updateCourseProgress(){
         courseProgress.setText("Progress: "+ numAssignmentsCompleted+"/3");
+    }
+
+
+    public static void main(String[] args) {
+        //CoursesPage app = new CoursesPage();
+        SwingUtilities.invokeLater(() -> new CoursesPage());
     }
 
 }

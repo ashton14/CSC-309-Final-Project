@@ -1,5 +1,4 @@
 package src.main;
-import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -11,7 +10,10 @@ import java.util.List;
 
 public class CloudDataPage extends JFrame{
 
-    public CloudDataPage(List<String> diagramNames) {
+    private TeachingApp teachingApp;
+
+    public CloudDataPage(List<String> diagramNames, TeachingApp teachingApp) {
+        this.teachingApp = teachingApp;
 
         setTitle("Cloud Saved Diagrams");
         setSize(400, 400);
@@ -70,7 +72,8 @@ public class CloudDataPage extends JFrame{
 
     private void returnToCoursesPage(){
         this.setVisible(false);
-        CoursesPage coursesPage = new CoursesPage();
+        teachingApp.setVisible(true);
+        //CoursesPage coursesPage = new CoursesPage();
     }
 
     private void displayDiagram(String filename){
@@ -82,19 +85,6 @@ public class CloudDataPage extends JFrame{
         diagramApp.setVisible(true);
         diagramApp.setSize(700,700);
         diagramApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel( new FlatLightLaf() );
-        } catch( Exception ex ) {
-            System.err.println( "Failed to initialize theme. Using fallback." );
-        }
-        // Sample diagram names
-        List<String> diagramNames = List.of("Diagram 1", "Diagram 2", "Diagram 3", "Diagram 4", "Diagram 5",
-                "Diagram 6", "Diagram 7", "Diagram 8", "Diagram 9", "Diagram 10");
-
-        SwingUtilities.invokeLater(() -> new CloudDataPage(diagramNames));
     }
 
 }
