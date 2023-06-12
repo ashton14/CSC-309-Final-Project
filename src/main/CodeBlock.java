@@ -3,16 +3,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-
 /**
  * Represents an abstract CodeBlock that is both Serializable and Drawable.
  *
  * @author Connor Hickey
  */
 public abstract class CodeBlock implements Drawable {
-
-    public static final int INBOUND_INFINITE = -1;
-
     private Shape shape;
     private String text;
     private ArrayList<CodeBlock> inboundCodeBlocks;
@@ -65,6 +61,7 @@ public abstract class CodeBlock implements Drawable {
             discovered.add(false);
         }
     }
+
     /**
      * Removes all connections from this CodeBlock and to other CodeBlocks.
      */
@@ -399,5 +396,4 @@ public abstract class CodeBlock implements Drawable {
         return (outboundCodeBlocks.size() < maxOutboundCount &&
                 !outboundCodeBlocks.contains(block));
     }
-
 }

@@ -124,6 +124,7 @@ public class LoginPage extends JFrame{
     private void displayRegistrationSucceeded() {
         JOptionPane.showMessageDialog(this, "Registration successful. Please log in with your username and password.");
     }
+
     /**
      * Method to handle the completion of the login process
      * Hides the login form and renders the main app
