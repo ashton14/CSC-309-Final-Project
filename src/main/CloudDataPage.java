@@ -78,7 +78,7 @@ public class CloudDataPage extends JFrame{
         String trimmedStr = filename.substring(0, filename.length() - 5);
         FileManager.readFile(trimmedStr);
         this.setVisible(false);
-        DiagramApp diagramApp = new DiagramApp();
+        DiagramApp diagramApp = new DiagramApp(new TeachingApp(false));
         diagramApp.setVisible(true);
         diagramApp.setSize(700,700);
         diagramApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

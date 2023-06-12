@@ -7,18 +7,21 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * @author Ashton Alonge, Aaron Bettencourt
+ * @author Ashton Alonge, Aaron Bettencourt, Connor Hickey
  * main class
  * frame with menu bar, drawing area, and status bar
  */
 public class DiagramApp extends JFrame implements Observer {
 
+    private TeachingApp teachingApp;
+
     private JPanel westPanel;
     /**
      * Constructor to add menu bar with 4 menus, a drawing area, and a status bar
      */
-    public DiagramApp(){
+    public DiagramApp(TeachingApp teachingApp){
         super("Intelligent Tutor App");
+        this.teachingApp = teachingApp;
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
 
@@ -87,8 +90,8 @@ public class DiagramApp extends JFrame implements Observer {
         //mode.add(sandbox);
         //mode.add(translateCode);
         //mode.add(translateFlowchart);
-        MenuBarControlHandler menuController = new MenuBarControlHandler();
-        
+        MenuBarControlHandler menuController = new MenuBarControlHandler(teachingApp, this);
+
 
         newFile.addActionListener(menuController);
         save.addActionListener(menuController);
