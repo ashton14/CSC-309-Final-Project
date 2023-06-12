@@ -265,7 +265,7 @@ public class TeachingApp {
      * @param args command-line arguments (unused).
      */
     public static void main(String[] args) {
-        boolean isTesting = true;  // change to true for testing mode
+        boolean isTesting = false;  // change to true for testing mode
         TeachingApp app = new TeachingApp(isTesting);
 
         LoginPage loginPage = new LoginPage(isTesting, app);
