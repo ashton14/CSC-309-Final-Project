@@ -34,11 +34,19 @@ public class Link extends Line {
         lines = new ArrayList<Line>();
         nodes = new ArrayList<Node>();
     }
+
+    /**
+     * Changes the stroke of the link (and its lines) to indicate selection
+     */
     public void setSelected() {
         for(int i = 0; i < lines.size(); i++) {
             lines.get(i).setStrokeWidth(DEFAULT_STROKE * 2);
         }
     }
+
+    /**
+     * Resets the link's stroke
+     */
     public void deSelect() {
         System.out.println("deselected");
         for(int i = 0; i < lines.size(); i++) {
@@ -109,6 +117,10 @@ public class Link extends Line {
      * @return CodeBlock - ending CodeBlock
      */
     public CodeBlock getEnd() { return end; }
+
+    /**
+     * Disconnects the link from it's CodeBlock ends - used when deleting links
+     */
     public void disconnect() {
         start.removeConnection(end);
         end.removeConnection(start);

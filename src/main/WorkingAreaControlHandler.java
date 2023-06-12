@@ -72,7 +72,6 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         l.label(labels[choice]);
     }
     /**
-     *
      * @param e - MouseEvent used to determine the line being pressed
      * @return Line
      */
@@ -86,6 +85,13 @@ public class WorkingAreaControlHandler implements MouseListener, MouseMotionList
         }
         return close;
     }
+
+    /**
+     * Returns the CodeBlock on the screen at the given x and y coordinates
+     * @param x
+     * @param y
+     * @return
+     */
     public CodeBlock getTopCodeBlock(int x, int y){
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         ArrayList<CodeBlock> codeBlocks = dataRepository.getCodeBlocks();

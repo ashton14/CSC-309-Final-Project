@@ -66,7 +66,6 @@ public class StateRepository extends Observable implements Repository {
         } else {
             message = "Element Selected";
         }
-        System.out.println("before " + currentlySelectedDrawable + " after " + drawable);
         if(currentlySelectedDrawable instanceof Link && currentlySelectedDrawable != drawable) {
             ((Link) currentlySelectedDrawable).deSelect();
         }

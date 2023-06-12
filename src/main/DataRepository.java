@@ -168,7 +168,6 @@ public class DataRepository extends Observable implements Repository {
     public void purgeCodeBlock(CodeBlock cblock) {
         System.out.println(cblock);
         for(Line l : getLines()) {
-            System.out.println(l.getStart());
             if(cblock.equals(l.getStart()) || cblock.equals(l.getEnd())) {
                 removeDrawable(l);
             }
