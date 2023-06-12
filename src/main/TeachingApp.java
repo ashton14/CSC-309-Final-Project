@@ -85,6 +85,13 @@ public class TeachingApp {
                 messageButton.setVisible(false);
                 break;
 
+            case "CloudDataView":
+                backButton.setVisible(true);
+                logoutButton.setVisible(true);
+                setSidePanel(generateDashboardSidePanel());
+                messageButton.setVisible(true);
+                break;
+
             default:
                 break;
         }
@@ -188,9 +195,10 @@ public class TeachingApp {
 
         JButton cloudCoursesButton = new JButton("Cloud");
         cloudCoursesButton.addActionListener(e -> {
-            frame.setVisible(false);
+            pushPage(new CloudDataView(this, SqlControlHandler.getFlowchartFileNames()));
+            /*frame.setVisible(false);
             CloudDataPage cdp = new CloudDataPage(SqlControlHandler.getFlowchartFileNames(), this);
-            cdp.setVisible(true);
+            cdp.setVisible(true);*/
         });
 
         panel.setLayout(new GridLayout(2, 1));
