@@ -1,6 +1,6 @@
 package src.main;
+
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Observable;
 
 /**
@@ -115,10 +115,10 @@ public class StateRepository extends Observable implements Repository {
      * @return The outline for the currently selected
      * Drawable if it is a CodeBlock instance as a Shape.
      */
-    public Shape getCurrentlySelectedCodeBlockOutline(){
+    public src.main.Shape getCurrentlySelectedCodeBlockOutline(){
         if(currentlySelectedDrawable instanceof CodeBlock) {
             CodeBlock codeBlock = ((CodeBlock) currentlySelectedDrawable);
-            Shape shapeOutline = codeBlock.copyShape();
+            src.main.Shape shapeOutline = codeBlock.copyShape();
             Shape innerShape = codeBlock.getShape();
             innerShape.addObserver(shapeOutline);
             shapeOutline.setColor(Color.YELLOW);
