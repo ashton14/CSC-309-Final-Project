@@ -117,21 +117,9 @@ public class CodeProblemView extends JPanel implements Observer {
         problemPanel.add(metricsPrompt);
 
         JPanel buttonPanel = makeButtonPanel();
-        ProblemTimer problemTimer = new ProblemTimer();
-
-        FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-        fRepo.addObserver(problemTimer);
-        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
-        pRepo.addObserver(problemTimer);
-
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new GridLayout(2,1));
-        southPanel.add(buttonPanel);
-        southPanel.add(problemTimer);
-
         add(problemPanel, BorderLayout.NORTH);
         add(tutorPane, BorderLayout.CENTER);
-        add(southPanel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
 

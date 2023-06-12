@@ -2,6 +2,7 @@ package src.main;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -96,19 +97,8 @@ public class FlowchartProblemView extends JPanel implements Observer {
                 "Casey: I can check if your work is correct and give hints when requested.\n");
         tutorFeedback.setEnabled(false);
 
-        ProblemTimer problemTimer = new ProblemTimer();
-        FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-        fRepo.addObserver(problemTimer);
-        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
-        pRepo.addObserver(problemTimer);
-
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new GridLayout(2,1));
-        southPanel.add(buttonPanel);
-        southPanel.add(problemTimer);
-
+        this.add(buttonPanel,BorderLayout.SOUTH);
         this.add(chatScrollPane, BorderLayout.CENTER);
-        this.add(southPanel,BorderLayout.SOUTH);
         this.setPreferredSize(new Dimension(300,400));
         this.updateProblemTitle();
     }

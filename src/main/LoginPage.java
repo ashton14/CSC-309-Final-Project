@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Alex Banham, Connor Hickey
+ * @author Alex Banham
  * JPanel with simple login user interface
  * connects with mySQL DB to authenticate users
  */

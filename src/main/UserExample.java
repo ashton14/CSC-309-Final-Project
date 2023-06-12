@@ -110,7 +110,6 @@ public class UserExample {
      */
     public int gradeUserCode(ArrayList<String> userCodeStatements,boolean verbose){
         FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-        fRepo.setErrorIndex(0);
 
         //check if userCode is smaller than correct answer
         int maxIndex = this.codeStatements.size();

@@ -8,39 +8,23 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * The AssignmentsView class represents a view that displays the assignments for a specific course.
- * It implements the AppPage interface.
- * It provides methods to show the contents of the view and retrieve header information.
- * It also handles the assignment button clicks.
- *
- * The assignments are retrieved from the Course object.
- * The view is displayed as a vertical list of assignment buttons.
- * Clicking on an assignment button opens the DiagramApp and sets the mode and assignment index accordingly.
- *
  * @author Connor Hickey
  */
 class AssignmentsView extends JPanel implements AppPage {
 
     private List<String> assignments;
+
     private TeachingApp app;
+
     private Course course;
 
-    /**
-     * Constructs an AssignmentsView object with the specified TeachingApp and Course.
-     *
-     * @param app    the TeachingApp instance.
-     * @param course the Course instance.
-     */
     public AssignmentsView(TeachingApp app, Course course) {
         this.app = app;
         this.course = course;
         this.assignments = course.getAssignments();
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // set layout to BoxLayout for vertical arrangement
     }
 
-    /**
-     * Shows the contents of the AssignmentsView by displaying the assignment buttons.
-     */
     @Override
     public void showContents() {
         this.removeAll();
@@ -57,30 +41,19 @@ class AssignmentsView extends JPanel implements AppPage {
                 }
             });
             this.add(assignmentButton);
-            this.add(Box.createRigidArea(new Dimension(0, 15)));
+            this.add(Box.createRigidArea(new Dimension(0, 15))); // add spacing between buttons
         }
         this.revalidate();
         this.repaint();
     }
 
-    /**
-     * Retrieves the header information of the AssignmentsView.
-     * The header information consists of the current course name followed by "Assignments".
-     *
-     * @return the header information.
-     */
     @Override
     public String getHeaderInfo() {
-        String currentCourse = course.getCourseName();
+        String currentCourse = course.getCourseName(); // Assuming there's a method that gets the current course
         return currentCourse + " Assignments";
     }
 
-    /**
-     * Handles the assignment button click events.
-     * Opens the DiagramApp and sets the mode and assignment index based on the clicked assignment.
-     *
-     * @param assignment the clicked assignment.
-     */
+
     private void handleAssignmentButtonClick(String assignment) {
         System.out.println("Assignment button clicked! " + assignment);
         StateRepository sRepo = (StateRepository) StateRepository.getInstance();
@@ -108,20 +81,10 @@ class AssignmentsView extends JPanel implements AppPage {
         }
     }
 
-    /**
-     * Retrieves the list of assignments.
-     *
-     * @return the list of assignments.
-     */
     public List<String> getAssignments() {
         return this.assignments;
     }
 
-    /**
-     * Sets the list of assignments.
-     *
-     * @param assignments the list of assignments.
-     */
     public void setAssignments(List<String> assignments) {
         this.assignments = assignments;
     }

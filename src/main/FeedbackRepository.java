@@ -19,7 +19,7 @@ public class FeedbackRepository extends Observable implements Repository {
      * Private constructor to enforce singleton.
      */
     private FeedbackRepository(){
-        this.errorIndex = -2;
+        this.errorIndex = -1;
         feedbackNumber = 0;
         cyclomaticComplexity = "";
     }

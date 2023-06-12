@@ -8,24 +8,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.List;
 
-/**
- * The MessagesPage class represents the view for sending messages.
- * It extends JPanel and implements the AppPage interface.
- * It provides methods to show the contents of the messages page and retrieve the header information.
- *
- * The messages page allows the user to select a course from a dropdown menu and send a message to the selected course.
- * The message text area initially displays a placeholder text specific to the selected course.
- * When the user clicks on the text area, the placeholder text is cleared and the user can enter their message.
- * The user can send the message by clicking the send button.
- *
- * The messages page uses a BorderLayout to arrange the components.
- * The course selection dropdown is placed in the north, the message text area with a scroll pane is placed in the center,
- * and the send button is placed in the south.
- *
- * The messages page is associated with the TeachingApp.
- *
- * @author Connor Hickey
- */
 public class MessagesPage extends JPanel implements AppPage {
 
     private JTextArea messageTextArea;
@@ -34,21 +16,11 @@ public class MessagesPage extends JPanel implements AppPage {
     private List<Course> courses;
     private String placeholderText;
 
-    /**
-     * Constructs a MessagesPage object with the list of courses.
-     *
-     * @param courses the list of courses.
-     */
     public MessagesPage(List<Course> courses) {
         this.courses = courses;
         setLayout(new BorderLayout());
     }
 
-    /**
-     * Shows the contents of the messages page.
-     * It creates and adds the course selection dropdown, the message text area, and the send button.
-     * It initializes the placeholder text based on the selected course.
-     */
     @Override
     public void showContents() {
         if (coursesComboBox == null) {
@@ -115,11 +87,6 @@ public class MessagesPage extends JPanel implements AppPage {
         messageTextArea.setForeground(Color.GRAY);
     }
 
-    /**
-     * Retrieves the header information of the messages page.
-     *
-     * @return the header information.
-     */
     @Override
     public String getHeaderInfo() {
         return "Message";

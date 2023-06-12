@@ -1,28 +1,33 @@
 package src.test;
 
-import src.main.StateRepository;
 import src.main.*;
 import org.junit.Test;
 import src.main.Shape;
 
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static src.test.DrawablesMock.*;
 
-
-/**
- * Test cases for DataRepository class.
- * 84% statement coverage as of 6/11/2023
- * 92% statement coverage when run with:
- * DataStateRepositoryIntegrationTest
- *
- * All external CodeBlock and Line Dependencies are mocked.
- */
 public class StateRepositoryTest {
 
+
+    /**
+     * Helper method to make a CodeBlock for testing.
+     * @return A CodeBlock that happens to be of type
+     * Variable at coordinates 0,0.
+     */
+    public CodeBlock makeTestBlock(){
+        BlockFactory blockFactory = new BlockFactory();
+        return blockFactory.makeBlock("Variable", 0,0);
+    }
+
+    /**
+     * Helper method to make a Line for testing.
+     * @return A Line consisting between two CodeBlocks
+     * created with makeTestBlock().
+     */
+    public Line makeTestLine(){
+        return new Line(makeTestBlock(), makeTestBlock());
+    }
 
     /**
      * Ensures that StateRepository.getInstance() returns an instance of StateRepository.
@@ -53,9 +58,7 @@ public class StateRepositoryTest {
     public void getCurrentlySelectedLineTest() {
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         stateRepository.reset();
-        ArrayList<Drawable> mockFlowchart = mockFlowchartWithDrawables();
-        Line line = (Line) mockFlowchart.get(2);
-
+        Line line = makeTestLine();
         stateRepository.setCurrentlySelectedDrawable(line);
         assertEquals(stateRepository.getCurrentlySelectedLine(), line);
         assertEquals(stateRepository.getCurrentlySelectedDrawable(), line);
@@ -82,9 +85,7 @@ public class StateRepositoryTest {
     public void setCurrentlySelectedCodeBlockTest() {
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         stateRepository.reset();
-        ArrayList<Drawable> mockFlowchart = mockFlowchartWithDrawables();
-        CodeBlock testBlock = (CodeBlock) mockFlowchart.get(0);
-
+        CodeBlock testBlock = makeTestBlock();
         stateRepository.setCurrentlySelectedDrawable(testBlock);
         assertEquals(stateRepository.getCurrentlySelectedCodeBlock(), testBlock);
         assertEquals(stateRepository.getCurrentlySelectedDrawable(), testBlock);
@@ -106,7 +107,7 @@ public class StateRepositoryTest {
 
     /**
      * Ensures that the StateRepository.getCurrentlySelectedDrawable()
-     * and its associated CodeBlock method returns the outlines of the
+     * and its associated CodeBlock method return outlines of the
      * same shape of a given CodeBlock at the same position when
      * a CodeBlock is selected and null when one is not.
      */
@@ -114,28 +115,27 @@ public class StateRepositoryTest {
     public void getCurrentlySelectedOutlineCodeBlockTest() {
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         stateRepository.reset();
-
-        ArrayList<Drawable> mockFlowchart = mockFlowchartWithDrawables();
-        CodeBlock testBlock = (CodeBlock) mockFlowchart.get(0);
-
+        CodeBlock testBlock = makeTestBlock();
         stateRepository.setCurrentlySelectedDrawable(testBlock);
         assertNull(stateRepository.getCurrentlySelectedLineOutline());
         Shape testShape = testBlock.copyShape();
 
         Shape repoDrawable = (Shape) stateRepository.getCurrentlySelectedDrawableOutline();
         assertEquals(testShape.getClass(), repoDrawable.getClass());
+        assertNotEquals(testShape.getColor(), repoDrawable.getColor());
         assertEquals(testShape.getYCenter(), repoDrawable.getYCenter());
         assertEquals(testShape.getXCenter(), repoDrawable.getXCenter());
 
         Shape repoShape = stateRepository.getCurrentlySelectedCodeBlockOutline();
         assertEquals(testShape.getClass(), repoShape.getClass());
+        assertNotEquals(testShape.getColor(), repoShape.getColor());
         assertEquals(testShape.getYCenter(), repoShape.getYCenter());
         assertEquals(testShape.getXCenter(), repoShape.getXCenter());
     }
 
     /**
      * Ensures that the StateRepository.getCurrentlySelectedDrawable()
-     * and its associated Line method returns the outlines of the
+     * and its associated Line method return outlines of the
      * given Line (starts and ends at same points) and that
      * getCurrentlySelectedCodeBlock() returns null when a Line
      * is selected.
@@ -144,15 +144,11 @@ public class StateRepositoryTest {
     public void getCurrentlySelectedOutlineLineTest() {
         StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
         stateRepository.reset();
-
-        ArrayList<Drawable> mockFlowchart = mockFlowchartWithDrawables();
-        Line testLine = (Line) mockFlowchart.get(2);
-
+        Line testLine = makeTestLine();
         stateRepository.setCurrentlySelectedDrawable(testLine);
         Line testDrawable = (Line) stateRepository.getCurrentlySelectedDrawable();
         assertNull(stateRepository.getCurrentlySelectedCodeBlockOutline());
         Line repoLine = stateRepository.getCurrentlySelectedLineOutline();
-
         assertEquals(repoLine.getStart(), testLine.getStart());
         assertEquals(repoLine.getEnd(), testLine.getEnd());
         assertEquals(repoLine.getStart(), testDrawable.getStart());
@@ -186,6 +182,48 @@ public class StateRepositoryTest {
         assertEquals(stateRepository.getSelectedMenuItem(), "test item");
         stateRepository.setSelectedMenuItem(null);
         assertNull(stateRepository.getSelectedMenuItem());
+    }
+
+    /**
+     * Ensures that DataRepository.deleteSelectedItem() removes
+     * only the selected item regardless of position and
+     * does not crash when no item is selected.
+     */
+    @Test
+    public void deleteSelectedItem() {
+        DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
+        dataRepository.clearFlowchart();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+        stateRepository.reset();
+
+        CodeBlock codeBlock = makeTestBlock();
+        CodeBlock codeBlock2 = makeTestBlock();
+        Line line = makeTestLine();
+        dataRepository.addDrawable(codeBlock);
+        dataRepository.addDrawable(codeBlock2);
+        dataRepository.addDrawable(line);
+
+        // remove middle
+        stateRepository.setCurrentlySelectedDrawable(codeBlock2);
+        stateRepository.deleteSelectedItem();
+
+        assertFalse(dataRepository.getDrawables().contains(codeBlock2));
+        assertTrue(dataRepository.getDrawables().contains(line));
+        assertTrue(dataRepository.getDrawables().contains(codeBlock));
+        assertNull(stateRepository.getCurrentlySelectedDrawable());
+        //remove left
+        stateRepository.setCurrentlySelectedDrawable(codeBlock);
+        stateRepository.deleteSelectedItem();
+        assertFalse(dataRepository.getDrawables().contains(codeBlock));
+        assertTrue(dataRepository.getDrawables().contains(line));
+        assertNull(stateRepository.getCurrentlySelectedDrawable());
+        //remove right
+        stateRepository.setCurrentlySelectedDrawable(line);
+        stateRepository.deleteSelectedItem();
+        assertFalse(dataRepository.getDrawables().contains(line));
+        assertEquals(0, dataRepository.getDrawables().size());
+        //remove none (avoid crash)
+        stateRepository.deleteSelectedItem();
     }
 
     /**

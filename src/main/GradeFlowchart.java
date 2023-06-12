@@ -1,7 +1,5 @@
 package src.main;
 
-import src.main.*;
-
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -117,7 +115,6 @@ public class GradeFlowchart {
         int startCount = 0;
         for (CodeBlock codeBlock : flowchart) {
             if (codeBlock.getClass() == StartBlock.class) {
-
                 ++startCount;
             }
         }
@@ -416,6 +413,8 @@ public class GradeFlowchart {
             }
         return false;
         }
+
+
 
     /**
      * Helper method for the discover method to retrieve a conditional CodeBlock (LoopBlock or IfBlocK)

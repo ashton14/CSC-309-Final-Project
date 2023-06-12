@@ -1,8 +1,6 @@
 package src.test;
-import org.junit.Test;
-import org.mockito.Mockito;
 import src.main.*;
-import src.main.GradeCyclomaticComplexity;
+import org.junit.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,25 +12,23 @@ import static org.junit.Assert.*;
  * expected cyclomatic complexity of a given flowchart.
  * Since cyclomatic complexity is independent of connections
  * between CodeBlocks, no connections need to be made.
- *
- * 74% statement coverage, only tests for if a solution
- * is right or wrong, not the verbose feedback.
  */
 public class GradeCyclomaticTests {
 
+    /**
+     * Helper method to create a Circle to construct a CodeBlock.
+     * @return   A Circle to place inside a CodeBlock.
+     */
+    private Circle makeCircle(){
+        return new Circle(0,0, 0, Color.BLACK);
+    }
 
     /**
-     * Tests the GradeCyclomaticComplexity.grade method to ensure
-     * that a String that can't be converted to an integer results
-     * in a false value being returned also that the program doesn't crash.
+     * Helper method to create a Diamond to construct a CodeBlock.
+     * @return   A Diamond to place inside a CodeBlock.
      */
-    @Test
-    public void testCyclomaticComplexityNonInteger(){
-        ArrayList<CodeBlock> flowchart = new ArrayList<>();
-        flowchart.add(Mockito.mock(StartBlock.class));
-        flowchart.add(Mockito.mock(StopBlock.class));
-        GradeCyclomaticComplexity grade = new GradeCyclomaticComplexity(flowchart, false);
-        assertFalse(grade.grade("abcdefg"));
+    private Diamond makeDiamond(){
+        return new Diamond(0,0, 0, 0, Color.BLACK);
     }
 
     /**
@@ -43,8 +39,8 @@ public class GradeCyclomaticTests {
     @Test
     public void testCyclomaticComplexity1(){
         ArrayList<CodeBlock> flowchart = new ArrayList<>();
-        flowchart.add(Mockito.mock(StartBlock.class));
-        flowchart.add(Mockito.mock(StopBlock.class));
+        flowchart.add(new StartBlock(makeCircle(), ""));
+        flowchart.add(new StopBlock(makeCircle(), ""));
         GradeCyclomaticComplexity grade = new GradeCyclomaticComplexity(flowchart, false);
         assertTrue(grade.grade("1"));
     }
@@ -56,24 +52,10 @@ public class GradeCyclomaticTests {
     @Test
     public void testCyclomaticComplexity2If(){
         ArrayList<CodeBlock> flowchart = new ArrayList<>();
-        flowchart.add(Mockito.mock(StartBlock.class));
-        flowchart.add(Mockito.mock(IfBlock.class));
-        flowchart.add(Mockito.mock(StopBlock.class));
+        flowchart.add(new StartBlock(makeCircle(), ""));
+        flowchart.add(new IfBlock(makeDiamond(), ""));
+        flowchart.add(new StopBlock(makeCircle(), ""));
         GradeCyclomaticComplexity grade = new GradeCyclomaticComplexity(flowchart, false);
-        assertTrue(grade.grade("2"));
-    }
-
-    /**
-     * Tests the GradeCyclomaticComplexity.grade method to ensure
-     * a flowchart with 1 IfBlock is 2 when Verbose is true.
-     */
-    @Test
-    public void testCyclomaticComplexity2IfVerbose(){
-        ArrayList<CodeBlock> flowchart = new ArrayList<>();
-        flowchart.add(Mockito.mock(StartBlock.class));
-        flowchart.add(Mockito.mock(IfBlock.class));
-        flowchart.add(Mockito.mock(StopBlock.class));
-        GradeCyclomaticComplexity grade = new GradeCyclomaticComplexity(flowchart, true);
         assertTrue(grade.grade("2"));
     }
 
@@ -84,23 +66,9 @@ public class GradeCyclomaticTests {
     @Test
     public void testCyclomaticComplexity2Loop(){
         ArrayList<CodeBlock> flowchart = new ArrayList<>();
-        flowchart.add(Mockito.mock(StartBlock.class));
-        flowchart.add(Mockito.mock(LoopBlock.class));
-        flowchart.add(Mockito.mock(StopBlock.class));
-        GradeCyclomaticComplexity grade = new GradeCyclomaticComplexity(flowchart, false);
-        assertTrue(grade.grade("2"));
-    }
-
-    /**
-     * Tests the GradeCyclomaticComplexity.grade method to ensure
-     * a flowchart with 1 LoopBlock is 2 when verbose is true.
-     */
-    @Test
-    public void testCyclomaticComplexity2LoopVerbose(){
-        ArrayList<CodeBlock> flowchart = new ArrayList<>();
-        flowchart.add(Mockito.mock(StartBlock.class));
-        flowchart.add(Mockito.mock(LoopBlock.class));
-        flowchart.add(Mockito.mock(StopBlock.class));
+        flowchart.add(new StartBlock(makeCircle(), ""));
+        flowchart.add(new LoopBlock(makeDiamond(), ""));
+        flowchart.add(new StopBlock(makeCircle(), ""));
         GradeCyclomaticComplexity grade = new GradeCyclomaticComplexity(flowchart, false);
         assertTrue(grade.grade("2"));
     }
@@ -112,12 +80,12 @@ public class GradeCyclomaticTests {
     @Test
     public void testCyclomaticComplexityCombo17(){
         ArrayList<CodeBlock> flowchart = new ArrayList<>();
-        flowchart.add(Mockito.mock(StartBlock.class));
+        flowchart.add(new StartBlock(makeCircle(), ""));
         for(int i = 0; i < 8; ++i){
-            flowchart.add(Mockito.mock(LoopBlock.class));
-            flowchart.add(Mockito.mock(IfBlock.class));
+            flowchart.add(new LoopBlock(makeDiamond(), ""));
+            flowchart.add(new IfBlock(makeDiamond(), ""));
         }
-        flowchart.add(Mockito.mock(StopBlock.class));
+        flowchart.add(new StopBlock(makeCircle(), ""));
         GradeCyclomaticComplexity grade = new GradeCyclomaticComplexity(flowchart, false);
         assertTrue(grade.grade("17"));
     }

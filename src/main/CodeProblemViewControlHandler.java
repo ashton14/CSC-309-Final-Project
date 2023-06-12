@@ -63,7 +63,7 @@ public class CodeProblemViewControlHandler implements ActionListener {
         ((FeedbackRepository)FeedbackRepository.getInstance()).metricsPromptRequest(FeedbackRepository.REQUEST_COMPLEXITY);
         String complexityStr = ((FeedbackRepository)FeedbackRepository.getInstance()).getCyclomaticComplexity();
         boolean correctComplexity = gradeCyclomaticComplexity.grade(complexityStr);
-        ((FeedbackRepository)FeedbackRepository.getInstance()).setColorTextField(FeedbackRepository.REQUEST_COMPLEXITY, correctComplexity);
+        ((FeedbackRepository)FeedbackRepository.getInstance()).setColorTextField(MetricsPrompt.COMPLEXITY_INDEX, correctComplexity);
 
         return correctComplexity && correctFlowchart;
     }
@@ -77,8 +77,6 @@ public class CodeProblemViewControlHandler implements ActionListener {
         ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         String commandString = e.getActionCommand();
         if(commandString.equals("Next")){
-            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-            fRepo.setErrorIndex(-2);
             currentProblemIndex++;
 
             pRepo.setNextProblemIndex();
@@ -88,8 +86,6 @@ public class CodeProblemViewControlHandler implements ActionListener {
                     metricsPromptRequest(FeedbackRepository.REQUEST_CLEAR);
 
         } else if(commandString.equals("Previous")){
-            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-            fRepo.setErrorIndex(-2);
             currentProblemIndex--;
             next.setEnabled(true);
             pRepo.setPreviousProblem();
@@ -107,8 +103,6 @@ public class CodeProblemViewControlHandler implements ActionListener {
         } else if(commandString.equals("Submit")) {
             boolean isCorrect = gradeProblem(false);
             if (isCorrect) {
-                FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-                fRepo.setErrorIndex(-1);
                 displayCorrectPrompt();
                 if (numProblemsInCurrentAssignment > currentProblemIndex + 1) {
                     next.setEnabled(true);

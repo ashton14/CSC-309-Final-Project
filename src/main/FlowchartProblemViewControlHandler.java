@@ -1,5 +1,4 @@
 package src.main;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,21 +37,14 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
             gradeCode(true);
         }
         if(e.getActionCommand().equals("Next")) {
-            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-            fRepo.setErrorIndex(-2);
-            clearCode();
             System.out.println("setting next problem");
             curProblemNumber ++;
             pRepo.setNextProblem();
             if(curProblemNumber > numProblemsCompleted || curProblemNumber == numProblemsInCurrentAssignment)
                 this.next.setEnabled(false);
             this.prev.setEnabled(true);
-
         }
         if(e.getActionCommand().equals("Previous")) {
-            FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
-            fRepo.setErrorIndex(-2);
-            clearCode();
             next.setEnabled(true);
             pRepo.setPreviousProblem();
             curProblemNumber --;

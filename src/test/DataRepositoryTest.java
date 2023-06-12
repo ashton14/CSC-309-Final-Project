@@ -1,32 +1,22 @@
 package src.test;
 
-import org.mockito.Mockito;
 import src.main.*;
 import org.junit.Test;
-import src.main.Shape;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
-import static src.test.DrawablesMock.*;
 
 /**
- * Test cases for DataRepository class.
- * 65% statement coverage as of 6/11/2023
- * 93% statement coverage when run with DataStateRepositoryIntegrationTest
- * All external CodeBlock and Line Dependencies are mocked.
+ * Test cases for DataRepository and
+ * DrawableData classes. 100% statement coverage.
  */
 public class DataRepositoryTest {
 
-    /**
-     * Creates a simple mock of a CodeBlock
-     * that does not support any operations.
-     * @return  A simple CodeBlock mock.
-     */
-    public CodeBlock mockTestBlock(){
-        CodeBlock mockBlock = Mockito.mock(CodeBlock.class);
-        return mockBlock;
+    public CodeBlock makeTestBlock(){
+        BlockFactory blockFactory = new BlockFactory();
+        return blockFactory.makeBlock("Variable", 0,0);
     }
 
     /**
@@ -51,7 +41,6 @@ public class DataRepositoryTest {
     @Test
     public void testDataInitial(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clearFlowchart();
         assertEquals(repository.getDrawables().size(), 0);
     }
 
@@ -63,9 +52,8 @@ public class DataRepositoryTest {
     public void testDataAddOne(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         repository.clearFlowchart();
-
-        Shape mockRectangle = Mockito.mock(Shape.class);
-        CodeBlock  varBlock = new VariableBlock(mockRectangle,"");
+        BlockFactory blockFactory = new BlockFactory();
+        CodeBlock varBlock = blockFactory.makeBlock("Variable",0,0);
         repository.addDrawable(varBlock);
         assertEquals(repository.getDrawables().size(), 1);
         assertEquals(repository.getDrawables().get(0), varBlock);
@@ -78,12 +66,10 @@ public class DataRepositoryTest {
     @Test
     public void testDataAddThree(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-
-        ArrayList<Drawable> mockFlowchart = mockFlowchartWithDrawables();
-        CodeBlock start = (CodeBlock) mockFlowchart.get(0);
-        CodeBlock end = (CodeBlock) mockFlowchart.get(1);
-        Line line = (Line) mockFlowchart.get(2);
-
+        BlockFactory blockFactory = new BlockFactory();
+        CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
+        CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
+        Line line = new Line(start, end);
         repository.addDrawable(start);
         repository.addDrawable(end);
         repository.addDrawable(line);
@@ -107,25 +93,26 @@ public class DataRepositoryTest {
 
     /**
      * Ensures that DataRepository.getLines() returns an
-     * ArrayList of type Line containing all Drawables
-     * that are Line instances.
+     * ArrayList of type Line containing all lines
+     * within the StateData object with the order
+     * preserved.
      */
     @Test
     public void testDataGetLines(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         repository.clearFlowchart();
-
-        ArrayList<Drawable> mockFlowchart = mockFlowchartWithDrawables();
-        CodeBlock start = (CodeBlock) mockFlowchart.get(0);
-        CodeBlock end = (CodeBlock) mockFlowchart.get(1);
-        Line line = (Line) mockFlowchart.get(2);
-
+        BlockFactory blockFactory = new BlockFactory();
+        CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
+        CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
+        Line line1 = new Line(start, end);
+        Line line2 = new Line(start, end);
         repository.addDrawable(start);
-        repository.addDrawable(line);
+        repository.addDrawable(line1);
         repository.addDrawable(end);
-
-        assertEquals(repository.getLines().size(), 1);
-        assertEquals(repository.getLines().get(0), line);
+        repository.addDrawable(line2);
+        assertEquals(repository.getLines().size(), 2);
+        assertEquals(repository.getLines().get(0), line1);
+        assertEquals(repository.getLines().get(1), line2);
     }
 
     /**
@@ -138,27 +125,18 @@ public class DataRepositoryTest {
     public void testDataGetBlocks(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         repository.clearFlowchart();
-
-        Shape mockShape = Mockito.mock(Shape.class);
-        CodeBlock var1 = new VariableBlock(mockShape,"");
-        CodeBlock var2 = new VariableBlock(mockShape,"");
-
-        Line mockLine1 = Mockito.mock(Line.class);
-        when(mockLine1.getStart()).thenReturn(var1);
-        when(mockLine1.getEnd()).thenReturn(var2);
-
-        Line mockLine2 = Mockito.mock(Line.class);
-        when(mockLine2.getStart()).thenReturn(var2);
-        when(mockLine2.getEnd()).thenReturn(var1);
-
-        repository.addDrawable(var1);
-        repository.addDrawable(mockLine1);
-        repository.addDrawable(var2);
-        repository.addDrawable(mockLine2);
-
+        BlockFactory blockFactory = new BlockFactory();
+        CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
+        CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
+        Line line1 = new Line(start, end);
+        Line line2 = new Line(start, end);
+        repository.addDrawable(start);
+        repository.addDrawable(line1);
+        repository.addDrawable(end);
+        repository.addDrawable(line2);
         assertEquals(repository.getCodeBlocks().size(), 2);
-        assertEquals(repository.getCodeBlocks().get(0), var1);
-        assertEquals(repository.getCodeBlocks().get(1), var2);
+        assertEquals(repository.getCodeBlocks().get(0), start);
+        assertEquals(repository.getCodeBlocks().get(1), end);
     }
 
     /**
@@ -170,23 +148,84 @@ public class DataRepositoryTest {
     public void testDataUndo(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         repository.clearFlowchart();
-
-        ArrayList<Drawable> mockFlowchart = mockFlowchartWithDrawables();
-        CodeBlock start = (CodeBlock) mockFlowchart.get(0);
-        CodeBlock end = (CodeBlock) mockFlowchart.get(1);
-        Line line = (Line) mockFlowchart.get(2);
-
+        BlockFactory blockFactory = new BlockFactory();
+        CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
+        CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
+        Line line = new Line(start, end);
         repository.addDrawable(start);
         repository.addDrawable(end);
         repository.addDrawable(line);
         repository.undo();
-
         // see if line and connections gets undone
         assertEquals(0, repository.getLines().size());
-        assertEquals(start.getInboundCodeBlocks().size(), 0);
-        assertEquals(start.getOutboundCodeBlocks().size(), 0);
-        assertEquals(end.getOutboundCodeBlocks().size(), 0);
         assertEquals(end.getInboundCodeBlocks().size(), 0);
+        assertEquals(start.getOutboundCodeBlocks().size(), 0);
+        // see if all CodeBlocks remain
+        assertEquals(2, repository.getDrawables().size());
+        repository.undo();
+        // see if end is removed
+        assertEquals(1, repository.getDrawables().size());
+        assertEquals(start, repository.getDrawables().get(0));
+        repository.undo();
+        // see if start is removed
+        assertEquals(0, repository.getDrawables().size());
+        // ensure program doesn't crash;
+        repository.undo();
+    }
+
+    /**
+     * Ensures that DataRepository.undo() only changes the
+     * currently selected CodeBlock in the StateRepository
+     * to null if the undone CodeBlock is the
+     * currently selected CodeBlock.
+     */
+    @Test
+    public void testDataUndoSelected(){
+        DataRepository repository = (DataRepository) DataRepository.getInstance();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+
+        BlockFactory blockFactory = new BlockFactory();
+        CodeBlock varBlock1 = blockFactory.makeBlock("Variable", 0,0);
+        CodeBlock varBlock2 = blockFactory.makeBlock("Variable", 0,0);
+        repository.clearFlowchart();
+        stateRepository.setCurrentlySelectedDrawable(varBlock1);
+        repository.addDrawable(varBlock1);
+        repository.addDrawable(varBlock2);
+        repository.undo();
+        assertEquals(varBlock1, stateRepository.getCurrentlySelectedCodeBlock());
+        repository.undo();
+        assertEquals(repository.getDrawables().size(), 0);
+        assertNull(stateRepository.getCurrentlySelectedCodeBlock());
+    }
+
+    /**
+     * Ensures that the StateRepository has its status
+     * changed to "Action undone" after calling DataRepository.undo().
+     */
+    @Test
+    public void testDataUndoStatus(){
+        DataRepository repository = (DataRepository) DataRepository.getInstance();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+
+        repository.clearFlowchart();
+        repository.addDrawable(new Circle(0,0,0,Color.BLACK));
+        repository.undo();
+        assertEquals("Action undone", stateRepository.getStatus());
+    }
+
+    /**
+     * Ensures that the StateRepository has its status
+     * changed to "Board cleared" after calling DataRepository.clear().
+     */
+    @Test
+    public void testDataClearStatus(){
+        DataRepository repository = (DataRepository) DataRepository.getInstance();
+        StateRepository stateRepository = (StateRepository) StateRepository.getInstance();
+
+        repository.clearFlowchart();
+        repository.addDrawable(new Circle(0,0,0,Color.BLACK));
+        repository.clearFlowchart();
+        assertEquals("Board cleared", stateRepository.getStatus());
     }
 
     /**
@@ -196,12 +235,19 @@ public class DataRepositoryTest {
     @Test
     public void testDataAddAll(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        repository.clearFlowchart();
 
-        ArrayList<Drawable> localDrawables = mockFlowchartWithDrawables();
+        repository.clearFlowchart();
+        BlockFactory blockFactory = new BlockFactory();
+        CodeBlock start = blockFactory.makeBlock("Variable", 0,0);
+        CodeBlock end = blockFactory.makeBlock("Variable", 0,0);
+        Line line = new Line(start, end);
+
+        ArrayList<Drawable> localDrawables = new ArrayList<>();
+        localDrawables.add(start);
+        localDrawables.add(line);
+        localDrawables.add(end);
         repository.addAll(localDrawables);
         ArrayList<Drawable> drawables = repository.getDrawables();
-
         assertEquals(localDrawables.size(), drawables.size());
         for(int i = 0; i < localDrawables.size(); ++i){
             assertEquals(localDrawables.get(i), drawables.get(i));
@@ -227,6 +273,18 @@ public class DataRepositoryTest {
     }
 
     /**
+     * DataRepository.modifiedDrawables just notifies observers,
+     * no testing can be done here. This is just included for
+     * 100% coverage.
+     */
+    @Test
+    public void testModified(){
+        DataRepository repository = (DataRepository) DataRepository.getInstance();
+        repository.clearFlowchart();
+        repository.modifiedDrawables();
+    }
+
+    /**
      * Tests the removeDrawable method in the DataRepository
      * to ensure that only selected elements get removed.
      */
@@ -235,7 +293,7 @@ public class DataRepositoryTest {
         DataRepository repository = (DataRepository) DataRepository.getInstance();
         ArrayList<Drawable> drawables = new ArrayList<>();
         for(int i = 0; i < 10; ++i){
-            drawables.add(mockTestBlock());
+            drawables.add(makeTestBlock());
             repository.addDrawable(drawables.get(i));
         }
         repository.removeDrawable(drawables.get(0));
@@ -269,7 +327,7 @@ public class DataRepositoryTest {
     @Test
     public void removeNotIn(){
         DataRepository repository = (DataRepository) DataRepository.getInstance();
-        CodeBlock codeBlock = mockTestBlock();
+        CodeBlock codeBlock = makeTestBlock();
         repository.removeDrawable(codeBlock);
     }
 

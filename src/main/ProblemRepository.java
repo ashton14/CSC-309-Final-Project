@@ -12,6 +12,7 @@ public class ProblemRepository extends Observable implements Repository{
     private static ProblemRepository repository;
     private ArrayList<Assignment> assignments;
     private int assignmentIndex;
+
     private int problemIndex;
 
     /**
@@ -61,16 +62,6 @@ public class ProblemRepository extends Observable implements Repository{
         return this.assignments.get(this.assignmentIndex).getProblem(problemIndex);
     }
 
-    public int getBestTimeForCurrentProblem() {
-        return this.assignments.get(this.assignmentIndex).getBestTime(problemIndex).intValue();
-    }
-
-    public void addBestTimeToCurrentProblem(int bestTime) {
-        this.assignments.get(this.assignmentIndex).setBestTime(problemIndex,bestTime);
-    }
-
-
-
     public void setNextProblemIndex() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         dRepo.clearFlowchart();
@@ -105,7 +96,6 @@ public class ProblemRepository extends Observable implements Repository{
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
         this.setNextProblemIndex();
         dRepo.clearFlowchart();
-        dRepo.addAll(this.getCurrentProblem().getFlowChart());
     }
     public void setPreviousProblem() {
         DataRepository dRepo = (DataRepository) DataRepository.getInstance();
