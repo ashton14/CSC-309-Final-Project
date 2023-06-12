@@ -150,7 +150,7 @@ public class CodeProblemView extends JPanel implements Observer {
             return;
         }
 
-        if(arg.getClass() == String.class) {
+        if(arg!= null && arg.getClass() == String.class) {
             String string = (String) arg;
             tutorFeedback.append(string);
         }

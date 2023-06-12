@@ -129,8 +129,22 @@ public class FlowchartProblemView extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         updateProblemTitle();
         if(o == FeedbackRepository.getInstance()) {
-            String string = (String) arg;
-            tutorFeedback.append(string);
+            try {
+                if(arg instanceof ArrayList) {
+                    ArrayList<String> stringList = (ArrayList<String>) arg;
+                    for (String string : stringList) {
+                        tutorFeedback.append(string);
+                    }
+                } else if(arg instanceof Integer) {
+                    tutorFeedback.append(arg.toString());
+                } else {
+                    String string = (String) arg;
+                    tutorFeedback.append(string);
+
+                }
+            } catch(Exception e){
+                System.out.println("an error occured: "+e.getMessage());
+            }
         }
 
         //make error'd line of code red
