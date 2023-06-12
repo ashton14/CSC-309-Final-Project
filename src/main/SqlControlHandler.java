@@ -1,6 +1,5 @@
 package src.main;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,9 +10,9 @@ import java.util.List;
 
 public class SqlControlHandler {
 
-        private static final String url = "jdbc:mysql://localhost:3306/tutorapp_schema_1";
-        private static final String username = "root";
-        private static final String password = "Csc3092023";
+        private static final String url = "jdbc:mysql://sql9.freesqldatabase.com:3306/sql9625644";
+        private static final String connectionUser = "sql9625644";
+        private static final String connectionPass = "KjBEiLBFrn";
 
     /**
      * Method to handle the user authentication, queries the db to check if user info is there
@@ -23,9 +22,7 @@ public class SqlControlHandler {
         // Connect to the MySQL database
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tutorapp_schema_1",
-                    "root", "Csc3092023");
-
+            Connection conn = DriverManager.getConnection(url, connectionUser, connectionPass);
             // Execute the SELECT statement to check if the user exists
             String sql = "SELECT * FROM users WHERE username=? AND password=?";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -54,8 +51,7 @@ public class SqlControlHandler {
     public static boolean registerUser(String userType, String username, String password) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tutorapp_schema_1",
-                    "root", "Csc3092023");
+            Connection conn = DriverManager.getConnection(url, connectionUser, connectionPass);
             String sql = "SELECT * FROM users WHERE username=? AND password=?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, username);
@@ -64,7 +60,6 @@ public class SqlControlHandler {
 
             if (result.next()){
                 conn.close();
-                return false;
             } else {
                 String sql2 = "INSERT INTO users (username, password, usertype) VALUES (?, ?, ?)";
                 PreparedStatement statement2 = conn.prepareStatement(sql2);
@@ -76,8 +71,8 @@ public class SqlControlHandler {
                     conn.close();
                     return true;
                 }
-                return false;
             }
+            return false;
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -86,9 +81,9 @@ public class SqlControlHandler {
     }
 
         public static boolean uploadFlowchart(String filename) {
-            try (Connection connection = DriverManager.getConnection(url, username, password)) {
-                String sql = "INSERT INTO Flowcharts (name, file_data) VALUES (?, ?)";
-                File file = new File(filename);
+            try (Connection connection = DriverManager.getConnection(url, connectionUser, connectionPass)) {
+                String sql = "INSERT INTO flowcharts (name, file_data) VALUES (?, ?)";
+                File file = new File(filename + ".diag");
 
                 try (FileInputStream fis = new FileInputStream(file);
                      PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -105,8 +100,8 @@ public class SqlControlHandler {
         }
 
     public static void downloadFlowchart(String filename) {
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            String sql = "SELECT file_data FROM Flowcharts WHERE name = ?";
+        try (Connection connection = DriverManager.getConnection(url, connectionUser, connectionPass)) {
+            String sql = "SELECT file_data FROM flowcharts WHERE name = ?";
             File outputFile = new File(filename);
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -138,8 +133,8 @@ public class SqlControlHandler {
     public static List<String> getFlowchartFileNames() {
         List<String> fileNames = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            String sql = "SELECT name FROM Flowcharts";
+        try (Connection connection = DriverManager.getConnection(url, connectionUser, connectionPass)) {
+            String sql = "SELECT name FROM flowcharts";
 
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(sql)) {
