@@ -61,10 +61,13 @@ public class StateRepository extends Observable implements Repository {
      */
     public void setCurrentlySelectedDrawable(Drawable drawable) {
         String message;
-        if(drawable == null){
+        if(drawable == null) {
             message = "Element Unselected";
         } else {
             message = "Element Selected";
+        }
+        if(currentlySelectedDrawable instanceof Link && currentlySelectedDrawable != drawable) {
+            ((Link) currentlySelectedDrawable).deSelect();
         }
         currentlySelectedDrawable = drawable;
         setChanged();
@@ -200,6 +203,9 @@ public class StateRepository extends Observable implements Repository {
     public void deleteSelectedItem(){
         DataRepository dataRepository = (DataRepository) DataRepository.getInstance();
         dataRepository.removeDrawable(currentlySelectedDrawable);
+        if(currentlySelectedDrawable instanceof Link) {
+            ((Link) currentlySelectedDrawable).disconnect();
+        }
         currentlySelectedDrawable = null;
         setChanged();
         notifyObservers("Selected element deleted");

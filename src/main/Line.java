@@ -1,6 +1,7 @@
 package src.main;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 /**
@@ -12,17 +13,15 @@ public class Line implements Drawable {
     /**
      * @Field start - CodeBlock being drawn from
      * @Field end - CodeBlock being drawn to
+     * @Field parent - The link containing this line
+     * @Field strokeWidth - stroke width of the line
+     * @Field color - color of the line
      */
     private CodeBlock start;
     private CodeBlock end;
-
+    private Link parent;
     private int strokeWidth;
     private Color color = Color.BLACK;
-
-    /**
-     * @Field arrowLen - Defines the length of the arrow head lines
-     */
-    private int arrowLen = 15;
 
     /**
      * Assigns starting and ending CodeBlocks
@@ -37,7 +36,23 @@ public class Line implements Drawable {
         s.addToOutbound(e);
         e.addToInbound(s);
     }
-
+    /**
+     * Setter function for parent link of this Line.
+     */
+    public void setColor(Color c) {
+        color = c;
+    }
+    /**
+     * Setter function for parent link of this Line.
+     */
+    public void setLink(Link c) {
+        parent = c;
+    }
+    /**
+     * Getter function for parent link of this Line.
+     * @return link containing this line
+     */
+    public Link getLink() { return (Link) parent; }
     /**
      * Getter function for the first CodeBlock in this Line.
      * @return The first CodeBlock in this Line.
@@ -50,17 +65,31 @@ public class Line implements Drawable {
      * Getter function for the last CodeBlock in this Line.
      * @return The last CodeBlock in this Line.
      */
-    public CodeBlock getEnd(){
-        return end;
+    public CodeBlock getEnd() { return end; }
+    /**
+     * Setter function for the last CodeBlock in this Line.
+     */
+    public void setEnd(CodeBlock c) {
+        end = c;
     }
-
+    /**
+     * Setter function for the stroke width
+     */
     public void setStrokeWidth(int strokeWidth){
         this.strokeWidth = strokeWidth;
     }
-
+    public Link getConnection() {
+        return parent;
+    }
     /**
-     * Draws the line, and arrow head
-     * @param g - Graphics object used for drawing
+     * Gets the center of this line... used to draw the labels
+     */
+    public Point getCenter() {
+        return new Point(((end.getXCenter() - start.getXCenter()) / 2) + start.getXCenter(), ((end.getYCenter() - start.getYCenter()) / 2) + start.getYCenter());
+    }
+    /**
+     * Draw this line, from the start CodeBlock to end CodeBlock
+     * @param g - The graphics object being drawn to
      */
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -69,22 +98,28 @@ public class Line implements Drawable {
         Point startPos = new Point(start.getXCenter(), start.getYCenter() + (start.getHeight() / 2));
         Point endPos = new Point(end.getXCenter(), end.getYCenter() - (end.getHeight() / 2));
 
-        // Calculates the angle the line makes
-        double theta = Math.atan2((double) (endPos.y - startPos.y), (double)(endPos.x - startPos.x));
-        // Calculate the points for arrow head drawing
-        Point ahead1 = new Point(endPos.x - (int) (arrowLen * Math.cos(theta - Math.toRadians(45))),
-                endPos.y - (int) (arrowLen * Math.sin(theta - Math.toRadians(45))));
-        Point ahead2 = new Point(endPos.x - (int) (arrowLen * Math.cos(theta + Math.toRadians(45))),
-                endPos.y - (int) (arrowLen * Math.sin(theta + Math.toRadians(45))));
-
         // Set the color, stroke, and draw line and arrow head
         g.setColor(color);
         g2d.setStroke(new BasicStroke(strokeWidth));
         g2d.drawLine(startPos.x, startPos.y, endPos.x, endPos.y);
-        g2d.drawLine(endPos.x, endPos.y, ahead1.x, ahead1.y);
-        g2d.drawLine(endPos.x, endPos.y, ahead2.x, ahead2.y);
     }
+    /**
+     * Split the given line into two, the arrow head always staying at the end
+     * @param e - Mouse position when splitting line
+     */
+    public void split(MouseEvent e) {
+        Node midpt = new Node(new Circle(e.getX(), e.getY(), 5, new Color(0, 0, 0)));
+        midpt.addToInbound(start);
+        midpt.addToOutbound(end);
 
+        Line newL = new Line(start, midpt);
+
+        newL.setLink(parent);
+        parent.addLine(newL);
+        parent.addNode(midpt);
+
+        start = midpt;
+    }
     /**
      * Returns the distance from the line to the given point
      * @param x - x coordinate of the point
@@ -121,10 +156,10 @@ public class Line implements Drawable {
     }
 
     /**
-     * Sets the color of the line
-     * @param c - Color to set the line to
+     * "Label" this line - (Replace this line with a LabelDecorator containing this line)
+     * @param text - The label to be used
      */
-    public void setColor(Color c) {
-        color = c;
+    public void label(String text) {
+        parent.replace(this, new LabelDecorator(text, this));
     }
 }

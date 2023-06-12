@@ -29,6 +29,7 @@ public class WorkingArea extends JPanel implements Observer {
         ArrayList<CodeBlock> codeBlocks = dataRepository.getCodeBlocks();
         CodeBlock currentlySelectedBlock = stateRepository.getCurrentlySelectedCodeBlock();
         ArrayList<Line> lines = dataRepository.getLines();
+        Drawable currentlySelectedDrawable = stateRepository.getCurrentlySelectedDrawable();
 
         for (CodeBlock currentCodeBlock : codeBlocks) {
             if (currentlySelectedBlock == currentCodeBlock) {
@@ -37,9 +38,11 @@ public class WorkingArea extends JPanel implements Observer {
             }
             currentCodeBlock.draw(g);
         }
-
+        if(currentlySelectedDrawable instanceof Link) {
+            ((Link) currentlySelectedDrawable).setSelected();
+        }
         for (Line line : lines) {
-            line.draw(g);
+            ((Link) line).draw(g);
         }
     }
 
