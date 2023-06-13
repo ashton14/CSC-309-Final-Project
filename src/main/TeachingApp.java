@@ -191,7 +191,9 @@ public class TeachingApp {
 
         JButton cloudCoursesButton = new JButton("Cloud");
         cloudCoursesButton.addActionListener(e -> {
-            // logic to show cloud courses
+            List<String> diagramNames = List.of("Diagram 1", "Diagram 2", "Diagram 3", "Diagram 4", "Diagram 5",
+                    "Diagram 6", "Diagram 7", "Diagram 8", "Diagram 9", "Diagram 10");
+            pushPage(new CloudDataView(this, diagramNames));
         });
 
         panel.setLayout(new GridLayout(2, 1));
@@ -223,9 +225,7 @@ public class TeachingApp {
         LoginPage loginPage = new LoginPage(isTesting, this);
         pushPage(loginPage);
         frame.setVisible(true);
-
-        // Update the side panel to the dashboard side panel
-        setSidePanel(generateDashboardSidePanel());
+        frame.getContentPane().remove(sidePanel);
     }
 
     /**
