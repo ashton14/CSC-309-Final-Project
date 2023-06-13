@@ -12,7 +12,6 @@ public class TextDecorator extends ShapeDecorator {
 
     private String text;
 
-
     /**
      * Instantiates an object of type TextDecorator given
      * a shape to decorate and a String of text.

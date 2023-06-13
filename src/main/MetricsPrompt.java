@@ -102,16 +102,12 @@ public class MetricsPrompt extends JPanel implements Observer {
      * @param requestId   The request being made.
      */
     private void processRequest(Integer requestId){
-        if(requestId == null || requestId.intValue() < 0
-                || requestId.intValue() >= metricsPrompts.size()){
-            return;
-        }
         if(requestId == FeedbackRepository.REQUEST_COMPLEXITY){
             String complexityStr = metricsPrompts.get(FeedbackRepository.REQUEST_COMPLEXITY).getText();
             ((FeedbackRepository) (FeedbackRepository.getInstance())).
                     setCyclomaticComplexity(complexityStr);
 
-        } else if(requestId == FeedbackRepository.RESET_METRICS_FIELDS){
+        } else if(requestId == FeedbackRepository.REQUEST_CLEAR){
             reset();
         }
     }

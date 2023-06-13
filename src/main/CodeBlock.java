@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Represents an abstract CodeBlock that is both Serializable and Drawable.
  *
- * @author Connor Hickey
+ * @author Connor Hickey, Aaron Bettencourt
  */
 public abstract class CodeBlock implements Drawable {
     private Shape shape;

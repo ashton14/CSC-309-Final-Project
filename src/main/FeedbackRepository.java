@@ -9,7 +9,6 @@ import java.util.Observable;
 public class FeedbackRepository extends Observable implements Repository {
 
     public static final int REQUEST_COMPLEXITY = 0;
-    public static final int RESET_METRICS_FIELDS = 1;
     public static final int REQUEST_CLEAR = 1;
     private static FeedbackRepository repository;
     private int feedbackNumber;
