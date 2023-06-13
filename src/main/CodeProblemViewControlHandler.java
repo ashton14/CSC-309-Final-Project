@@ -46,6 +46,10 @@ public class CodeProblemViewControlHandler implements ActionListener {
             if (numProblemsInCurrentAssignment > currentProblemIndex + 1) {
                 next.setEnabled(true);
             }
+            if(currentProblemIndex+1 == numProblemsInCurrentAssignment) {
+                ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
+                pRepo.setAssignmentComplete(true);
+            }
     }
 
     /**
