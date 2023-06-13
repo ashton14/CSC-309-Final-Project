@@ -129,7 +129,7 @@ public class FlowchartProblemView extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         updateProblemTitle();
         if(o == FeedbackRepository.getInstance()) {
-            String string = (String) arg;
+            String string = arg.toString();
             tutorFeedback.append(string);
         }
 
