@@ -84,6 +84,13 @@ public class TeachingApp {
                 messageButton.setVisible(false);
                 break;
 
+            case "CloudDataView":
+                backButton.setVisible(true);
+                logoutButton.setVisible(true);
+                setSidePanel(generateDashboardSidePanel());
+                messageButton.setVisible(true);
+                break;
+
             default:
                 break;
         }
@@ -210,6 +217,10 @@ public class TeachingApp {
     public void pushPage(AppPage page) {
         this.pages.push(page);
         showCurrentPage();
+    }
+
+    public AppPage peekPage() {
+        return this.pages.peek();
     }
 
     /**

@@ -93,4 +93,5 @@ public class Course {
     public List<String> getAssignments() {
         return this.assignments;
     }
+
 }

@@ -135,4 +135,8 @@ public class ProblemRepository extends Observable implements Repository{
     public void setAssignmentComplete(boolean complete) {
         this.assignments.get(this.assignmentIndex).setAssignmentComplete(complete);
     }
+
+    public ArrayList<Assignment> getAssignments() {
+        return this.assignments;
+    }
 }

@@ -83,6 +83,7 @@ public class MenuBarControlHandler implements ActionListener {
                 break;
             case "Courses":
                 teachingApp.setVisible(true); // Show the TeachingApp frame
+                teachingApp.peekPage().showContents();
                 diagramApp.dispose();
                 break;
 

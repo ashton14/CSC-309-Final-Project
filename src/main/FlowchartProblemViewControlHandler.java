@@ -81,6 +81,9 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
         FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
         fRepo.setErrorIndex(mistakeIndex);
 
+        /*testing
+        mistakeIndex = -1;
+*/
         if (mistakeIndex == -1) {
             DecimalFormat df = new DecimalFormat("#0");
                 JOptionPane.showMessageDialog(null,
@@ -95,9 +98,9 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
                 this.next.setEnabled(true);
             }
             else {
-                this.next.setEnabled(false);
-                CoursesPage.numAssignmentsCompleted++;
-                CoursesPage.updateCourseProgress();
+                next.setEnabled(false);
+                // Update the completion status in ProblemRepository
+                pRepo.setAssignmentComplete(true); // Mark current assignment as completed
             }
 
             if(curProblemNumber+1 == numProblemsInCurrentAssignment) {

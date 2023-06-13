@@ -49,6 +49,7 @@ class CourseView extends JPanel implements AppPage {
     @Override
     public void showContents() {
         this.removeAll(); // remove existing components
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         for (Course course : this.courses) {
             JButton courseButton = new JButton(course.getCourseName());
             courseButton.setUI(new RoundedButtonUI(300, 300));
@@ -64,6 +65,16 @@ class CourseView extends JPanel implements AppPage {
                     app.pushPage(assignmentsView);
                 }
             });
+
+            List<Assignment> assignments = pRepo.getAssignments();
+            int completedAssignments = 0;
+            for (Assignment assignment : assignments) {
+                if (assignment.getAssignmentComplete()) {
+                    completedAssignments++;
+                }
+            }
+
+            course.setNumAssignmentsCompleted(completedAssignments);
 
             // Create a JLabel to display the number of completed assignments
             JLabel completedLabel = new JLabel("Completed: " + course.getCourseCompletionString());

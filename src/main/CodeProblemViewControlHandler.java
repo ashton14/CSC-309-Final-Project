@@ -113,7 +113,10 @@ public class CodeProblemViewControlHandler implements ActionListener {
             gradeProblem(true);
 
         } else if(commandString.equals("Submit")) {
+
             boolean isCorrect = gradeProblem(false);
+            /*testing
+            boolean isCorrect = true;*/
             if (isCorrect) {
                 FeedbackRepository fRepo = (FeedbackRepository) FeedbackRepository.getInstance();
                 fRepo.setErrorIndex(-1);
@@ -122,8 +125,8 @@ public class CodeProblemViewControlHandler implements ActionListener {
                     next.setEnabled(true);
                 } else {
                     next.setEnabled(false);
-                    CoursesPage.numAssignmentsCompleted++;
-                    CoursesPage.updateCourseProgress();
+                    // Update the completion status in ProblemRepository
+                    pRepo.setAssignmentComplete(true); // Mark current assignment as completed
                 }
             }
         }

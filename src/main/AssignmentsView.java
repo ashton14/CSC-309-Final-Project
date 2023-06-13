@@ -74,6 +74,20 @@ class AssignmentsView extends JPanel implements AppPage {
             });
             assignmentButton.setUI(new RoundedButtonUI(200, 200));
             this.add(assignmentButton);
+
+            // Add the assignment completion status
+            JLabel completionLabel = new JLabel();
+            int assignmentIndex = Integer.parseInt(assignment.substring(11))-1;
+            if (pRepo.getAssignments().get(assignmentIndex).getAssignmentComplete()) {
+                completionLabel.setText("Completed");
+                completionLabel.setForeground(new Color(0, 128, 0)); // green color
+            } else {
+                completionLabel.setText("Incomplete");
+                completionLabel.setForeground(Color.RED); // red color
+            }
+            completionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            this.add(completionLabel);
+
             this.add(Box.createRigidArea(new Dimension(0, 10)));
         }
         this.revalidate();
