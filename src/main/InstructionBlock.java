@@ -2,7 +2,7 @@ package src.main;
 /**
  * Represents an InstructionBlock which extends CodeBlock.
  *
- * @author Connor Hickey
+ * @author Connor Hickey, Aaron Bettencourt
  */
 public class InstructionBlock extends CodeBlock {
 

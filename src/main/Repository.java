@@ -6,6 +6,7 @@ import java.util.Observable;
  * An interface to be implemented for
  * the creation of multiple Singleton
  * Repository classes.
+ * @author Aaron Bettencourt
  */
 public interface Repository {
 

@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
  *
  * 74% statement coverage, only tests for if a solution
  * is right or wrong, not the verbose feedback.
+ * @author Aaron Bettencourt
  */
 public class GradeCyclomaticTests {
 

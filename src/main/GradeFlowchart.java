@@ -12,6 +12,8 @@ import java.util.function.Predicate;
  * for ease of use and increased efficiency of select operations.
  * These flowcharts are evaluated as graphs starting with
  * the StartBlock, which there should exist only one of.
+ *
+ * @author Aaron Bettencourt
  */
 public class GradeFlowchart {
 

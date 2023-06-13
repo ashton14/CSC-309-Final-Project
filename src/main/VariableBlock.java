@@ -1,7 +1,7 @@
 package src.main;
 
 /**
- * @author Alex Banham
+ * @author Alex Banham, Aaron Bettencourt
  * Creates a VariableBlock object
  */
 public class VariableBlock extends CodeBlock {

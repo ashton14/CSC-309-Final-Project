@@ -14,6 +14,8 @@ import static org.junit.Assert.assertTrue;
  * 77% statement coverage, covers everything except
  * for one edgecase and verbose output verification.
  * Both of these were verified through manual testing.
+ *
+ * @author Aaron Bettencourt
  */
 public class GradeFlowchartTest {
 

@@ -10,6 +10,7 @@ import java.util.Observer;
 
 /**
  * A Class to display a problem for the user to translate Code to a Flowchart.
+ * @author Aaron Bettencourt, Ashton Alonge
  */
 public class CodeProblemView extends JPanel implements Observer {
 

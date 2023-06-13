@@ -16,6 +16,7 @@ import static src.test.DrawablesMock.*;
  * 65% statement coverage as of 6/11/2023
  * 93% statement coverage when run with DataStateRepositoryIntegrationTest
  * All external CodeBlock and Line Dependencies are mocked.
+ * @author Aaron Bettencourt
  */
 public class DataRepositoryTest {
 

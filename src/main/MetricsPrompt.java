@@ -12,6 +12,7 @@ import java.util.Observer;
  * This class is intended to support
  * the addition of more metrics once the
  * algorithms to grade them are implemented.
+ * @author Aaron Bettencourt
  */
 public class MetricsPrompt extends JPanel implements Observer {
 

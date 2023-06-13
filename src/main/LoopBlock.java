@@ -2,7 +2,7 @@ package src.main;
 
 /**
  * Represents a LoopBlock, which is a specialized type of CodeBlock for loops.
- * @author Connor Hickey
+ * @author Connor Hickey, Aaron Bettencourt
  */
  public class LoopBlock extends CodeBlock {
 

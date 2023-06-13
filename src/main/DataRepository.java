@@ -7,6 +7,7 @@ import java.util.Observable;
 /**
  * A class to store data of type Drawable, which is to be observed
  * by observers.
+ * @author Aaron Bettencourt
  */
 public class DataRepository extends Observable implements Repository {
 

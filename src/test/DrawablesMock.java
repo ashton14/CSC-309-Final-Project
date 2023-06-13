@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.when;
 
+/**
+ * Utility class for mocking drawables.
+ * @author Aaron Bettencourt
+ */
 public class DrawablesMock {
 
 

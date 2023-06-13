@@ -11,6 +11,8 @@ import java.util.ArrayList;
  * A class designed to grade the cyclomatic complexity
  * of a flowchart by comparing its contents against
  * a user submitted answer.
+ *
+ * @author Aaron Bettencourt
  */
 public class GradeCyclomaticComplexity {
 

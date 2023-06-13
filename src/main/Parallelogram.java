@@ -5,6 +5,7 @@ import java.awt.*;
  * Parallelogram
  * @author Patrick Whitlock
  * @author Ashton Alonge
+ * @author Aaron Bettencourt
  */
 public class Parallelogram extends Shape {
     public static final int offset = 30;
@@ -22,6 +23,10 @@ public class Parallelogram extends Shape {
         super(xPosCenter, yPosCenter,width,height, color);
     }
 
+    /**
+     * Creates a deep copy of this Shape
+     * @return   A deep copy of this Shape.
+     */
     @Override
     public Shape copyShape() {
         return new Parallelogram(getXCenter(), getYCenter(), getWidth(), getHeight(), getColor());

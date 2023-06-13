@@ -42,6 +42,12 @@ public abstract class ShapeDecorator extends Shape {
         innerShape.setWidth(width);
     }
 
+    /**
+     * Returns a deep copy of the innermost Shape that is
+     * being decorated.
+     * @return A deep copy of the innermost Shape that is
+     * being decorated.
+     */
 
     public Shape getInnerShapeCopy(){
         return innerShape.copyShape();

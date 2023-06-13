@@ -4,6 +4,7 @@ import java.util.Observable;
 
 /**
  * Repository to hold feedback to send to the user.
+ * @author Aaron Bettencourt, Patrick Whitlock
  */
 public class FeedbackRepository extends Observable implements Repository {
 

@@ -20,6 +20,7 @@ import static src.test.DrawablesMock.*;
  * DataStateRepositoryIntegrationTest
  *
  * All external CodeBlock and Line Dependencies are mocked.
+ * @author Aaron Bettencourt
  */
 public class StateRepositoryTest {
 

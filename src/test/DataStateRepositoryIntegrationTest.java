@@ -18,6 +18,7 @@ public class DataStateRepositoryIntegrationTest {
      * currently selected CodeBlock in the StateRepository
      * to null if the undone CodeBlock is the
      * currently selected CodeBlock.
+     * @author Aaron Bettencourt
      */
     @Test
     public void testDataUndoSelected(){

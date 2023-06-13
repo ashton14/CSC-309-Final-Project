@@ -12,6 +12,7 @@ import java.util.ArrayList;
 /**
  * Class to be instantiated to handle the button presses for the
  * CodeProblemView instances.
+ * @author Aaron Bettencourt, Ashton Alonge
  */
 public class CodeProblemViewControlHandler implements ActionListener {
 

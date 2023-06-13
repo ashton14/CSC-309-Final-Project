@@ -1,13 +1,13 @@
 package src.main;
 /**
  * Print Code Block
- * @author Patrick Whitlock
+ * @author Patrick Whitlock, Aaron Bettencourt
  */
 public class PrintBlock extends CodeBlock {
     /**
      * Creates a PrintBlock object
-     * @param xPosCenter x location
-     * @param yPosCenter y location
+     * @param wrapper   The Shape or ShapeDecorator to represent
+     *                  this PrintBlock.
      * @param label A label to label this CodeBlock with.
      */
     public PrintBlock(Shape wrapper, String label) {
