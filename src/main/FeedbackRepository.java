@@ -112,7 +112,7 @@ public class FeedbackRepository extends Observable implements Repository {
     public void setErrorIndex(int index) {
         this.errorIndex = index;
         setChanged();
-        notifyObservers();
+        notifyObservers(errorIndex);
     }
     public int getErrorIndex() {
         return this.errorIndex;
