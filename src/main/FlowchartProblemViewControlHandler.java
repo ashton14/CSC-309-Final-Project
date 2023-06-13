@@ -15,9 +15,14 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
     private JButton next;
     private int curProblemNumber = 1;
     private int numProblemsCompleted = 0;
+
     private int numProblemsInCurrentAssignment = ((ProblemRepository) ProblemRepository.getInstance())
+            .getNumAssignmentProblems(AssignmentsView.getCurrentAssignment().substring(0,11)+
+                    (Character.toLowerCase(AssignmentsView.getCurrentAssignment().charAt(11)) - 'a' + 1));
+
+    /*private int numProblemsInCurrentAssignment = ((ProblemRepository) ProblemRepository.getInstance())
             .getNumAssignmentProblems(CoursesPage.getCurrentAssignment().substring(0,11)+
-                    (Character.toLowerCase(CoursesPage.getCurrentAssignment().charAt(11)) - 'a' + 1));
+                    (Character.toLowerCase(CoursesPage.getCurrentAssignment().charAt(11)) - 'a' + 1));*/
 
     FlowchartProblemViewControlHandler(ArrayList<JTextField> jTextAreas, JButton prev, JButton next){
         this.jTextAreas = jTextAreas;

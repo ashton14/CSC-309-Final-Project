@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Random;
 
 /**
  * The AssignmentsView class represents a view that displays the assignments for a specific course.
@@ -24,6 +23,7 @@ class AssignmentsView extends JPanel implements AppPage {
     private List<String> assignments;
     private TeachingApp app;
     private Course course;
+    private static String currentAssignment;
 
     /**
      * Constructs an AssignmentsView object with the specified TeachingApp and Course.
@@ -44,24 +44,42 @@ class AssignmentsView extends JPanel implements AppPage {
     @Override
     public void showContents() {
         this.removeAll();
-        Random rand = new Random();
+        // For the course name
+        JLabel courseLabel = new JLabel(course.getCourseName());
+        courseLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        courseLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        courseLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        this.add(courseLabel);
 
+        // For each assignment
+        ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         for (String assignment : this.assignments) {
-            JButton assignmentButton = new JButton(assignment);
-            assignmentButton.setUI(new RoundedButtonUI(800, 80));
+            JButton assignmentButton = new JButton(assignment + " (" + pRepo.getNumAssignmentProblems(assignment) + " problems)");
+            assignmentButton.setForeground(Color.WHITE);
             assignmentButton.setBackground(new Color(40, 237, 152));
+            assignmentButton.setBorderPainted(false);
+            assignmentButton.setFocusPainted(false);
+            assignmentButton.setContentAreaFilled(false);
+            assignmentButton.setOpaque(true);
+            assignmentButton.setPreferredSize(new Dimension(400, 75));
+            assignmentButton.setMaximumSize(new Dimension(400, 75));
+            assignmentButton.setMinimumSize(new Dimension(400, 75));
+            assignmentButton.setFont(new Font("Arial", Font.BOLD, 18));
+            assignmentButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             assignmentButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     handleAssignmentButtonClick(assignment);
                 }
             });
+            assignmentButton.setUI(new RoundedButtonUI(200, 200));
             this.add(assignmentButton);
-            this.add(Box.createRigidArea(new Dimension(0, 15)));
+            this.add(Box.createRigidArea(new Dimension(0, 10)));
         }
         this.revalidate();
         this.repaint();
     }
+
 
     /**
      * Retrieves the header information of the AssignmentsView.
@@ -83,6 +101,7 @@ class AssignmentsView extends JPanel implements AppPage {
      */
     private void handleAssignmentButtonClick(String assignment) {
         System.out.println("Assignment button clicked! " + assignment);
+        setCurrentAssignment(assignment);
         StateRepository sRepo = (StateRepository) StateRepository.getInstance();
         ProblemRepository pRepo = (ProblemRepository) ProblemRepository.getInstance();
         DiagramApp diagramApp = new DiagramApp(app);
@@ -125,4 +144,13 @@ class AssignmentsView extends JPanel implements AppPage {
     public void setAssignments(List<String> assignments) {
         this.assignments = assignments;
     }
+
+    public void setCurrentAssignment(String assignment){
+        this.currentAssignment = "Assignment "+assignment;
+    }
+
+    public static String getCurrentAssignment(){
+        return currentAssignment;
+    }
+
 }
