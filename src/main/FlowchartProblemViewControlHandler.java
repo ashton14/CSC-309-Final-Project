@@ -100,6 +100,9 @@ public class FlowchartProblemViewControlHandler implements ActionListener, Mouse
                 CoursesPage.updateCourseProgress();
             }
 
+            if(curProblemNumber+1 == numProblemsInCurrentAssignment) {
+                pRepo.setAssignmentComplete(true);
+            }
         }
     }
 

@@ -131,4 +131,8 @@ public class ProblemRepository extends Observable implements Repository{
     public int getProblemIndex() {
         return problemIndex;
     }
+
+    public void setAssignmentComplete(boolean complete) {
+        this.assignments.get(this.assignmentIndex).setAssignmentComplete(complete);
+    }
 }
