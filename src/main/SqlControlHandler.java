@@ -8,6 +8,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller class to handle all database queries and the results
+ * @author Alex Banham
+ */
+
 public class SqlControlHandler {
 
     private static final String url = "jdbc:mysql://sql9.freesqldatabase.com:3306/sql9625644";
@@ -16,9 +21,10 @@ public class SqlControlHandler {
 
     /**
      * Method to handle the user authentication, queries the db to check if user info is there
+     * @param username The user's username to be validated
+     * @param password The user's password to be validated
      */
     public static boolean authenticateUser(String username, String password) {
-
         // Connect to the MySQL database
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -29,7 +35,6 @@ public class SqlControlHandler {
             statement.setString(1, username);
             statement.setString(2, password);
             ResultSet result = statement.executeQuery();
-
             // Check the result set
             if (result.next()) {
                 conn.close();
@@ -47,6 +52,8 @@ public class SqlControlHandler {
     /**
      * Method to handle user registration, queries the db to check if user exists before adding a new user
      * @param userType the type of user, either professor or student
+     * @param username The user's username to be registered
+     * @param password The user's password to be registered
      */
     public static boolean registerUser(String userType, String username, String password) {
         try {
@@ -73,13 +80,16 @@ public class SqlControlHandler {
                 }
             }
             return false;
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return false;
     }
 
+    /**
+     * Method to handle uploading a flowchart to the db
+     * @param filename the filename of the flowchart to upload
+     */
     public static boolean uploadFlowchart(String filename) {
         try (Connection connection = DriverManager.getConnection(url, connectionUser, connectionPass)) {
             String sql = "INSERT INTO flowcharts (name, file_data) VALUES (?, ?)";
@@ -99,6 +109,10 @@ public class SqlControlHandler {
         return false;
     }
 
+    /**
+     * Method to handle downloading a flowchart from the db
+     * @param filename the filename of the flowchart to upload
+     */
     public static void downloadFlowchart(String filename) {
         try (Connection connection = DriverManager.getConnection(url, connectionUser, connectionPass)) {
             String sql = "SELECT file_data FROM flowcharts WHERE name = ?";
@@ -130,6 +144,10 @@ public class SqlControlHandler {
         }
     }
 
+    /**
+     * Method that returns a list of the names of all the flowcharts in the db
+     * @return List of flowchart file names
+     */
     public static List<String> getFlowchartFileNames() {
         List<String> fileNames = new ArrayList<>();
 
@@ -146,7 +164,6 @@ public class SqlControlHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return fileNames;
     }
 

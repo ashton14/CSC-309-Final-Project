@@ -1,5 +1,7 @@
 package src.main;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -216,8 +218,7 @@ public class TeachingApp {
 
         JButton cloudCoursesButton = new JButton("Cloud");
         cloudCoursesButton.addActionListener(e -> {
-            List<String> diagramNames = List.of("Diagram 1", "Diagram 2", "Diagram 3", "Diagram 4", "Diagram 5",
-                    "Diagram 6", "Diagram 7", "Diagram 8", "Diagram 9", "Diagram 10");
+            List<String> diagramNames = SqlControlHandler.getFlowchartFileNames();
             pushPage(new CloudDataView(this, diagramNames));
         });
 
@@ -284,7 +285,12 @@ public class TeachingApp {
      * @param args command-line arguments (unused).
      */
     public static void main(String[] args) {
-        boolean isTesting = true;  // change to true for testing mode
+        try {
+            UIManager.setLookAndFeel( new FlatLightLaf() );
+        } catch( Exception ex ) {
+            System.err.println( "Failed to initialize theme. Using fallback." );
+        }
+        boolean isTesting = false;  // change to true for testing mode
         TeachingApp app = new TeachingApp(isTesting);
 
         LoginPage loginPage = new LoginPage(isTesting, app);

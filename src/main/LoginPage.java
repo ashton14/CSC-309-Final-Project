@@ -169,19 +169,19 @@ public class LoginPage extends JPanel implements AppPage {
         } else {
             CourseView courseView = new CourseView(this.app);
 
-            if (isTesting) {
-                List<String> assignments = new ArrayList<>(Arrays.asList("Assignment 1", "Assignment 2", "Assignment 3"));
-                List<Student> students = new ArrayList<>(Arrays.asList(studentNames).stream().map(Student::new).collect(Collectors.toList()));
+            List<String> assignments = new ArrayList<>(Arrays.asList("Assignment 1", "Assignment 2", "Assignment 3"));
+            List<Student> students = new ArrayList<>(Arrays.asList(studentNames)
+                    .stream().map(Student::new)
+                    .collect(Collectors.toList()));
 
-                List<Course> courses = new ArrayList<>();
+            List<Course> courses = new ArrayList<>();
 
-                for (int i = 0; i < 4; i++) {
-                    Course course = new Course(courseNames[i], teachers[i], descriptions[i], assignments);
-                    students.forEach(course::enrollStudent);
-                    courses.add(course);
-                }
-                courseView.setCourses(courses);
+            for (int i = 0; i < 4; i++) {
+                Course course = new Course(courseNames[i], teachers[i], descriptions[i], assignments);
+                students.forEach(course::enrollStudent);
+                courses.add(course);
             }
+            courseView.setCourses(courses);
 
             app.pushPage(courseView);
         }
@@ -190,7 +190,7 @@ public class LoginPage extends JPanel implements AppPage {
     }
 
     /**
-     * Validate with actual SQL integration, currently just for testing
+     * TODO: Validate with actual SQL integration, currently just for testing
      * @return if the user is a teacher
      */
     public boolean validateIsTeacher() {
