@@ -18,8 +18,10 @@ public class Assignment {
         this.problems = problems;
         this.assignmentName = assignmentName;
         bestTimes = new ArrayList<>();
-        for(UserExample problem : problems) { //initialize bestTimes to be the max time
-            bestTimes.add(359999);
+        for (UserExample problem : problems) { //initialize bestTimes to be the max time
+            if (problem != null) {
+                bestTimes.add(359999);
+            }
         }
     }
 

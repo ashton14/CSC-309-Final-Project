@@ -65,15 +65,16 @@ class CourseView extends JPanel implements AppPage {
                     app.pushPage(assignmentsView);
                 }
             });
-
-            List<Assignment> assignments = pRepo.getAssignments();
             int completedAssignments = 0;
+
+            /*
+            List<Assignment> assignments = pRepo.getAssignments();
             for (Assignment assignment : assignments) {
                 if (assignment.getAssignmentComplete()) {
                     completedAssignments++;
                 }
             }
-
+            */
             course.setNumAssignmentsCompleted(completedAssignments);
 
             // Create a JLabel to display the number of completed assignments

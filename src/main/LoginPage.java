@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Alex Banham, Connor Hickey
@@ -20,6 +21,7 @@ public class LoginPage extends JPanel implements AppPage {
     private TeachingApp app;
 
     private boolean isTesting;
+    private boolean isTeacher;
 
     /**
      * Constructor to initialize basic layout of login form
@@ -119,41 +121,81 @@ public class LoginPage extends JPanel implements AppPage {
      * Hides the login form and renders the main app
      */
     private void login() {
-        //CoursesPage coursesPage = new CoursesPage();
-
-        CourseView courseView = new CourseView(this.app);
-
-        if (isTesting) {
-            String[] courseNames = {
+        String[] courseNames = {
                 "Introduction to Algorithms",
                 "Software Engineering Principles",
                 "Computer Networks",
                 "Artificial Intelligence: Theory and Practice"
-            };
-            String[] teachers = {
+        };
+        String[] teachers = {
                 "Connor",
                 "Alex",
                 "Patrick",
                 "Aaron"
-            };
+        };
 
-            String[] descriptions = {
+        String[] descriptions = {
                 "In 'Introduction to Algorithms', students explore the foundations of computer science. This course introduces core algorithmic techniques and proofs, and encourages students to design, analyze, and implement algorithms in a hands-on manner.",
                 "'Software Engineering Principles' teaches the basics of software development. Students will learn about different software development methodologies, project management, and quality assurance. The course also includes a group project where students will design and implement their own software application.",
                 "The 'Computer Networks' course provides an overview of how data is transmitted over networks. Key topics include network architecture, data transmission methods, network protocols, and network security. Practical labs will allow students to set up and troubleshoot simple networks.",
                 "'Artificial Intelligence: Theory and Practice' exposes students to the principles and techniques used in the field of artificial intelligence. The curriculum includes machine learning, natural language processing, robotics, and expert systems. The final project involves developing a simple AI program."
-            };
+        };
 
-            List<String> assignments = Arrays.asList("Assignment 1", "Assignment 2", "Assignment 3");
+        String[] studentNames = {
+                "John", "Paul", "George", "Ringo",
+                "Mick", "Keith", "Charlie", "Ronnie",
+                "Robert", "Jimmy", "John Paul", "Bonzo",
+                "Freddy", "Brian", "Roger", "John Deacon"
+        };
 
-            List<Course> courses = new ArrayList<>();
+        if (validateIsTeacher()) {
+            TeacherView teacherView = new TeacherView(this.app);
 
-            for (int i = 0; i < 4; i++) {
-                courses.add(new Course(courseNames[i], teachers[i], descriptions[i], assignments));
+            if (isTesting) {
+                List<String> assignments = new ArrayList<>(Arrays.asList("Assignment 1", "Assignment 2", "Assignment 3"));
+                List<Student> students = new ArrayList<>(Arrays.asList(studentNames).stream().map(Student::new).collect(Collectors.toList()));
+
+                List<Course> courses = new ArrayList<>();
+
+                for (int i = 0; i < 4; i++) {
+                    Course course = new Course(courseNames[i], teachers[i], descriptions[i], assignments);
+                    students.forEach(course::enrollStudent);
+                    courses.add(course);
+                }
+                teacherView.setCourses(courses);
             }
-            courseView.setCourses(courses);
+
+            app.pushPage(teacherView);
+        } else {
+            CourseView courseView = new CourseView(this.app);
+
+            if (isTesting) {
+                List<String> assignments = new ArrayList<>(Arrays.asList("Assignment 1", "Assignment 2", "Assignment 3"));
+                List<Student> students = new ArrayList<>(Arrays.asList(studentNames).stream().map(Student::new).collect(Collectors.toList()));
+
+                List<Course> courses = new ArrayList<>();
+
+                for (int i = 0; i < 4; i++) {
+                    Course course = new Course(courseNames[i], teachers[i], descriptions[i], assignments);
+                    students.forEach(course::enrollStudent);
+                    courses.add(course);
+                }
+                courseView.setCourses(courses);
+            }
+
+            app.pushPage(courseView);
         }
-        app.pushPage(courseView);
+
+
+    }
+
+    /**
+     * Validate with actual SQL integration, currently just for testing
+     * @return if the user is a teacher
+     */
+    public boolean validateIsTeacher() {
+        this.isTeacher = true;
+        return this.isTeacher;
     }
 
     @Override

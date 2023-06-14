@@ -91,6 +91,19 @@ public class TeachingApp {
                 messageButton.setVisible(true);
                 break;
 
+            case "TeacherView":
+                backButton.setVisible(false);
+                logoutButton.setVisible(true);
+                this.frame.getContentPane().remove(sidePanel);
+                messageButton.setVisible(true);
+                break;
+
+            case "TeacherCourseView":
+                backButton.setVisible(true);
+                logoutButton.setVisible(true);
+                messageButton.setVisible(true);
+                break;
+
             default:
                 break;
         }

@@ -1,5 +1,6 @@
 package src.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,9 @@ public class Course {
     private String description;
     private String teacher;
     private int numAssignmentsCompleted;
+
+    private List<Student> enrolledStudents;  // The list of students enrolled in the course
+
     private List<String> assignments;
 
     /**
@@ -36,6 +40,7 @@ public class Course {
         this.description = description;
         this.assignments = assignments;
         this.numAssignmentsCompleted = 0;
+        this.enrolledStudents = new ArrayList<>();  // Initialize with no enrolled students
     }
 
     /**
@@ -94,4 +99,19 @@ public class Course {
         return this.assignments;
     }
 
+    public void addAssignment(String assignmentName) {
+        this.assignments.add(assignmentName);
+    }
+
+    public List<Student> getEnrolledStudents() {
+        return this.enrolledStudents;
+    }
+
+    public void enrollStudent(Student student) {
+        this.enrolledStudents.add(student);
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
