@@ -106,21 +106,4 @@ public class CloudDataView extends JPanel implements AppPage {
         return "Cloud Saved Diagrams";
     }
 
-    /**
-     * Retrieves the diagram names of the CloudDataView.
-     *
-     * @return a list of the diagram names.
-     */
-    public List<String> getDiagramNames() {
-        return diagramNames;
-    }
-
-    /**
-     * Sets the diagram names of the CloudDataView.
-     *
-     * @param diagramNames the list of diagram names.
-     */
-    public void setDiagramNames(List<String> diagramNames) {
-        this.diagramNames = diagramNames;
-    }
 }
