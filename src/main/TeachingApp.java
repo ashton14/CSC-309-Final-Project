@@ -103,6 +103,11 @@ public class TeachingApp {
                 logoutButton.setVisible(true);
                 messageButton.setVisible(true);
                 break;
+            case "TeacherStudentView":
+                backButton.setVisible(true);
+                logoutButton.setVisible(true);
+                messageButton.setVisible(true);
+                break;
 
             default:
                 break;
@@ -271,6 +276,9 @@ public class TeachingApp {
         frame.setVisible(visible);
     }
 
+    public Stack getPages() {
+        return this.pages;
+    }
     /**
      * The main method to start the TeachingApp application.
      * @param args command-line arguments (unused).

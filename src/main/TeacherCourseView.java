@@ -26,25 +26,40 @@ class TeacherCourseView extends JPanel implements AppPage {
         this.removeAll();
         this.assignmentTextFields.clear();
 
-        // Show the list of students enrolled in the course in the side panel
-        String[] studentNames = course.getEnrolledStudents().stream()
-                .map(Student::getName)
-                .toArray(String[]::new);
+// Show the list of students enrolled in the course in the side panel
+        List<Student> enrolledStudents = course.getEnrolledStudents();
+        DefaultListModel<Student> studentListModel = new DefaultListModel<>();
+        for (Student student : enrolledStudents) {
+            studentListModel.addElement(student);
+        }
 
-        // Create a label for "Enrolled Students" text
         JLabel enrolledLabel = new JLabel("Enrolled Students");
         enrolledLabel.setFont(new Font("Arial", Font.BOLD, 18));
         enrolledLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         enrolledLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
-        JList<String> studentList = new JList<>(studentNames);
+        JList<Student> studentList = new JList<>(studentListModel);
         studentList.setFont(new Font("Arial", Font.BOLD, 18)); // Set bigger font size for student names
-        studentList.setVisibleRowCount(course.getEnrolledStudents().size()); // Display all students
-        JScrollPane studentListScrollPane = new JScrollPane(studentList);
+        studentList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                Student student = (Student) value;
+                label.setText(student.getName());
+                return label;
+            }
+        });
+        studentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        studentList.addListSelectionListener(e -> {
+            Student selectedStudent = studentList.getSelectedValue();
+            if (selectedStudent != null) {
+                handleStudentSelection(selectedStudent);
+            }
+        });
 
-        // Set a fixed width for the scroll pane
-        Dimension scrollPaneSize = new Dimension(200, 600);
-        studentListScrollPane.setPreferredSize(scrollPaneSize);
+        JScrollPane studentListScrollPane = new JScrollPane(studentList);
+        studentListScrollPane.setPreferredSize(new Dimension(200, 600));
 
         JPanel sidePanel = new JPanel();
         sidePanel.setPreferredSize(new Dimension(200, 600)); // Set a slightly wider side panel
@@ -52,9 +67,6 @@ class TeacherCourseView extends JPanel implements AppPage {
         sidePanel.add(enrolledLabel, BorderLayout.NORTH); // Add the enrolledLabel at the top
         sidePanel.add(studentListScrollPane, BorderLayout.CENTER); // Add the scroll pane in the center
         app.setSidePanel(sidePanel);
-
-
-
 
         // Show the course name
         JLabel courseLabel = new JLabel(course.getCourseName());
@@ -98,7 +110,11 @@ class TeacherCourseView extends JPanel implements AppPage {
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Code to handle assignment editing
+                    DiagramApp diagramApp = new DiagramApp(app);
+                    diagramApp.setVisible(true);
+                    diagramApp.setSize(900, 900);
+                    diagramApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    app.setVisible(false);
                 }
             });
 
@@ -159,8 +175,22 @@ class TeacherCourseView extends JPanel implements AppPage {
         this.repaint();
     }
 
+
     @Override
     public String getHeaderInfo() {
         return "Course View for Teachers";
+    }
+
+    private void handleStudentSelection(Student student) {
+        if (app.peekPage().getClass().getSimpleName().equals("TeacherStudentView")) {
+            if (((TeacherStudentView) app.peekPage()).getStudent().getName().equals(student.getName())) {
+                System.out.println("In Student View");
+            } else {
+                app.goBack();
+                app.pushPage(new TeacherStudentView(app, course, student));
+            }
+        } else {
+            app.pushPage(new TeacherStudentView(app, course, student));
+        }
     }
 }

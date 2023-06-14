@@ -27,6 +27,35 @@ class TeacherView extends JPanel implements AppPage {
         gbc.weighty = 1.0;
         gbc.anchor = GridBagConstraints.CENTER;
 
+        JButton createCourseButton = new JButton("Create Course");
+        createCourseButton.setPreferredSize(new Dimension(120, 50)); // Set the preferred size of the button
+
+        JTextField courseNameTextField = new JTextField();
+        courseNameTextField.setPreferredSize(new Dimension(300, 50)); // Set the preferred size of the text field
+
+        JPanel createCoursePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        createCoursePanel.add(courseNameTextField);
+        createCoursePanel.add(createCourseButton);
+
+        createCourseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String courseName = courseNameTextField.getText();
+                if (!courseName.isEmpty()) {
+                    // Create a new course with the provided course name
+                    Course newCourse = new Course(courseName, "Test Teacher", "", new ArrayList<>());
+                    // Add the new course to the list of courses
+                    courses.add(0, newCourse);
+                    // Refresh the view to display the new course
+                    showContents();
+                }
+            }
+        });
+
+        // Create a panel to hold the courses
+        JPanel coursesPanel = new JPanel();
+        coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
+
         for (Course course : this.courses) {
             JButton courseButton = new JButton(course.getCourseName());
             courseButton.setUI(new RoundedButtonUI(600, 100));
@@ -54,10 +83,22 @@ class TeacherView extends JPanel implements AppPage {
             coursePanel.add(courseButton, BorderLayout.CENTER);
             coursePanel.add(enrolledLabel, BorderLayout.SOUTH);
 
-            this.add(coursePanel, gbc);
-            this.add(Box.createRigidArea(new Dimension(0, 20))); // Add spacing between assignments
-            gbc.gridy++;
+            coursesPanel.add(coursePanel);
+            coursesPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Add spacing between assignments
         }
+
+        // Wrap the courses panel with a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(coursesPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // Set the preferred size of the scroll pane
+        Dimension scrollPaneSize = new Dimension(600, 500);
+        scrollPane.setPreferredSize(scrollPaneSize);
+
+        // Add "Create Course" panel and the scroll pane to the main panel
+        this.add(createCoursePanel, gbc);
+        gbc.gridy++;
+        this.add(scrollPane, gbc);
 
         this.revalidate();
         this.repaint();
