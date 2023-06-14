@@ -108,7 +108,7 @@ public class MenuBarControlHandler implements ActionListener {
                     break;
                 case "Change Text":
                     CodeBlock selectedCodeBlock = stateRepository.getCurrentlySelectedCodeBlock();
-                    if(selectedCodeBlock == null){
+                    if (selectedCodeBlock == null){
                         break;
                     }
                     String text = (String) JOptionPane.showInputDialog(
