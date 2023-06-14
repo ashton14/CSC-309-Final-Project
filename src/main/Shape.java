@@ -11,7 +11,7 @@ import java.util.Observer;
  *
  * @author Aaron Bettencourt
  */
-public abstract class Shape extends Observable implements Drawable, Serializable, Observer {
+public abstract class Shape extends Observable implements Drawable, Observer {
     private int xPosCenter;
     private int yPosCenter;
     private int width;

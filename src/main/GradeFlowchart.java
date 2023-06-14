@@ -81,7 +81,7 @@ public class GradeFlowchart {
      * @param feedback   The verbose feedback as a String to
      *                   potentially send to the FeedbackRepository.
      */
-    public void sendPositiveFeedback(String feedback){
+    private void sendPositiveFeedback(String feedback){
         FeedbackRepository hintRepository = (FeedbackRepository) FeedbackRepository.getInstance();
         if(isVerbose) {
             hintRepository.setFeedback(feedback);
@@ -134,7 +134,7 @@ public class GradeFlowchart {
      * @param int3   The third potential minimum integer.
      * @return   The minimum integer of three given values.
      */
-    public static int min(int int1, int int2, int int3){
+    private int min(int int1, int int2, int int3){
         int min = Math.min(int1, int2);
         min = Math.min(min, int3);
         return min;
@@ -152,7 +152,7 @@ public class GradeFlowchart {
      * @return The Levenshtein distance between two StringBuilders or the given tolerance value if the computed distance
      * exceeds it.
      */
-    public int distance(StringBuilder solution, StringBuilder student, int distance, int index, int tolerance){
+    private int distance(StringBuilder solution, StringBuilder student, int distance, int index, int tolerance){
         if(solution == null || student == null)
             return 0;
         if(distance == -1)
@@ -188,7 +188,7 @@ public class GradeFlowchart {
      * @return  The distance between the solution and student Strings or the given tolerance value,
      * whichever is lower.
      */
-    public int distanceWrapper(String solution, String student, int tolerance){
+    private int distanceWrapper(String solution, String student, int tolerance){
         int distance = distance(new StringBuilder(solution), new StringBuilder(student), -1,0, tolerance);
         if(solution.length() > student.length()){
             distance += solution.length() - student.length();
@@ -204,7 +204,7 @@ public class GradeFlowchart {
      * @return    True if the two CodeBlocks are equivalent, otherwise
      * false.
      */
-    public  boolean isCodeBlockEquivalent(CodeBlock codeBlock1, CodeBlock codeBlock2){
+    private boolean isCodeBlockEquivalent(CodeBlock codeBlock1, CodeBlock codeBlock2){
         if(codeBlock1 == null || codeBlock2 == null){
             return false;
         }
@@ -224,7 +224,7 @@ public class GradeFlowchart {
      * @return   True if the two CodeBlocks are equivalent with the exception
      * that they contain unequal text, otherwise false.
      */
-    public  boolean isCodeBlockMisspelled(CodeBlock codeBlock1, CodeBlock codeBlock2){
+    private  boolean isCodeBlockMisspelled(CodeBlock codeBlock1, CodeBlock codeBlock2){
         return (codeBlock1 != null && codeBlock2 != null
                 && codeBlock1.getClass() == codeBlock2.getClass()
                 && !codeBlock1.getText().equals(codeBlock2.getText()));
@@ -238,7 +238,7 @@ public class GradeFlowchart {
      * @return  True if both CodeBlocks are not null and unequal text,
      * otherwise false.
      */
-    public  boolean isCodeBlockMisspelledIgnoreType(CodeBlock codeBlock1, CodeBlock codeBlock2){
+    private boolean isCodeBlockMisspelledIgnoreType(CodeBlock codeBlock1, CodeBlock codeBlock2){
         return (codeBlock1 != null && codeBlock2 != null
                 && !codeBlock1.getText().equals(codeBlock2.getText()));
     }
@@ -251,7 +251,7 @@ public class GradeFlowchart {
      * @return   True if both CodeBlocks are not null, contain equal text
      * and are different classes, otherwise false.
      */
-    public boolean isCodeBlockWrongType(CodeBlock codeBlock1, CodeBlock codeBlock2){
+    private boolean isCodeBlockWrongType(CodeBlock codeBlock1, CodeBlock codeBlock2){
         return (codeBlock1 != null && codeBlock2 != null
                 && codeBlock1.getClass() != codeBlock2.getClass()
                 && codeBlock1.getText().equals(codeBlock2.getText()));
@@ -267,7 +267,7 @@ public class GradeFlowchart {
      *         has not yet been discovered and is determined to be equivalent to the given
      *         nextSolutionBlock of type CodeBlock if it exists, otherwise null.
      */
-    public CodeBlock findEquivalent(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock){
+    private CodeBlock findEquivalent(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock){
         for(int i = 0; i < nextStudentBlocks.size(); ++i){
             if(isCodeBlockEquivalent(nextSolutionBlock, nextStudentBlocks.get(i))) {
                 for (int j = 0; j < nextStudentBlocks.get(i).getDiscovered().size(); ++j) {
@@ -293,7 +293,7 @@ public class GradeFlowchart {
      *         has not yet been discovered and is determined to be the same, but be a different class
      *         compared to the given nextSolutionBlock of type CodeBlock, otherwise null.
      */
-    public CodeBlock findWrongType(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock){
+    private CodeBlock findWrongType(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock){
         for(int i = 0; i < nextStudentBlocks.size(); ++i){
             if(isCodeBlockWrongType(nextSolutionBlock, nextStudentBlocks.get(i))) {
                 for (int j = 0; j < nextStudentBlocks.get(i).getDiscovered().size(); ++j) {
@@ -319,7 +319,7 @@ public class GradeFlowchart {
      *         has not yet been discovered and is determined to be the same, but contains
      *         unequal text compared to the nextSolutionBlock of type CodeBlock, otherwise null.
      */
-    public CodeBlock findMisspelled(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock, int tolerance){
+    private CodeBlock findMisspelled(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock, int tolerance){
         CodeBlock closestSpelledBlock = null;
         int closestDistance = tolerance - 1;
         for(int i = 0; i < nextStudentBlocks.size(); ++i){
@@ -350,7 +350,7 @@ public class GradeFlowchart {
      *         has not yet been discovered and is determined to be the same, but contains
      *         unequal text compared to the nextSolutionBlock of type CodeBlock, otherwise null.
      */
-    public CodeBlock findMisspelledIgnoreType(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock, int tolerance){
+    private CodeBlock findMisspelledIgnoreType(ArrayList<CodeBlock> nextStudentBlocks, CodeBlock nextSolutionBlock, int tolerance){
         CodeBlock closestSpelledBlock = null;
         int closestDistance = tolerance - 1;
         for(int i = 0; i < nextStudentBlocks.size(); ++i){
@@ -488,7 +488,7 @@ public class GradeFlowchart {
      * @param solutionBlock   The root of the solution graph of CodeBlocks to check.
      * @param studentBlock   The root of the student's graph of CodeBlocks to check.
      */
-    public void discover(CodeBlock solutionBlock, CodeBlock studentBlock) {
+    private void discover(CodeBlock solutionBlock, CodeBlock studentBlock) {
         previousCodeBlock = solutionBlock;
         ArrayList<CodeBlock> nextSolutionBlocks = solutionBlock.getOutboundCodeBlocks();
         ArrayList<Boolean> nextSolutionBlocksMarkings = solutionBlock.getOutBoundCodeBlockMarkings();
