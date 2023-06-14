@@ -194,7 +194,7 @@ public class LoginPage extends JPanel implements AppPage {
      * @return if the user is a teacher
      */
     public boolean validateIsTeacher() {
-        this.isTeacher = true;
+        this.isTeacher = false;
         return this.isTeacher;
     }
 
